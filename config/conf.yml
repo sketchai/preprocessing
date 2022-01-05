@@ -1,0 +1,39 @@
+filters:
+  type:
+    status : op
+    order : 0
+  label:
+    status : op
+    order : 1
+    parms:
+      node : []
+      edge : []
+  count:
+    status : op
+    order : 2
+    parms:
+      type : node 
+      min : 60
+      max : 5 
+  dof:
+    status : seq
+    order : 0
+    parms:
+      dof_max : 5
+  normalization :
+    status : seq
+    order : 1
+  weighter : 
+    status : seq
+    order : 2
+
+encoding:
+  n_bins : 50
+
+main_parameters:
+  n_process : 1
+  input_folder : ''
+  output_folder : ''
+
+
+  
