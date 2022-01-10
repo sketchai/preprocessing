@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "preprocessing_sg"
+version = "0.1.0"
+description = ""
+authors = ["EDF - F.Robin"]
+
+[tool.poetry.dependencies]
+python = "3.9.9"
+
+
+[tool.poetry.dev-dependencies]
+black = "^21.6b0"
+pytest = "^6.2.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",  # You should have a "tests" directory
+]

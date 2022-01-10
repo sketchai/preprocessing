@@ -1,4 +1,4 @@
-name: preprocessing_sg_edf
+name: basic_conda
 
 channels:
   - default

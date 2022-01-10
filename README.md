@@ -4,8 +4,13 @@
 
 ## Installation
 
-Run 
 
+We use conda as an environment manager and poetry as dependency manager.
+
+1. Generate a conda env 
+First, create and activate a basic conda env from the [env_basic_conda.yml](./env/env_basic_conda.yml) file. 
+
+Run 
 ```
 conda env create -f ./env/env.yml
 ```
@@ -13,5 +18,39 @@ conda env create -f ./env/env.yml
 then 
 
 ```
-conda activate preprocessing_sg_edf
+conda activate basic_conda
 ```
+
+NB: it can be good to change the conda name env into [env_basic_conda.yml](./env/env_basic_conda.yml) file.
+
+
+2. Install poetry and package dependencies
+
+To install poetry, run 
+```
+    conda install poetry
+```
+
+Then, to install package dependencies with poetry, 
+
+```
+poetry install
+```
+
+To update package dependencies, 
+```
+poetry update
+```
+
+## Testing 
+
+For running all the tests:
+
+```
+poetry run pytest 
+```
+
+For running a specific test: [TO COMPLETE]
+
+
+See test coverage : [TO COMPLETE]
