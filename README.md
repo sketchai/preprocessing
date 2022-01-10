@@ -18,7 +18,7 @@ Run
 then 
 
 ```
-    conda activate basic_conda
+    conda activate env_prep
 ```
 
 NB: it can be good to change the conda name env into [env_basic_conda.yml](./env/env_basic_conda.yml) file.
