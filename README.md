@@ -8,17 +8,17 @@
 We use conda as an environment manager and poetry as dependency manager.
 
 1. Generate a conda env 
-First, create and activate a basic conda env from the [env_basic_conda.yml](./env/env_basic_conda.yml) file. 
+First, create and activate a basic conda env from the [env_prep.yml](./env/env_prep.yml) file. 
 
 Run 
 ```
-conda env create -f ./env/env.yml
+    conda env create -f ./env/env_prep.yml
 ```
 
 then 
 
 ```
-conda activate basic_conda
+    conda activate basic_conda
 ```
 
 NB: it can be good to change the conda name env into [env_basic_conda.yml](./env/env_basic_conda.yml) file.
@@ -26,20 +26,15 @@ NB: it can be good to change the conda name env into [env_basic_conda.yml](./env
 
 2. Install poetry and package dependencies
 
-To install poetry, run 
-```
-    conda install poetry
-```
-
-Then, to install package dependencies with poetry, 
+To install package dependencies with poetry, 
 
 ```
-poetry install
+    poetry install
 ```
 
 To update package dependencies, 
 ```
-poetry update
+    poetry update
 ```
 
 ## Testing 
@@ -47,7 +42,7 @@ poetry update
 For running all the tests:
 
 ```
-poetry run pytest 
+    poetry run pytest 
 ```
 
 For running a specific test: [TO COMPLETE]
@@ -65,3 +60,8 @@ Use the pep8 norm to format all the code. Specific pep8 parameters are given int
 ```
 autopep8 --in-place --aggressive --aggressive ./
 ```
+
+
+### FLAKE8
+
+[TO COMPLETE]
