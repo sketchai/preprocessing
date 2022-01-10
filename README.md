@@ -54,3 +54,14 @@ For running a specific test: [TO COMPLETE]
 
 
 See test coverage : [TO COMPLETE]
+
+
+## Good pratices 
+
+### PEP8
+
+Use the pep8 norm to format all the code. Specific pep8 parameters are given into the [pyproject.toml](pyproject.toml) file.
+
+```
+autopep8 --in-place --aggressive --aggressive ./
+```

@@ -1,4 +1,4 @@
-name: basic_conda
+name: env_prep
 
 channels:
   - default
@@ -7,5 +7,6 @@ channels:
 dependencies:
   - python=3.9
   - pip=20.3.3
+  - poetry=1.1.12
   - pip:
     - requests==2.25.0
