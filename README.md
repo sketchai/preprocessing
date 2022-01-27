@@ -45,10 +45,18 @@ For running all the tests:
     poetry run pytest 
 ```
 
-For running a specific test: [TO COMPLETE]
+For running a specific test: 
+```
+    poetry run pytest path/my_test
+```
 
 
 See test coverage : [TO COMPLETE]
+
+
+## Preprocessing pipeline 
+
+- [How does the preprocessing pipeline works?](docs/pipeline_preprocessing/pipeline.md)
 
 
 ## Good pratices 
