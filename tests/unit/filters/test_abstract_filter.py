@@ -20,7 +20,6 @@ class TestAbstractFilter(unittest.TestCase):
         new_message = self.mock_filter.process(self.mock_message_1)
         self.assertDictEqual(new_message, {'a': 2, 'b': 2})
 
-
     def test_update_wrong_ob(self):
         logger.debug('Test update wrong ob')
         self.assertEqual(self.mock_filter.wrong_ob_cnt, 0)

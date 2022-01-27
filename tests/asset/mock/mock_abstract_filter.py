@@ -11,6 +11,7 @@ class MockFilter(AbstractFilter):
     """
         A basic filter that change one of the message element.
     """
+
     def __init__(self, conf_filter: Dict = {}):
         super().__init__()
         self.wrong_ob_cnt: int = 0
@@ -22,4 +23,3 @@ class MockFilter(AbstractFilter):
         if message.get('b'):
             self.wrong_ob_cnt += 1
         return message
-

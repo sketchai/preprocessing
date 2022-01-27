@@ -11,11 +11,14 @@ class SourceList(SourceFilter):
     """
         A basic source that generates a list.
     """
+
     def __init__(self, conf: Dict = {}):
         super().__init__()
         self.l_data = conf.get('l_data')
 
     def generator(self) -> object:
         logger.debug('Start generator')
-        for elt in self.l_data :
+        for elt in self.l_data:
+            logger.debug(f'Element : {elt}')
             yield {'data': elt}
+        logger.info('Stop generator')
