@@ -45,8 +45,6 @@ To update package dependencies,
 3. Install sktechgraphs: to avoid unwanted evolution, use a cloned version on the EDF repo:
 
 ```bash
-    pip install torch
-    pip install -e git+https://gitlab.pam-retd.fr/cao_ml/python_packages/abstractfilters/filteringpipeline.git#egg=filteringpipeline
     pip install -e git+https://gitlab.pam-retd.fr/cao_ml/sg.git#egg=sketchgraphs
 ```
 
