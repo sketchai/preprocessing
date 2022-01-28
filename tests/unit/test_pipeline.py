@@ -23,6 +23,8 @@ class TestPipeline(unittest.TestCase):
         self.sink = MockSinkFilter(conf={'output_path': self.output_path})
         self.source = SourceList(conf={'l_data': [1, 2, 5, 6]})
 
+        self.clean = True
+
     def test_execute(self):
         # Test execution - Case 1: up to the end of the data source
         self.pipeline.add_source(self.source)
@@ -30,9 +32,10 @@ class TestPipeline(unittest.TestCase):
         self.pipeline.add_sink(self.sink)
         last_message = self.pipeline.execute()
 
-        self.assertDictEqual(last_message, {})
+        self.assertDictEqual(last_message, {'END_SOURCE': 'True'})
         self.assertTrue(os.path.exists(self.output_path))  # Check that the file has been created at the end
 
     def tearDown(self):
         # Clean and remove created files
-        os.remove(self.output_path)
+        if self.clean and os.path.exists(self.output_path):
+            os.remove(self.output_path)
