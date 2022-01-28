@@ -26,7 +26,7 @@ NB: it can be good to change the conda name env into [env_basic_conda.yml](./env
 
 2. Install poetry and package dependencies
 
-To install package dependencies with poetry, 
+1. To install package dependencies with poetry, 
 
 ```
     poetry install
@@ -37,7 +37,12 @@ To update package dependencies,
     poetry update
 ```
 
-2.a About sketchgraphs installation: to avoid unwanted evolution, use a cloned version on the EDF repo:
+2. Install our gitlab package FilteringPipeline:
+```bash
+    pip install -e git+https://gitlab.pam-retd.fr/cao_ml/python_packages/abstractfilters/filteringpipeline.git#egg=filteringpipeline
+```
+
+3. Install sktechgraphs: to avoid unwanted evolution, use a cloned version on the EDF repo:
 
 ```bash
     pip install torch

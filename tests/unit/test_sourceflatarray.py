@@ -2,8 +2,8 @@ import unittest
 import logging
 
 
-from src.sketchgraph_plus.sources.source_fromflatarray import SourceFromFlatArray
-  
+from src.sources.source_fromflatarray import SourceFromFlatArray
+
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
