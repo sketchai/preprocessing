@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
-class TestPipeline(unittest.TestCase):
+class TestFactory(unittest.TestCase):
 
     @classmethod
     def setUp(self):
@@ -41,10 +41,10 @@ class TestPipeline(unittest.TestCase):
         pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
         last_message = pipeline.execute()
 
-        self.assertDictEqual(last_message, {})
+        self.assertDictEqual(last_message, {'END_SOURCE': 'True'})
         self.assertTrue(os.path.exists(self.output_path))  # Check that the file has been created at the end
 
     def tearDown(self):
         # Clean and remove created files
-        if self.clean:
+        if self.clean and os.path.exists(self.output_path):
             os.remove(self.output_path)

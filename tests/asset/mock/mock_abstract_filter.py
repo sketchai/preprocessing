@@ -1,7 +1,7 @@
 from typing import Dict
 import logging
 from src.filters.abstract_filter import AbstractFilter
-
+from src.filters import KO_FILTER_TAG
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -22,4 +22,6 @@ class MockFilter(AbstractFilter):
             message['a'] += 1
         if message.get('b'):
             self.wrong_ob_cnt += 1
+        if message.get('c'):
+            message.update({KO_FILTER_TAG: self.name})
         return message
