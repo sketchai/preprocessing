@@ -7,7 +7,7 @@ __pycache__/
 # Poetry specific file
 poetry.lock
 
-
+data
 
 # Unit test / coverage reports
 .coverage
@@ -15,3 +15,6 @@ poetry.lock
 nosetests.xml
 coverage.xml
 
+# Remove gitlab installation
+src/filteringpipeline
+src/sketchgraphs
