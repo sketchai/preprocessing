@@ -37,7 +37,7 @@ To update package dependencies,
     poetry update
 ```
 
-2. Install our gitlab package FilteringPipeline:
+2. Install our gitlab package [FilteringPipeline](https://gitlab.pam-retd.fr/cao_ml/python_packages/abstractfilters/filteringpipeline):
 ```bash
     pip install -e git+https://gitlab.pam-retd.fr/cao_ml/python_packages/abstractfilters/filteringpipeline.git#egg=filteringpipeline
 ```
