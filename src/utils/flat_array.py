@@ -119,7 +119,8 @@ def pack_list_flat(offsets, data_bytes):
     num_elements = np.array([len(offsets) - 1], dtype=i64)
     version = np.array([2], dtype=i64)
 
-    pack = np.empty(i64.itemsize * 4 + offsets.nbytes + len(data_bytes), dtype=np.byte)
+    pack = np.empty(i64.itemsize * 4 + offsets.nbytes +
+                    len(data_bytes), dtype=np.byte)
     current_offset = 0
 
     for arr in [_MAGIC_BYTES, version, num_elements, offsets.astype(i64, copy=False), data_bytes]:
@@ -177,7 +178,7 @@ def merge_raw_list(offset_arrays, data_arrays):
     idx = 0
 
     for off in offset_arrays:
-        all_offsets[idx:idx+len(off) - 1] = off[:-1] + current_offset
+        all_offsets[idx:idx + len(off) - 1] = off[:-1] + current_offset
         current_offset += off[-1]
         idx += len(off) - 1
 
@@ -209,14 +210,17 @@ def _unpack_flat_array(byte_data):
 
     magic, offset = _next_slice(byte_data, offset, 1, i64_dt)
     if magic != _MAGIC:
-        raise ValueError("Did not find magic bytes in data. The data is in the wrong format or corrupted.")
+        raise ValueError(
+            "Did not find magic bytes in data. The data is in the wrong format or corrupted.")
 
     version, offset = _next_slice(byte_data, offset, 1, i64_dt)
     if version != 2:
-        raise ValueError("Expected protocol version 2, but found version {0}.".format(version))
+        raise ValueError(
+            "Expected protocol version 2, but found version {0}.".format(version))
 
     num_items, offset = _next_slice(byte_data, offset, 1, i64_dt)
-    pickle_offsets, offset = _next_slice(byte_data, offset, num_items + 1, i64_dt)
+    pickle_offsets, offset = _next_slice(
+        byte_data, offset, num_items + 1, i64_dt)
     pickle_data = byte_data[offset:]
 
     return pickle_offsets, pickle_data
@@ -246,6 +250,7 @@ class FlatSerializedArray:
     each access. This allows it to use memory-mapped byte arrays as its underlying storage, which enable
     random access and arrays larger than system memory.
     """
+
     def __init__(self, offsets, pickle_data):
         """Initializes a new array from offsets and pickled data.
 
@@ -314,7 +319,8 @@ class FlatSerializedArray:
         different processes without copying when using `torch.multiprocessing`.
         """
         if torch is None:
-            raise ValueError('pytorch could not be loaded. It is required to share memory.')
+            raise ValueError(
+                'pytorch could not be loaded. It is required to share memory.')
 
         self._offsets = torch.as_tensor(self._offsets).share_memory_()
         self._pickle_data = torch.as_tensor(self._pickle_data).share_memory_()
@@ -325,7 +331,8 @@ class FlatSerializedArray:
 
 
 _DICTIONARY_MAGIC = 87374267
-_DICTIONARY_MAGIC_BYTES = np.array([_DICTIONARY_MAGIC], dtype=np.dtype('<i8')).view(np.byte)
+_DICTIONARY_MAGIC_BYTES = np.array(
+    [_DICTIONARY_MAGIC], dtype=np.dtype('<i8')).view(np.byte)
 
 
 def pack_dictionary_flat(dict_):
@@ -379,9 +386,11 @@ def pack_dictionary_flat(dict_):
 
     offset = 0
     offset = _write_slice(result, offset, _DICTIONARY_MAGIC_BYTES)
-    offset = _write_slice(result, offset, np.array([1], dtype=i64)) # version
-    offset = _write_slice(result, offset, np.array([len(header_dict_data)], dtype=i64))
-    offset = _write_slice(result, offset, np.frombuffer(header_dict_data, dtype=np.byte))
+    offset = _write_slice(result, offset, np.array([1], dtype=i64))  # version
+    offset = _write_slice(result, offset, np.array(
+        [len(header_dict_data)], dtype=i64))
+    offset = _write_slice(result, offset, np.frombuffer(
+        header_dict_data, dtype=np.byte))
 
     for element in element_data:
         offset = _write_slice(result, offset, element)
@@ -417,14 +426,16 @@ def load_dictionary_flat(data):
         raise ValueError('Unknown protocol version {0}'.format(version))
 
     len_header, offset = _next_slice(data, offset, 1)
-    header_data, base_offset = _next_slice(data, offset, len_header, np.dtype(np.byte))
+    header_data, base_offset = _next_slice(
+        data, offset, len_header, np.dtype(np.byte))
 
     header_dict = pickle.loads(header_data)
 
     result = {}
 
     for k, (data_offset, data_len, data_type) in header_dict.items():
-        element_data = data[base_offset + data_offset:base_offset + data_offset + data_len]
+        element_data = data[base_offset +
+                            data_offset:base_offset + data_offset + data_len]
 
         if data_type == 0:
             result[k] = pickle.loads(element_data)
