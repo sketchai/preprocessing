@@ -1,33 +1,96 @@
-# Preprocessing
+# SketchGraph: data preprocessing
 
-## Filter
-### Coarse filter
-Sketches are filtered out according to:
-- their primitives and their constraints. Sketches containing the less common ones are rejected. Sketches containing constraints with three references (mirror, a few midpoints) are rejected;
-- the number of primitives;
-- the number of remaining degrees of freedom.
+La pipeline de preprocessing s'appuie sur 4 grandes étapes :
+A. Une étape de filtrage selon les critéres détaillés ci-dessous,
+B. Une étape de normalisation des données,
+C. Une étape finale de tri dont le but est de retirer les esquisses les plus proches,
+D. Une étape de conversion dans un format binaire compatible pour l'entraînement avec un modèle torch.
 
-### Normalization
-We modify the numerical parameters of the primitives and the constraints according to:
-- lines have six parameters. We reduce them to five zeroing the start parameter;
-- sketches are centered using a proxy for the barycenter;
-- numerical values are converted to numbers. Some sketches are not well formated, they are discarded;
-- lengths and positions are sent to $\[-1,1\]$ applying one homothety per sketch; angles to $\[0,2\pi\]$. So each parameter is either a boolean or a numerical value which lies in these intervals.
+L'intégralité de l'étape de preprocessing permet de générer à partir d'un fichier binaire .npy contenant des esquisses au format SketchGraph un nouveau fichier binaire compatible pour un entraînement avec pytorch.
 
-### Weighting
-Similar sketches are underweighted:
-- classes are formed looking at sketches with identical sequences of operations and references;
-- among each class sketches are clustered according to their numerical parameters;
-- one sketch per cluster is kept; its weight is the inverse of the number of clusters among the class. So, the distribution of classes is uniform.
+# A. Filtration des données
 
-We underweight repeated sketches by an additional factor one over the number of slices, if the job is done paralelly on different slices. Indeed, common sketches are still over-represented since they appear in each slice; while unique sketches appear in only one slice. If a sketch appears two times or more in one slice, then surely it is present in all the other slices.
+Les données sont filtrés selon les critères suivants :
 
-## Encoding
-Sketches are converted toward the input format of the neural network. In particular there are:
-- `*_features`: the types of the primitives/constraints;
-- `sparse_*_features`: the discretizations of the parameters;
-- `incidences`: the sparse adjacency matrix of the graph;
-- `i_edges_given`: indices of the constraints that are given to the neural network; the indices refer to the list `edge_ops` or samely to `incidences`;
-- `i_edges_possible`: indices of the constraints that can be given to the neural network;
-- `edges_toInf_neg`: couples of nodes that are not neighboor.
+a. un Noeud doit appartenir à la liste suivante (9 éléments):
+```python
+    keep_node = [datalib.EntityType.Point, datalib.EntityType.Line,
+              datalib.EntityType.Circle, datalib.EntityType.Arc,
+             datalib.SubnodeType.SN_Start, datalib.SubnodeType.SN_End, datalib.SubnodeType.SN_Center,
+             datalib.EntityType.External, datalib.EntityType.Stop]
+```
 
+b. une Arête appartenir à la liste suivante (15 éléments):
+```python
+    keep_edge = [datalib.ConstraintType.Coincident, datalib.ConstraintType.Distance, datalib.ConstraintType.Horizontal,
+             datalib.ConstraintType.Parallel, datalib.ConstraintType.Vertical, datalib.ConstraintType.Tangent,
+             datalib.ConstraintType.Length, datalib.ConstraintType.Perpendicular, datalib.ConstraintType.Midpoint,
+             datalib.ConstraintType.Equal, datalib.ConstraintType.Diameter, datalib.ConstraintType.Radius,
+             datalib.ConstraintType.Concentric, datalib.ConstraintType.Angle, datalib.ConstraintType.Subnode]
+```
+
+c. une contrainte ne doit pas avoir 3 références
+
+d. la séquence doit contenir au moins une contrainte
+
+e. la séquence doit avoir une taille minimale et maximale.
+
+f. la séquence doit avoir un DoF inférieur ou égale à ```dof_max```
+
+g. les angles doivent être en degrés et les distances en métres
+
+*Remarques :* 
+- Le test sur la référence est == et non >=. Doit-on modifier ce test ? 
+- Des étapes de filtrations sont également contenues dans la partie normalization du code d'Odilon. Il paraît plus logique de les basculer dans le A.
+
+
+**Dans notre pipeline de preprocessing**
+- les filtres a., b., c. et g. sont des filtres s'appliquant opération par opération.
+- les filtres  d., e. et f. sont des filtres s'appliquant sur l'intégralité de la séquence. Pour les filtres d. et e., il y a un phénomène d'accumulations.
+
+Par conséquent, nous proposons la construction suivante :
+
+```mermaid 
+flowchart LR
+    Source(SourceFromFlatArray)--->|message= \n SketchGraph \n sequence| FilterPipeline;
+    FilterPipeline --->|message= \n Entity/Constraint \n object & status| CheckElementWiseFilter;
+    CheckElementWiseFilter --->|message= \n Entity/Constraint \n object & status| CheckMetrics;
+    CheckMetrics --->|message= \n status, nb_constraints, nb_primitives| FilterPipeline;
+    FilterPipeline--->|message= \n seq, status, nb_constraints, nb_primitives| CheckSize[CheckSize: \n Check sequence length \n Check nb constraints];
+    CheckSize--->|message= \n seq, status, nb_constraints, nb_primitives|CheckDoF;
+    CheckDoF--->|message= \n seq, status, nb_constraints, nb_primitives| Sink(SinkSaveData);
+```
+
+
+# B. Normalization des données 
+
+Une fois l'étape de filtrage effectuée, le dataset est normalisé selon les critères suivants :
+
+a. Normalization des segments (Constraint Line)
+
+b. Centrer l'esquisse
+
+c. Conversion des longueurs en mètre
+
+d. Conversion des angles en degrès
+
+e. Normalization des longeurs
+
+f. Conversion des angles pour les contraintes Arc et Angle
+
+**Dans notre pipeline de preprocessing**
+- les filtres a., c., d. et f. sont des filtres s'appliquant opération par opération.
+- les filtres  b. et e. sont des filtres s'appliquant sur l'intégralité de la séquence (mais avec un phénomène d'accumulation)
+
+```mermaid 
+flowchart LR
+    Source(SourceFromFlatArray)--->|message= \n SketchGraph \n sequence| FilterPipeline;
+    FilterPipeline --->|message= \n Entity/Constraint \n object| NormalizeLine;
+    NormalizeLine --->|message= \n Entity/Constraint \n object| ConvertLength;
+    ConvertLength --->|message= \n status| ConvertAngle;
+    ConvertAngle --->|message= \n status| SubFiltereNormalizeSketch;
+    SubFiltereNormalizeSketch --->|message= \n status| SubFiltereNormalizeLength;
+    SubFiltereNormalizeLength--->|message= \n status| FilterPipeline;
+    FilterPipeline--->|message= \n seq, status| ConvertSequence[ConvertSequence: \n Convert length \n Convert angle];
+    ConvertSequence--->|message=seq |SaveNormalization;
+```
