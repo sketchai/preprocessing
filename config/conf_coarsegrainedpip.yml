@@ -1,5 +1,5 @@
 PipelineFilter:
-  l_filters: [PipelineFilter] 
+  l_filters: [PipelineSubFilter] 
   source : Source_A
   sink : None # Can be None
   n_process : 1
@@ -12,16 +12,15 @@ Source_A:
     file_path: 'data/sg_t16_test.npy'
 
 # Pipeline Filters
-PipelineFilter:
-  type: PipelineFilter
+PipelineSubFilter:
+  type: PipelineSubFilter
   parms:
-    l_sub_filters: [CheckElementWiseFilter]
+    l_sub_filters: [FilterCheckLabel]
 
-CheckElementWiseFilter:
-  type: CheckElementWiseFilter
+FilterCheckLabel:
+  type: FilterCheckLabel
   parms :
-
-
+    label_list: TO_COMPLETE
 
 
 
