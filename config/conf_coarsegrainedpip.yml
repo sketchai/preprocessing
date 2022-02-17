@@ -1,5 +1,5 @@
-PipelineFilter:
-  l_filters: [PipelineSubFilter] 
+General:
+  l_filters: [OpSubPipelineFilter] 
   source : Source_A
   sink : None # Can be None
   n_process : 1
@@ -10,12 +10,20 @@ Source_A:
   type: SourceFromFlatArray
   parms:
     file_path: 'data/sg_t16_test.npy'
+    counter_for_test: 1
 
 # Pipeline Filters
-PipelineSubFilter:
-  type: PipelineSubFilter
+OpSubPipelineFilter:
+  type: OpSubPipelineFilter
+  source: SourceSub
+  sink : None
   parms:
-    l_sub_filters: [FilterCheckLabel]
+    l_filters: [FilterCheckLabel]
+
+SourceSub:
+  type : SourceList
+  parms:
+    l_data : TO_COMPLETE
 
 FilterCheckLabel:
   type: FilterCheckLabel

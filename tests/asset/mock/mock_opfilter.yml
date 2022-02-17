@@ -1,0 +1,22 @@
+General:
+  l_filters: [FilterOp] 
+  source : None
+  sink : None # Can be None
+
+
+FilterOp:
+  type: OpSubPipelineFilter
+  source: SourceSub
+  sink : None
+  parms:
+    l_sub_filters: [FilterCheckLabel]
+
+SourceSub:
+  type : SourceList
+  parms:
+    l_data : TO_COMPLETE
+
+FilterCheckLabel:
+  type: FilterCheckLabel
+  parms :
+    label_list: TO_COMPLETE
