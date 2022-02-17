@@ -1,0 +1,28 @@
+PipelineFilter:
+  l_filters: [PipelineSubFilter] 
+  source : Source_A
+  sink : None # Can be None
+  n_process : 1
+
+
+# Source
+Source_A:
+  type: SourceFromFlatArray
+  parms:
+    file_path: 'data/sg_t16_test.npy'
+
+# Pipeline Filters
+PipelineSubFilter:
+  type: PipelineSubFilter
+  parms:
+    l_sub_filters: [FilterCheckLabel]
+
+FilterCheckLabel:
+  type: FilterCheckLabel
+  parms :
+    label_list: TO_COMPLETE
+
+
+
+
+  
