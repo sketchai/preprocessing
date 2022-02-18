@@ -1,4 +1,4 @@
-from typing import Dict 
+from typing import Dict
 import re
 
 from ..filteringpipeline.src.filters.abstract_filter import AbstractFilter
@@ -35,21 +35,19 @@ class FilterMeasureUnit(AbstractFilter):
         op = message.get('op')
         KO_flag = False
         if isinstance(op, sequence.EdgeOp):
-            if self.angle_regex and op.label==datalib.ConstraintType.Angle:
+            if self.angle_regex and op.label == datalib.ConstraintType.Angle:
                 angle = op.parameters['angle']
                 if not re.match(self.angle_regex, angle):
-                    message.update({KO_FILTER_TAG : self.name})
+                    message.update({KO_FILTER_TAG: self.name})
                     return message
 
             if self.length_regex and op.label in CONSTRAINTS_WITH_A_LENGTH:
                 length = op.parameters.get('length')
                 if length is None:
-                    KO_flag = True                    
+                    KO_flag = True
                 elif not re.match(self.length_regex, length):
                     KO_flag = True
 
                 if KO_flag:
-                    message.update({KO_FILTER_TAG : self.name})
+                    message.update({KO_FILTER_TAG: self.name})
         return message
-
-
