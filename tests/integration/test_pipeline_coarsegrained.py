@@ -30,9 +30,9 @@ class TestIntegrationCoarseGrainedPipeline(unittest.TestCase):
                                 'FilterCheckLabel': FilterCheckLabel,
                                 'SourceList': SourceList}
         self.d_conf = yaml_to_dict('config/conf_coarsegrainedpip.yml')
-        self.d_conf['FilterCheckLabel']['parms']['label_list'] = [datalib.ConstraintType.Coincident, datalib.ConstraintType.Distance, 
-                                                                    datalib.ConstraintType.Horizontal,datalib.EntityType.Point, 
-                                                                    datalib.EntityType.Line]
+        self.d_conf['FilterCheckLabel']['parms']['label_list'] = [datalib.ConstraintType.Coincident, datalib.ConstraintType.Distance,
+                                                                  datalib.ConstraintType.Horizontal, datalib.EntityType.Point,
+                                                                  datalib.EntityType.Line]
 
     def test_pipeline(self):
         pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
