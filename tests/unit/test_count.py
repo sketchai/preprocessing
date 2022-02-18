@@ -39,6 +39,12 @@ class TestFilterCount(unittest.TestCase):
 
         # n < min edges, should send KO
         self.mock_sequence_2 = [
+            NodeOp(label=2),
+            NodeOp(label=3),
+            NodeOp(label=1),
+            NodeOp(label=2),
+            NodeOp(label=3),
+            NodeOp(label=1),
             EdgeOp(label=2, references=None),
         ]
         conf_dict_2 = {'min': 4, 'max': None, 'type': 'edge'}
