@@ -39,17 +39,14 @@ class TestFilterCount(unittest.TestCase):
 
         # n < min edges, should send KO
         self.mock_sequence_2 = [
-            NodeOp(label=0),
-            NodeOp(label=2),
-            NodeOp(label=3),
-            NodeOp(label=1),
+            EdgeOp(label=2, references=None),
         ]
-        conf_dict_2 = {'min': 1, 'max': None, 'type': 'edge'}
+        conf_dict_2 = {'min': 4, 'max': None, 'type': 'edge'}
         filter2 = FilterCount(conf_filter=conf_dict_2)
         for op in self.mock_sequence_2:
             message = {'op': op}
             filter2.process(message)
-        self.assertEqual(filter2.count, 0)
+        self.assertEqual(filter2.count, 1)
         answer = filter2.last_process(message)
         tag = answer.get(KO_FILTER_TAG)
 
