@@ -10,21 +10,22 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
-class CountFilter(AbstractFilter):
+class FilterCount(AbstractFilter):
     """
         A filter that count operations
 
         conf_filter arguments :
 
-            'min' : int or None
-            'max' : int or None
-            'type' : str
+            'min' : int or None, inclusive minimum number of op
+            'max' : int or None, inclusive maximum number of op
+            'type' : str, type of op to count
+
                 'node' to count sequence.NodeOp or 
                 'edge' to count sequence.EdgeOp 
 
         last_process_action :
 
-            returns a KO_FILTER_TAG if not min < count < max
+            returns a KO_FILTER_TAG if not min <= count <= max
     """
 
     def __init__(self, conf_filter: Dict = {}):
@@ -36,7 +37,7 @@ class CountFilter(AbstractFilter):
             self.type = sequence.NodeOp
         elif type_str=='edge':
             self.type = sequence.EdgeOp
-        else : raise NotImplementedError()
+        else : raise Exception()
         self.count : int = 0
         self.name = 'CountFilter'
 
@@ -50,10 +51,10 @@ class CountFilter(AbstractFilter):
     def last_process(self, message: Dict) -> Dict:
         KO_flag = False
         if self.min is not None :
-            if self.count <= self.min :
+            if self.count < self.min :
                 KO_flag = True
         if self.max is not None :
-            if self.count >= self.max:
+            if self.count > self.max:
                 KO_flag = True
                 
         if KO_flag : message.update({KO_FILTER_TAG: self.name})
