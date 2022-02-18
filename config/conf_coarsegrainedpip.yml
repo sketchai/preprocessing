@@ -22,7 +22,17 @@ FilterCheckLabel:
   parms :
     label_list: TO_COMPLETE
 
+FilterCount_MinEdge:
+  type: FilterCount
+  parms:
+    min: 1
+    max: None
+    type: 'edge'
 
-
-
+FilterCount_MinMaxNode:
+  type: FilterCount
+  parms:
+    min: 5
+    max: 60
+    type: 'node'
   
