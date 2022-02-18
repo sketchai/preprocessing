@@ -15,9 +15,12 @@ class SourceFromFlatArray(SourceFilter):
     def __init__(self, conf: Dict = {}):
         super().__init__()
         self.file_path = conf.get('file_path')
+        self.counter = conf.get('counter_for_test')
 
     def generator(self) -> object:
         logger.debug('Start generator')
+        if self.counter :
+            cpt = 0
         try:
             logger.info('Load dictionary flat array method')
             data = load_dictionary_flat(self.file_path)['sequences']
@@ -28,4 +31,9 @@ class SourceFromFlatArray(SourceFilter):
         for elt in data:
             logger.debug(f'Element : {elt}')
             yield {'data': elt}
+
+            if self.counter :
+                cpt +=1 
+                if cpt > self.counter :
+                    break 
         logger.info('Stop generator')

@@ -2,8 +2,8 @@ import unittest
 import logging
 
 
-from sketchgraphs.data.sequence import NodeOp, EdgeOp
-from sketchgraphs.data import sketch as datalib
+from src.sketchgraphs.sketchgraphs.data.sequence import NodeOp, EdgeOp
+from src.sketchgraphs.sketchgraphs.data import sketch as datalib
 
 from src.filters.filter_checklabel import FilterCheckLabel
 
