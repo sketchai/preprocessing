@@ -1,7 +1,8 @@
-from typing import Dict 
+from typing import Dict
 
 from ..filteringpipeline.src.filters.abstract_filter import AbstractFilter
 from ..filteringpipeline.src.filters import KO_FILTER_TAG
+
 
 class FilterCheckLabel(AbstractFilter):
     """
@@ -14,9 +15,9 @@ class FilterCheckLabel(AbstractFilter):
         self.name = 'FilterCheckLabel'
 
     def process(self, message: object) -> object:
-        if message.get('status', False) :
-            return message 
-        else :
+        if message.get('status', False):
+            return message
+        else:
             op = message.get('op')
             if op.label not in self.label_list:
                 message.update({KO_FILTER_TAG: self.name})
