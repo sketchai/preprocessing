@@ -1,5 +1,5 @@
-PipelineFilter:
-  l_filters: [PipelineFilter] 
+General:
+  l_filters: [OpSubPipelineFilter] 
   source : Source_A
   sink : None # Can be None
   n_process : 1
@@ -10,20 +10,57 @@ Source_A:
   type: SourceFromFlatArray
   parms:
     file_path: 'data/sg_t16_test.npy'
+    counter_for_test: 1
 
 # Pipeline Filters
-PipelineFilter:
-  type: PipelineFilter
+OpSubPipelineFilter:
+  type: OpSubPipelineFilter
+  source: SourceSub
+  sink : None
   parms:
-    l_sub_filters: [CheckElementWiseFilter]
+    l_filters: [FilterCheckLabel]
 
-CheckElementWiseFilter:
-  type: CheckElementWiseFilter
+SourceSub:
+  type : SourceList
+  parms:
+    l_data : TO_COMPLETE
+
+FilterCheckLabel:
+  type: FilterCheckLabel
   parms :
+    label_list: TO_COMPLETE
 
+FilterCount_MinEdge:
+  type: FilterCount
+  parms:
+    min: 1
+    max: None
+    type: 'edge'
 
+FilterCount_MinMaxNode:
+  type: FilterCount
+  parms:
+    min: 5
+    max: 60
+    type: 'node'
 
+FilterProcessParam_CheckLengthUnit:
+  type: FilterProcessParam
+  parms:
+    type: 'edge'
+    label: [3,8,12,14]
+    param: 'length'
+    format_dict:
+      '.* METER': None
 
-
-
+FilterProcessParam_CheckAngleUnit:
+  type: FilterProcessParam
+  parms:
+    type: 'edge'
+    label: 17
+    param: 'angle'
+    format_dict:
+      '.* DEGREE': None
+    
+  
   
