@@ -33,7 +33,7 @@ c. une contrainte ne doit pas avoir 3 références
 
 d. la séquence doit contenir au moins une contrainte
 
-e. la séquence doit avoir une taille minimale et maximale.
+e. la séquence doit avoir nbre de noeuds compris entre ```n_min``` et ```n_max```.
 
 f. la séquence doit avoir un DoF inférieur ou égale à ```dof_max```
 

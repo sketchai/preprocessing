@@ -12,6 +12,10 @@ import pickle
 import lz4.frame
 import numpy as np
 
+# Temporary fix for the sketchgraphs install (ugly)
+import sys
+sys.path.append('src/sketchgraphs/')
+
 try:
     # this module can be used without pytorch, some multiprocessing tools are disabled
     import torch

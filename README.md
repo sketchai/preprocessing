@@ -12,13 +12,13 @@ First, create and activate a basic conda env from the [env_prep.yml](./env/env_p
 
 Run 
 ```
-    conda env create -f ./env/env_prep.yml
+    conda env create -f ./env/sg_prep.yml
 ```
 
 then 
 
 ```
-    conda activate env_prep
+    conda activate sg_prep
 ```
 
 NB: it can be good to change the conda name env into [env_basic_conda.yml](./env/env_basic_conda.yml) file.
@@ -45,6 +45,7 @@ To update package dependencies,
 3. Install sktechgraphs: to avoid unwanted evolution, use a cloned version on the EDF repo:
 
 ```bash
+    pip install torch
     pip install -e git+https://gitlab.pam-retd.fr/cao_ml/sg.git#egg=sketchgraphs
 ```
 
@@ -54,6 +55,28 @@ Otherwise, use the original github repository:
     pip install torch
     pip install -e git+https://github.com/PrincetonLIPS/SketchGraphs.git@2fbf9e5e84031b233325331c95880a86448e5bee#egg=sketchgraphs
 ```
+
+Then, you must install the following packages (sketchgraphs dependencies)
+```bash
+    pip install lz4 numpy matplotlib pygraphviz
+```
+
+
+## Problème de gestion du package sketchgraphs
+
+- Test 1: Ajouter 
+```python
+import sys
+sys.path.append('src/sketchgraphs')
+```
+dans le script python
+
+- Test 2 : Ajouter 
+```
+torch=""
+sketchgraphs = {path = "./src/sketchgraphs", develop = true}
+```
+dans le pytoml (mais il y a un problème avec le setup de sketchgraph).
 
 ## Testing 
 

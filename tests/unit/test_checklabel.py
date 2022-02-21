@@ -2,8 +2,8 @@ import unittest
 import logging
 
 
-from sketchgraphs.data.sequence import NodeOp, EdgeOp
-from sketchgraphs.data import sketch as datalib
+from src.sketchgraphs.sketchgraphs.data.sequence import NodeOp, EdgeOp
+from src.sketchgraphs.sketchgraphs.data import sketch as datalib
 
 from src.filters.filter_checklabel import FilterCheckLabel
 
@@ -20,21 +20,21 @@ class TestFilterCheckLabel(unittest.TestCase):
         # Test 1 : the op fulfills the condition
         message_A = {'op': NodeOp(label=0)}
         message = filter.process(message_A)
-        message_A['status'] = True 
+        message_A['status'] = True
         self.assertDictEqual(message_A, message)
 
         message_A = {'op': EdgeOp(label=0, references=(1,))}
         message = filter.process(message_A)
-        message_A['status'] = True 
+        message_A['status'] = True
         self.assertDictEqual(message_A, message)
 
         # Test 2 : the op does not fulfill the condition
         message_A = {'op': NodeOp(label=12)}
         message = filter.process(message_A)
-        message_A['status'] = False 
+        message_A['status'] = False
         self.assertDictEqual(message_A, message)
 
         message_A = {'op': EdgeOp(label=12, references=(1,))}
         message = filter.process(message_A)
-        message_A['status'] = False 
+        message_A['status'] = False
         self.assertDictEqual(message_A, message)
