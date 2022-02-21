@@ -34,6 +34,7 @@ class FilterParamFormat(AbstractFilter):
                 a dict that matches units to a format value
                 key = a string used as a regex
                 value = a float that is multiplied with the converted value
+                        if None, the value is not converted and stays as a string
 
         example :
             {
@@ -65,19 +66,22 @@ class FilterParamFormat(AbstractFilter):
     def process(self, message: object) -> object:
         op = message.get('op')
 
+        # Test if the op type corresponds to the one tested by the filter
         if self.type_of_op is not None:
             if isinstance(op, EdgeOp):
                 type_of_op = 'edge'
             elif isinstance(op, NodeOp):
                 type_of_op = 'node'
 
-            if not type_of_op == self.type_of_op:
+            if type_of_op != self.type_of_op:
                 return message
 
+        # Test if the op.label corresponds to the one tested by the filter
         if self.label is not None:
             if op.label not in self.label:
                 return message
 
+        # read the value of the chosen parameter
         param_value = op.parameters.get(self.param)
 
         if not isinstance(param_value, str):

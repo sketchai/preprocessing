@@ -43,4 +43,24 @@ FilterCount_MinMaxNode:
     min: 5
     max: 60
     type: 'node'
+
+FilterProcessParam_CheckLengthUnit:
+  type: FilterProcessParam
+  parms:
+    type: 'edge'
+    label: [3,8,12,14]
+    param: 'length'
+    format_dict:
+      '.* METER': None
+
+FilterProcessParam_CheckAngleUnit:
+  type: FilterProcessParam
+  parms:
+    type: 'edge'
+    label: 17
+    param: 'angle'
+    format_dict:
+      '.* DEGREE': None
+    
+  
   
