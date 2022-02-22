@@ -2,7 +2,7 @@ from typing import Dict
 import re
 import logging
 
-from ..filteringpipeline.src.filters.abstract_filter import AbstractFilter
+from src.filters.filter_functiononparam import FilterFunctionOnParam
 from ..filteringpipeline.src.filters import KO_FILTER_TAG
 from src.sketchgraphs.sketchgraphs.data.sequence import EdgeOp, NodeOp
 
@@ -13,9 +13,9 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
-class FilterParamFormat(AbstractFilter):
+class FilterParamFormat(FilterFunctionOnParam):
     """
-        A filter that access the value of parameter and perform an action
+        A filter that access the value of a parameter and format it
 
         conf_filter:
 
@@ -39,6 +39,7 @@ class FilterParamFormat(AbstractFilter):
         example :
             {
                 'type': 'edge'
+                'label': ConstraintType.Angle
                 'param': 'angle'
                 'format_dict': {
                     'RAD': 1.
@@ -51,38 +52,38 @@ class FilterParamFormat(AbstractFilter):
     def __init__(self, conf_filter: Dict = {}):
         super().__init__()
 
-        self.type_of_op = conf_filter.get('type')
-        self.label = conf_filter.get('label')
-        self.param = conf_filter.get('param')
-        self.format_dict = conf_filter.get('format_dict')
         self.name = 'FilterProcessParam'
 
-        if self.param is None:
+        # Parse the conf_dict into a request dictionnary
+        type_of_op = conf_filter.get('type')
+        l_label = conf_filter.get('label')
+        param = conf_filter.get('param')
+        format_dict = conf_filter.get('format_dict')
+
+        if param is None:
             raise Exception(f'Specifying a param for {self.name} is mandatory')
 
-        if isinstance(self.label, int):
-            self.label = [self.label]
+        if not isinstance(l_label, list):
+            l_label = [l_label]
 
-    def process(self, message: object) -> object:
-        op = message.get('op')
+        self.request = {}
 
-        # Test if the op type corresponds to the one tested by the filter
-        if self.type_of_op is not None:
-            if isinstance(op, EdgeOp):
-                type_of_op = 'edge'
-            elif isinstance(op, NodeOp):
-                type_of_op = 'node'
+        # here the kwargs are constant
+        function_kwargs = {'parameter_name': param, 'format_dict': format_dict}
 
-            if type_of_op != self.type_of_op:
-                return message
+        for label in l_label:
+            self.request.update({
+                (type_of_op, label): function_kwargs
+            })
 
-        # Test if the op.label corresponds to the one tested by the filter
-        if self.label is not None:
-            if op.label not in self.label:
-                return message
-
+    def apply_function(self, message: object, parameter_name: str, format_dict: dict) -> object:
+        """
+        This function formats the given parameter using the format_dict.
+        If it fails, a KO_FLAG is sent.
+        """
         # read the value of the chosen parameter
-        param_value = op.parameters.get(self.param)
+        op = message.get('op')
+        param_value = op.parameters.get(parameter_name)
 
         if not isinstance(param_value, str):
             message.update({KO_FILTER_TAG: self.name})
@@ -90,7 +91,7 @@ class FilterParamFormat(AbstractFilter):
 
         # Check that it correctly matches one of the regex
         format_is_in_keys = False
-        for regex, unit_format in self.format_dict.items():
+        for regex, unit_format in format_dict.items():
             if re.match(regex, param_value):
                 format_is_in_keys = True
                 logger.debug(f"{regex} correctly matches {param_value}")
@@ -111,6 +112,6 @@ class FilterParamFormat(AbstractFilter):
 
             logger.debug(f'found number {match} in {param_value}')
             new_param_value = float(match) * unit_format
-            op.parameters.update({self.param: new_param_value})
+            op.parameters.update({parameter_name: new_param_value})
 
         return message
