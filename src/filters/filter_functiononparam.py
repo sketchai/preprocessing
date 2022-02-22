@@ -15,7 +15,7 @@ logger = logging.getLogger()
 
 class FilterFunctionOnParam(AbstractFilter):
     """
-        A filter that check the operation and apply a function if it corresponds to the request
+        A filter that checks the operation and applies a function if it corresponds to the request
 
         The request and the function must be implemented for children filters
 
