@@ -11,7 +11,7 @@ logger = logging.getLogger()
 
 
 class TestFilterCollectParamValue(unittest.TestCase):
-    def test_length(self):
+    def test_process(self):
         conf = {
             'request': {
                 ('node', EntityType.Line): 'length',

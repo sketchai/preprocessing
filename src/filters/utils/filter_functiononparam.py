@@ -23,7 +23,7 @@ class FilterFunctionOnParam(AbstractFilter):
     """
 
     def __init__(self, conf: Dict = {}):
-        super().__init__()
+        super().__init__(conf)
         self.name = 'FilterFunctionOnParam'
         self.request = conf.get('request')
 
