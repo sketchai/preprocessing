@@ -2,23 +2,23 @@ import unittest
 import logging
 
 
-from src.filters.filter_saveparamvalue import FilterSaveParamValue
+from src.filters.utils.filter_collectparamvalue import FilterCollectParamValue
 from src.sketchgraphs.sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
-from src.filteringpipeline.src.filters import KO_FILTER_TAG
+
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
-class TestFilterSaveParamValue(unittest.TestCase):
+class TestFilterCollectParamValue(unittest.TestCase):
     def test_length(self):
-        conf_filter1 = {
+        conf = {
             'request': {
-                ('node', EntityType.Line): {'parameter_name': 'length'},
-                ('node', EntityType.Circle): {'parameter_name': 'radius'}
+                ('node', EntityType.Line): 'length',
+                ('node', EntityType.Circle): 'radius'
             }
         }
-        filter1 = FilterSaveParamValue(conf_filter=conf_filter1)
+        filter1 = FilterCollectParamValue(conf=conf)
         logger.debug(filter1.request)
         self.mock_sequence_1 = [
             NodeOp(label=0, parameters={'radius': 0}),  # wrong label
