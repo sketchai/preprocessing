@@ -6,6 +6,10 @@ authors = ["EDF - F.Robin"]
 
 [tool.poetry.dependencies]
 python = "3.9.9"
+lz4 = "^4.0.0"
+numpy = "^1.22.2"
+matplotlib = "^3.5.1"
+pygraphviz = "^1.9"
 
 
 
@@ -37,3 +41,7 @@ in-place = true
 recursive = true
 aggressive = 3
 
+[[tool.poetry.source]]
+name = "nexus"
+url = "https://nexus.retd.edf.fr/repository/pypi-all/simple"
+default = true 
