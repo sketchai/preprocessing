@@ -51,7 +51,6 @@ To update package dependencies,
 Otherwise, use the original github repository:
 
 ```bash
-    pip install torch
     pip install -e git+https://github.com/PrincetonLIPS/SketchGraphs.git@2fbf9e5e84031b233325331c95880a86448e5bee#egg=sketchgraphs
 ```
 
