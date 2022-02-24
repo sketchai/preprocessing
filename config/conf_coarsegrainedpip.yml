@@ -9,7 +9,8 @@ General:
 Source_A:
   type: SourceFromFlatArray
   parms:
-    file_path: 'data/sg_t16_test.npy'
+    # file_path: 'data/sg_t16_test.npy'
+    file_path: 'tests/asset/sg_t16_mini.npy'
     counter_for_test: 1
 
 # Pipeline Filters
