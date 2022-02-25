@@ -86,6 +86,7 @@ For running a specific test:
     poetry run pytest path/my_test
 ```
 
+We use a small 5 sequence long dataset extracted from the sg_t16_test.npy file to do the testing. It is located under tests/asset/sg_t16_mini.npy
 
 See test coverage : [TO COMPLETE]
 
