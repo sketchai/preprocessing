@@ -45,14 +45,12 @@ To update package dependencies,
 3. Install sktechgraphs: to avoid unwanted evolution, use a cloned version on the EDF repo:
 
 ```bash
-    pip install torch
     pip install -e git+https://gitlab.pleiade.edf.fr/cao_ml/sketchgraphs_for_edf/sketchgraphs.git#egg=sketchgraphs
 ```
 
 Otherwise, use the original github repository:
 
 ```bash
-    pip install torch
     pip install -e git+https://github.com/PrincetonLIPS/SketchGraphs.git@2fbf9e5e84031b233325331c95880a86448e5bee#egg=sketchgraphs
 ```
 
