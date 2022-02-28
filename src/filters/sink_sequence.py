@@ -26,7 +26,7 @@ class SinkSequence(AbstractFilter):
     def last_process(self, message: Dict) -> Dict:
         if message.get('sequence') is not None:
             self.collect_data.append(message.get('sequence'))  # Collect last data
-        logger.debug(f'-- Open and write into a file. Collect data= {self.collect_data}')
+        logger.debug(f'Writing {len(self.collect_data)} sequences to {self.output_path}')
        
         data = flat_array.save_list_flat(self.collect_data)
         np.save(self.output_path, data, allow_pickle=False)
