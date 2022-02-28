@@ -2,7 +2,7 @@ from typing import Dict
 
 from ..filteringpipeline.src.filters.abstract_filter import AbstractFilter
 from ..filteringpipeline.src.filters import KO_FILTER_TAG
-from ..sketchgraphs.sketchgraphs.data.sequence import NodeOp, EdgeOp
+from sketchgraphs.data.sequence import NodeOp, EdgeOp
 
 
 class FilterCheckLabel(AbstractFilter):

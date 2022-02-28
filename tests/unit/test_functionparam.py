@@ -1,8 +1,10 @@
+import sys
+sys.path.append('src/sketchgraphs/')
+
 import unittest
 import logging
 
-
-from src.sketchgraphs.sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType
+from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType
 from src.filteringpipeline.src.filters import KO_FILTER_TAG
 
 

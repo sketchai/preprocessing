@@ -1,9 +1,11 @@
+import sys
+sys.path.append('src/sketchgraphs/')
+
 import unittest
 import logging
 
-
-from src.sketchgraphs.sketchgraphs.data.sequence import NodeOp, EdgeOp
-from src.sketchgraphs.sketchgraphs.data import sketch as datalib
+from sketchgraphs.data.sequence import NodeOp, EdgeOp
+from sketchgraphs.data import sketch as datalib
 from src.filteringpipeline.src.filters import KO_FILTER_TAG
 from src.filters.filter_checklabel import FilterCheckLabel
 

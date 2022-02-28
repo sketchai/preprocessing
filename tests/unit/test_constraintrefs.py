@@ -1,9 +1,11 @@
+import sys
+sys.path.append('src/sketchgraphs/')
+
 import unittest
 import logging
 
-
 from src.filters.filter_constraintrefs import FilterConstraintRefs
-from src.sketchgraphs.sketchgraphs.data.sequence import EdgeOp
+from sketchgraphs.data.sequence import EdgeOp
 from src.filteringpipeline.src.filters import KO_FILTER_TAG
 
 logging.basicConfig(level=logging.DEBUG)

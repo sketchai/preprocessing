@@ -1,8 +1,9 @@
+import sys
+sys.path.append('src/sketchgraphs/')
+
 import unittest
 import logging
 
-import sys
-sys.path.append('src/sketchgraphs')
 from src.sources.source_fromflatarray import SourceFromFlatArray
 
 
