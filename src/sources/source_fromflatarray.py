@@ -30,7 +30,7 @@ class SourceFromFlatArray(SourceFilter):
 
         for elt in data:
             logger.debug(f'Element : {elt}')
-            yield {'data': elt}
+            yield {'sequence': elt}
 
             if self.counter:
                 cpt += 1
