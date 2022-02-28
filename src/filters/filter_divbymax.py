@@ -1,7 +1,6 @@
 from typing import Dict
 import re
 import logging
-import numpy as np
 
 from src.filters.utils.filter_collectparamvalue import FilterCollectParamValue
 
@@ -20,14 +19,13 @@ class FilterDivByMax(FilterCollectParamValue):
         self.name = 'FilterDivByMax'
 
     def last_process(self,message : object)->object:
-        all_values = []
+        max_value = 0
 
         if self.values.items() is None:
             return message
 
         for key, values in self.values.items():
-            all_values.extend(values)
-        max_value = max(np.abs(all_values))
+            max_value = max(max_value, max(values))
         
         if max_value == 0:
             return message
