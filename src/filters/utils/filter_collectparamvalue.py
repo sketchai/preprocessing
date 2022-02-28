@@ -26,10 +26,13 @@ class FilterCollectParamValue(FilterFunctionOnParam):
 
     def apply_function(self, message: Dict, additional_parameters: Dict) -> Dict:
         """
-        This function saves the parameter value and references into a dict
+        This function saves the parameters values and references into a dict
         """
         op = message.get('op')
-        param_value = op.parameters.get(additional_parameters)
-        self.values[additional_parameters].append(param_value)
-        self.references[additional_parameters].append(op.parameters)
+        if isinstance(additional_parameters,str):
+            additional_parameters = [additional_parameters]
+        for param in additional_parameters:
+            param_value = op.parameters.get(param)
+            self.values[param].append(param_value)
+            self.references[param].append(op.parameters)
         return message
