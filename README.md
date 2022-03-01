@@ -39,7 +39,7 @@ To update package dependencies,
 
 2. Install our gitlab package [FilteringPipeline](https://gitlab.pam-retd.fr/cao_ml/python_packages/abstractfilters/filteringpipeline):
 ```bash
-    pip install -e git+ssh://gitlab.pleiade.edf.fr/cao_ml/toolbox/filteringpipeline.git#egg=filteringpipeline
+    pip install -e git+https://gitlab.pleiade.edf.fr/cao_ml/toolbox/filteringpipeline.git#egg=filteringpipeline
 ```
 
 3. Install sktechgraphs: to avoid unwanted evolution, use a cloned version on the EDF repo:
@@ -54,22 +54,6 @@ Otherwise, use the original github repository:
     pip install -e git+https://github.com/PrincetonLIPS/SketchGraphs.git@2fbf9e5e84031b233325331c95880a86448e5bee#egg=sketchgraphs
 ```
 
-
-## Problème de gestion du package sketchgraphs
-
-- Test 1: Ajouter 
-```python
-import sys
-sys.path.append('src/sketchgraphs')
-```
-dans le script python
-
-- Test 2 : Ajouter 
-```
-torch=""
-sketchgraphs = {path = "./src/sketchgraphs", develop = true}
-```
-dans le pytoml (mais il y a un problème avec le setup de sketchgraph).
 
 ## Testing 
 
@@ -91,7 +75,8 @@ See test coverage : [TO COMPLETE]
 
 ## Preprocessing pipeline 
 
-- [How does the preprocessing pipeline works?](docs/pipeline_preprocessing/pipeline.md)
+- [How does the preprocessing pipeline works?](docs/preprocessing.md)
+- To launch a coarse-grained pipeline, use the  [following script](config/conf_coarsegrainedpip.yml)
 
 
 ## Good pratices 

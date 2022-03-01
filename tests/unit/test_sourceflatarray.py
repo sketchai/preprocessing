@@ -1,8 +1,11 @@
+import sys
+sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filteringpipeline/')
+
+
 import unittest
 import logging
 
-import sys
-sys.path.append('src/sketchgraphs')
 from src.sources.source_fromflatarray import SourceFromFlatArray
 
 

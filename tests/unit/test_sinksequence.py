@@ -1,11 +1,15 @@
+import sys
+sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filteringpipeline/')
+
+
 import unittest
 import logging
-
 import os
 
 from src.filters.sink_sequence import SinkSequence
-from src.sketchgraphs.sketchgraphs.data import flat_array
-from src.sketchgraphs.sketchgraphs.data.sequence import NodeOp, EdgeOp  
+from sketchgraphs.data import flat_array
+from sketchgraphs.data.sequence import NodeOp, EdgeOp  
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()

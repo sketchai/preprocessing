@@ -1,9 +1,13 @@
+import sys
+sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filteringpipeline/')
+
+
 import unittest
 import logging
 
-
 from src.filters.utils.filter_collectparamvalue import FilterCollectParamValue
-from src.sketchgraphs.sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
+from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
 
 
 logging.basicConfig(level=logging.DEBUG)
