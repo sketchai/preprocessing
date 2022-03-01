@@ -55,22 +55,6 @@ Otherwise, use the original github repository:
 ```
 
 
-## Problème de gestion du package sketchgraphs
-
-- Test 1: Ajouter 
-```python
-import sys
-sys.path.append('src/sketchgraphs')
-```
-dans le script python
-
-- Test 2 : Ajouter 
-```
-torch=""
-sketchgraphs = {path = "./src/sketchgraphs", develop = true}
-```
-dans le pytoml (mais il y a un problème avec le setup de sketchgraph).
-
 ## Testing 
 
 For running all the tests:
@@ -91,7 +75,8 @@ See test coverage : [TO COMPLETE]
 
 ## Preprocessing pipeline 
 
-- [How does the preprocessing pipeline works?](docs/pipeline_preprocessing/pipeline.md)
+- [How does the preprocessing pipeline works?](docs/preprocessing.md)
+- To launch a coarse-grained pipeline, use the  [following script](config/conf_coarsegrainedpip.yml)
 
 
 ## Good pratices 
