@@ -1,11 +1,13 @@
 import sys
 sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filteringpipeline/')
 
 import unittest
 import logging
 
-from src.filteringpipeline.src.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
-from src.filteringpipeline.src.filters.factory import pipeline_factory
+from filtering_pipeline.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
+from filtering_pipeline.factory import pipeline_factory
+
 from src.utils.to_dict import yaml_to_dict
 from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.sources.source_fromlist import SourceList
