@@ -1,5 +1,6 @@
 import sys
 sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filteringpipeline/')
 
 import unittest
 import logging

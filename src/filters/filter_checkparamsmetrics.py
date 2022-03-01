@@ -3,7 +3,7 @@ import re
 import logging
 
 from src.filters.utils.filter_functiononparam import FilterFunctionOnParam
-from ..filteringpipeline.src.filters import KO_FILTER_TAG
+from filtering_pipeline import KO_FILTER_TAG
 
 
 # a regex that should match all numbers in float notation or '' if no match

@@ -1,12 +1,14 @@
 import sys
 sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filteringpipeline/')
+
 
 import unittest
 import logging
 
 from src.filters.filter_count import FilterCount
 from sketchgraphs.data.sequence import EdgeOp, NodeOp
-from src.filteringpipeline.src.filters import KO_FILTER_TAG
+from filtering_pipeline import KO_FILTER_TAG
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()

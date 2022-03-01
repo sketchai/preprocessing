@@ -3,7 +3,7 @@ import logging
 import copy
 
 
-from src.filteringpipeline.src.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
+from filtering_pipeline.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()

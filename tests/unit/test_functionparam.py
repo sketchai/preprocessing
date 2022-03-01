@@ -1,11 +1,13 @@
 import sys
 sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filteringpipeline/')
+
 
 import unittest
 import logging
 
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType
-from src.filteringpipeline.src.filters import KO_FILTER_TAG
+from filtering_pipeline import KO_FILTER_TAG
 
 
 from tests.asset.mock.mock_functionOnParam import MockFunctionOnParam
