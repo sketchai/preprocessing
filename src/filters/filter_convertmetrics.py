@@ -2,7 +2,7 @@ from typing import Dict
 import re
 import logging
 
-from src.filters.filter_functiononparam import FilterFunctionOnParam
+from src.filters.utils.filter_functiononparam import FilterFunctionOnParam
 from filtering_pipeline import KO_FILTER_TAG
 from sketchgraphs.data.sequence import EdgeOp, NodeOp
 
@@ -15,21 +15,12 @@ logger = logging.getLogger()
 
 class FilterConvertMetrics(FilterFunctionOnParam):
     """
-        A filter that access the value of a parameter and convert the metrics
+        A filter that accesses the value of a str parameter and converts the metrics using a format_dict
 
-        requests : {(type, label) : {parameter_name : conver}}
-
-        example :
-            {
-                'type': 'edge'
-                'label': ConstraintType.Angle
-                'param': 'angle'
-                'format_dict': {
-                    'RAD': 1.
-                    'DEGREE': 0.01745
-                }
-
-            }
+        parms:
+          request : {(type, label) : {parameter_name : format_dict}}
+        
+        where format_dict = {string_regex: float}
     """
 
     def __init__(self, conf: Dict = {}):
@@ -38,33 +29,14 @@ class FilterConvertMetrics(FilterFunctionOnParam):
 
     def apply_function(self, message: Dict, additional_parameters: Dict) -> Dict:
         """
-        This function formats the given parameter using the format_dict.
-        If it fails, a KO_FLAG is sent.
+        This function formats the given parameter using the format_dict
         """
-        # read the value of the chosen parameter
         op = message.get('op')
-        param_value = op.parameters.get(parameter_name)
-
-        if not isinstance(param_value, str):
-            message.update({KO_FILTER_TAG: self.name})
-            return message
-
-        # Check that it correctly matches one of the regex
-        format_is_in_keys = False
-        for regex, unit_format in format_dict.items():
-            if re.match(regex, param_value):
-                format_is_in_keys = True
-                logger.debug(f"{regex} correctly matches {param_value}")
-                break
-
-        if not format_is_in_keys:
-            logger.debug(f"found no matches")
-            message.update({KO_FILTER_TAG: self.name})
-            return message
-
-        # Convert it if needed
-        if unit_format is not None:
-            match = re.findall(NUMBERS_REGEX, param_value)[0]
+        for parameter_name, format_dict in additional_parameters.items():
+            param_value = op.parameters.get(parameter_name)
+            format_is_in_keys = False
+            
+            match, unit_format = self._find_match(param_value, format_dict)
             if match == '':
                 logger.debug('no number found')
                 message.update({KO_FILTER_TAG: self.name})
@@ -75,3 +47,14 @@ class FilterConvertMetrics(FilterFunctionOnParam):
             op.parameters.update({parameter_name: new_param_value})
 
         return message
+
+    @staticmethod
+    def _find_match(param_value, format_dict):
+        for regex, unit_format in format_dict.items():
+            if re.match(regex, param_value):
+                format_is_in_keys = True
+                logger.debug(f"{regex} correctly matches {param_value}")
+                match = re.findall(NUMBERS_REGEX, param_value)[0]
+                return match, unit_format
+        return '', None
+        
