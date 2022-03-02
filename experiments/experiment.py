@@ -48,15 +48,16 @@ l_keep_node = [EntityType.Point, EntityType.Line,
 d_conf = yaml_to_dict('config/conf_coarsegrainedpip.yml')
 d_conf['FilterCheckLabel']['parms']['edge_label_list'] = l_keep_edge 
 d_conf['FilterCheckLabel']['parms']['node_label_list'] = l_keep_node
+length_format = {'length': r'[-+]?(?:\d*\.\d+|\d+) METER'}
 d_conf['FilterCheckParamsMetrics_Length']['parms']['request'] = {
-            ('edge', ConstraintType.Distance): {'length': ['.* METER']},
-            ('edge', ConstraintType.Length): {'length': ['.* METER']},
-            ('edge', ConstraintType.Diameter): {'length': ['.* METER']},
-            ('edge', ConstraintType.Radius): {'length': ['.* METER']},
+            ('edge', ConstraintType.Distance): length_format,
+            ('edge', ConstraintType.Length): length_format,
+            ('edge', ConstraintType.Diameter): length_format,
+            ('edge', ConstraintType.Radius): length_format,
         }
 
 d_conf['FilterCheckParamsMetrics_Angle']['parms']['request'] = {
-            ('edge', ConstraintType.Angle): {'angle': ['.* DEGREE']},
+            ('edge', ConstraintType.Angle): {'angle': r'[-+]?(?:\d*\.\d+|\d+) DEGREE'},
         }
 # Update some filters
 
