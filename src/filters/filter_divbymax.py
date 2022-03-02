@@ -1,6 +1,7 @@
 from typing import Dict
 import re
 import logging
+import numpy as np
 
 from src.filters.utils.filter_collectparamvalue import FilterCollectParamValue
 
@@ -9,7 +10,7 @@ logger = logging.getLogger()
 
 class FilterDivByMax(FilterCollectParamValue):
     """
-        A filter that divides all collected parameters by the max value
+        A filter that divides all collected parameters by the max absolute value
 
         request : {(type, label) : parameter_name}
     """
@@ -25,7 +26,7 @@ class FilterDivByMax(FilterCollectParamValue):
             return message
 
         for key, values in self.values.items():
-            max_value = max(max_value, max(values))
+            max_value = max(max_value, max(np.abs(values)))
         
         if max_value == 0:
             return message
