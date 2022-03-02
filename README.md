@@ -39,7 +39,7 @@ To update package dependencies,
 
 2. Install our gitlab package [FilteringPipeline](https://gitlab.pam-retd.fr/cao_ml/python_packages/abstractfilters/filteringpipeline):
 ```bash
-    pip install -e git+https://gitlab.pleiade.edf.fr/cao_ml/toolbox/filteringpipeline.git#egg=filteringpipeline
+    pip install -e git+https://gitlab.pleiade.edf.fr/cao_ml/toolbox/filteringpipeline.git#egg=filtering-pipeline
 ```
 
 3. Install sktechgraphs: to avoid unwanted evolution, use a cloned version on the EDF repo:
