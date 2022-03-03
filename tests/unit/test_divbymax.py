@@ -1,9 +1,14 @@
 import unittest
 import logging
 
+import sys
+sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filtering-pipeline')
+
+from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType
 
 from src.filters.filter_divbymax import FilterDivByMax
-from src.sketchgraphs.sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType
+
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
