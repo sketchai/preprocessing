@@ -1,9 +1,13 @@
+import sys
+sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filtering-pipeline/')
+
+
 import unittest
 import logging
 
-
 from src.filters.utils.filter_collectparamvalue import FilterCollectParamValue
-from src.sketchgraphs.sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
+from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -35,5 +39,22 @@ class TestFilterCollectParamValue(unittest.TestCase):
             message = {'op': op}
             filter1.process(message)
 
+        # check that we correctly collected the value
+
         self.assertEqual(filter1.values['radius'], [42, -42])
         self.assertEqual(filter1.values['length'], [1])
+
+        # check that we can modify the parameters by accessing the reference
+
+        for reference in filter1.references['radius']:
+            reference['radius'] /= 2
+
+        self.assertEqual(self.mock_sequence_1[2].parameters['radius'], 21)
+        self.assertEqual(self.mock_sequence_1[5].parameters['radius'], -21)
+
+        for reference in filter1.references['length']:
+            reference['length'] *= 2
+
+        self.assertEqual(self.mock_sequence_1[4].parameters['length'], 2)
+
+        logger.debug(self.mock_sequence_1)

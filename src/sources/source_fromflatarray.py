@@ -1,6 +1,6 @@
 from typing import Dict
 import logging
-from ..filteringpipeline.src.filters.abstract_filter import SourceFilter
+from filtering_pipeline.filters.abstract_filter import SourceFilter
 from ..utils.flat_array import load_flat_array, load_dictionary_flat
 
 logging.basicConfig(level=logging.DEBUG)
@@ -30,7 +30,7 @@ class SourceFromFlatArray(SourceFilter):
 
         for elt in data:
             logger.debug(f'Element : {elt}')
-            yield {'data': elt}
+            yield {'sequence': elt}
 
             if self.counter:
                 cpt += 1

@@ -1,28 +1,69 @@
 # Initialization
-from ..sources.source_fromflatarray import SourceFromFlatArray
-from ..filteringpipeline.src.filters.catalog_filter.pipeline_filter import PipelineFilter
-from ..filteringpipeline.src.filters.factory import pipeline_factory
+import sys
+import os
+
+## Add paths for packages
+sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filteringpipeline/')
+cur_path=os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, cur_path+"/..")
+
+print(sys.path)
+
+from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
+from sketchgraphs.data import flat_array
+from filtering_pipeline.factory import pipeline_factory
+
+from src.utils.to_dict import yaml_to_dict
+from src.sources.source_fromflatarray import SourceFromFlatArray
+from src.sources.source_fromlist import SourceList
+from src.filters.filter_checklabel import FilterCheckLabel
+from src.filters.filter_on_op import OpSubPipelineFilter
+from src.filters.filter_checkparamsmetrics import FilterCheckParamsMetrics
+from src.filters.filter_count import FilterCount
+from src.filters.filter_constraintrefs import FilterConstraintRefs
+from src.filters.sink_sequence import SinkSequence
 
 catalog_filters = {'SourceFromFlatArray': SourceFromFlatArray,
-                                'PipelineFilter': PipelineFilter,
-                                'CheckElementWiseFilter': CheckElementWiseFilter}
-d_conf = yaml_to_dict('config/conf_coarsegrainedpip.yml')
-
-# Update some filters
-from sketchgraphs.data import sketch as datalib
-
+                                'OpSubPipelineFilter': OpSubPipelineFilter,
+                                'FilterCheckLabel': FilterCheckLabel,
+                                'FilterCount': FilterCount,
+                                'SourceList': SourceList,
+                                'FilterConstraintRefs': FilterConstraintRefs,
+                                'FilterCheckParamsMetrics': FilterCheckParamsMetrics,
+                                'SinkSequence': SinkSequence,
+                                }
+########### Update conf 
 # the nodes and edges that are considered
-l_keep_edge = [datalib.ConstraintType.Coincident, datalib.ConstraintType.Distance, datalib.ConstraintType.Horizontal,
-             datalib.ConstraintType.Parallel, datalib.ConstraintType.Vertical, datalib.ConstraintType.Tangent,
-             datalib.ConstraintType.Length, datalib.ConstraintType.Perpendicular, datalib.ConstraintType.Midpoint,
-             datalib.ConstraintType.Equal, datalib.ConstraintType.Diameter, datalib.ConstraintType.Radius,
-             datalib.ConstraintType.Concentric, datalib.ConstraintType.Angle, datalib.ConstraintType.Subnode]
-l_keep_node = [datalib.EntityType.Point, datalib.EntityType.Line,
-             datalib.EntityType.Circle, datalib.EntityType.Arc,
-             datalib.SubnodeType.SN_Start, datalib.SubnodeType.SN_End, datalib.SubnodeType.SN_Center,
-             datalib.EntityType.External, datalib.EntityType.Stop]
+l_keep_edge = [ConstraintType.Coincident, ConstraintType.Distance, ConstraintType.Horizontal,
+               ConstraintType.Parallel, ConstraintType.Vertical, ConstraintType.Tangent,
+               ConstraintType.Length, ConstraintType.Perpendicular, ConstraintType.Midpoint,
+               ConstraintType.Equal, ConstraintType.Diameter, ConstraintType.Radius,
+               ConstraintType.Concentric, ConstraintType.Angle, ConstraintType.Subnode]
+l_keep_node = [EntityType.Point, EntityType.Line,
+               EntityType.Circle, EntityType.Arc,
+               SubnodeType.SN_Start, SubnodeType.SN_End, SubnodeType.SN_Center,
+               EntityType.External, EntityType.Stop]
+
+d_conf = yaml_to_dict('config/conf_coarsegrainedpip.yml')
+d_conf['FilterCheckLabel']['parms']['edge_label_list'] = l_keep_edge 
+d_conf['FilterCheckLabel']['parms']['node_label_list'] = l_keep_node
+length_format = {'length': r'[-+]?(?:\d*\.\d+|\d+) METER'}
+d_conf['FilterCheckParamsMetrics_Length']['parms']['request'] = {
+            ('edge', ConstraintType.Distance): length_format,
+            ('edge', ConstraintType.Length): length_format,
+            ('edge', ConstraintType.Diameter): length_format,
+            ('edge', ConstraintType.Radius): length_format,
+        }
+
+d_conf['FilterCheckParamsMetrics_Angle']['parms']['request'] = {
+            ('edge', ConstraintType.Angle): {'angle': r'[-+]?(?:\d*\.\d+|\d+) DEGREE'},
+        }
+# Update some filters
+
+
 
 
 # Launch pipeline
-pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
+pipeline = pipeline_factory(conf=d_conf, catalog_filter=catalog_filters)
 last_message = pipeline.execute()

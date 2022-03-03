@@ -1,8 +1,8 @@
 from typing import Dict
 
-from ..filteringpipeline.src.filters.abstract_filter import AbstractFilter
-from ..filteringpipeline.src.filters import KO_FILTER_TAG
-from ..sketchgraphs.sketchgraphs.data.sequence import NodeOp, EdgeOp
+from filtering_pipeline.filters.abstract_filter import AbstractFilter
+from filtering_pipeline import KO_FILTER_TAG
+from sketchgraphs.data.sequence import NodeOp, EdgeOp
 
 
 class FilterCheckLabel(AbstractFilter):

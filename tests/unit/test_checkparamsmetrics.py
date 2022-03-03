@@ -1,26 +1,32 @@
+import sys
+sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filtering-pipeline/')
+
+
 import unittest
 import logging
 
-
 from src.filters.filter_checkparamsmetrics import FilterCheckParamsMetrics
-from src.sketchgraphs.sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType
-from src.filteringpipeline.src.filters import KO_FILTER_TAG
+from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType
+from filtering_pipeline import KO_FILTER_TAG
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
-class TestFilterCollectParamValue(unittest.TestCase):
+class TestCheckParamMetrics(unittest.TestCase):
 
     def test_process(self):
 
         # First Filter : Check if length is in one of the accepted units
+        NB_RGX = r'[-+]?(?:\d*\.\d+|\d+)'
+        additional_parameters = {'length': f'{NB_RGX} ((METER)|(FEET))'}
         conf = {
             'request': {
-                ('edge', ConstraintType.Distance): {'length': ['.* METER', '.* FEET']},
-                ('edge', ConstraintType.Length): {'length': ['.* METER', '.* FEET']},
-                ('edge', ConstraintType.Diameter): {'length': ['.* METER', '.* FEET']},
-                ('edge', ConstraintType.Radius): {'length': ['.* METER', '.* FEET']},
+                ('edge', ConstraintType.Distance): additional_parameters,
+                ('edge', ConstraintType.Length): additional_parameters,
+                ('edge', ConstraintType.Diameter): additional_parameters,
+                ('edge', ConstraintType.Radius): additional_parameters,
             }
         }
 
