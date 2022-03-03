@@ -1,0 +1,59 @@
+General:
+  l_filters: [OpSubPipelineFilter] 
+  source : Source_A
+  sink : SinkSequence
+  n_process : 1
+
+
+# Source
+Source_A:
+  type: SourceFromFlatArray
+  parms:
+    file_path: 'tests/asset/out/coarse_grained_results.npy'
+
+# Pipeline Filters
+OpSubPipelineFilter:
+  type: OpSubPipelineFilter
+  source: SourceSub
+  sink : None
+  parms:
+    l_filters:
+      - FilterRecenterLine
+      - FilterBaryCenter_X
+      - FilterBaryCenter_Y
+      - FilterConvertMetrics
+      - FilterDivByMax
+
+SourceSub:
+  type : SourceList
+  parms:
+    l_data : TO_COMPLETE
+
+FilterRecenterLine:
+  type: FilterRecenterLine
+   
+FilterConvertMetrics:
+  type: FilterConvertMetrics
+  parms:
+    request: TO_COMPLETE
+
+FilterBaryCenter_X:
+  type: FilterBaryCenter
+  parms:
+    request: TO_COMPLETE
+
+FilterBaryCenter_Y:
+  type: FilterBaryCenter
+  parms:
+    request: TO_COMPLETE
+
+FilterDivByMax:
+  type: FilterDivByMax
+  parms:
+    request: TO_COMPLETE
+
+# Sink
+SinkSequence:
+  type: SinkSequence
+  parms:
+    output_path: 'tests/asset/out/normalization_results.npy'

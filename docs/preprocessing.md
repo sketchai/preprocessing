@@ -66,17 +66,17 @@ flowchart LR
 
 Une fois l'étape de filtrage effectuée, le dataset est normalisé selon les critères suivants :
 
-a. Normalization des segments (Constraint Line)
+a. Normalization des segments (Constraint Line) - [FilterRecenterLine](../src/filters/filter_recenterline.py)
 
-b. Centrer l'esquisse
+b. Centrer l'esquisse - [FilterBarycenter](../src/filters/filter_barycenter.py)
 
-c. Conversion des longueurs en mètre
+c. Conversion des longueurs en mètre - [FilterConvertMetrics](../src/filters/filter_convertmetrics.py)
 
-d. Conversion des angles en degrès
+d. Conversion des angles en degrès - [FilterConvertMetrics](../src/filters/filter_convertmetrics.py)
 
-e. Normalization des longeurs
+e. Normalization des longueurs - [FilterDivByMax](../src/filters/filter_divbymax.py)
 
-f. Conversion des angles pour les contraintes Arc et Angle
+f. Conversion des angles pour les noeuds Arc et les contraintes Angle - [FilterModuloAngle](../src/filters/.py)
 
 **Dans notre pipeline de preprocessing**
 - les filtres a., c., d. et f. sont des filtres s'appliquant opération par opération.
