@@ -19,7 +19,7 @@ class FilterConvertMetrics(FilterFunctionOnParam):
 
         parms:
           request : {(type, label) : {parameter_name : format_dict}}
-        
+
         where format_dict = {string_regex: float}
     """
 
@@ -35,7 +35,7 @@ class FilterConvertMetrics(FilterFunctionOnParam):
         for parameter_name, format_dict in additional_parameters.items():
             param_value = op.parameters.get(parameter_name)
             format_is_in_keys = False
-            
+
             match, unit_format = self._find_match(param_value, format_dict)
             if match == '':
                 logger.debug('no number found')
@@ -57,4 +57,3 @@ class FilterConvertMetrics(FilterFunctionOnParam):
                 match = re.findall(NUMBERS_REGEX, param_value)[0]
                 return match, unit_format
         return '', None
-        
