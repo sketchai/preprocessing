@@ -13,7 +13,6 @@ import lz4.frame
 import numpy as np
 
 
-
 try:
     # this module can be used without pytorch, some multiprocessing tools are disabled
     import torch

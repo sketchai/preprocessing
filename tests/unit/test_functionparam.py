@@ -1,16 +1,12 @@
+from tests.asset.mock.mock_functionOnParam import MockFunctionOnParam
+from filtering_pipeline import KO_FILTER_TAG
+from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType
+import logging
+import unittest
 import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
-
-import unittest
-import logging
-
-from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType
-from filtering_pipeline import KO_FILTER_TAG
-
-
-from tests.asset.mock.mock_functionOnParam import MockFunctionOnParam
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()

@@ -1,3 +1,5 @@
+from src.filters.filter_divbymax import FilterDivByMax
+from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType
 import unittest
 import logging
 
@@ -5,17 +7,13 @@ import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline')
 
-from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType
-
-from src.filters.filter_divbymax import FilterDivByMax
-
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
 class TestFilterDivByMax(unittest.TestCase):
-    
+
     def test_last_process(self):
         sequence_1 = [
             NodeOp(label=EntityType.Point, parameters={'x': 1., 'y': 2.}),
@@ -30,17 +28,16 @@ class TestFilterDivByMax(unittest.TestCase):
 
         conf_filter = {
             'request': {
-                ('node',EntityType.Point): ['x', 'y'],
-                ('node',EntityType.Line): ['pntX','pntY','startParam','endParam'],
-                ('node',EntityType.Circle): ['xCenter', 'yCenter', 'radius'],
-                ('node',EntityType.Arc): ['xCenter','yCenter', 'radius'],
-                ('edge',ConstraintType.Distance): 'length',
-                ('edge',ConstraintType.Length): 'length',
-                ('edge',ConstraintType.Diameter): 'length',
-                ('edge',ConstraintType.Radius): 'length',
-            }       
+                ('node', EntityType.Point): ['x', 'y'],
+                ('node', EntityType.Line): ['pntX', 'pntY', 'startParam', 'endParam'],
+                ('node', EntityType.Circle): ['xCenter', 'yCenter', 'radius'],
+                ('node', EntityType.Arc): ['xCenter', 'yCenter', 'radius'],
+                ('edge', ConstraintType.Distance): 'length',
+                ('edge', ConstraintType.Length): 'length',
+                ('edge', ConstraintType.Diameter): 'length',
+                ('edge', ConstraintType.Radius): 'length',
+            }
         }
-
 
         filter1 = FilterDivByMax(conf_filter=conf_filter)
 
@@ -49,7 +46,7 @@ class TestFilterDivByMax(unittest.TestCase):
             message = filter1.process(message)
 
         _ = filter1.last_process(message)
-        
+
         self.assertDictEqual(sequence_1[0].parameters, {'x': 0.1, 'y': 0.2})
         self.assertDictEqual(sequence_1[1].parameters, {'xCenter': 0.3, 'yCenter': 0.4, 'radius': 0.5})
         self.assertDictEqual(sequence_1[2].parameters, {'length': 0.6})

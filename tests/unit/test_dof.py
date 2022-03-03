@@ -1,10 +1,11 @@
+from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType
+from src.filters.filter_dof import FilterDof
 import unittest
 import logging
 
-
-from src.filters.filter_dof import FilterDof
-from src.sketchgraphs.sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType
-from src.filteringpipeline.src.filters import KO_FILTER_TAG
+import sys
+sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filtering-pipeline/')
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()

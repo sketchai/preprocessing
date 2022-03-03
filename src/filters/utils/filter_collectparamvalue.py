@@ -29,7 +29,7 @@ class FilterCollectParamValue(FilterFunctionOnParam):
         This function saves the parameters values and references into a dict
         """
         op = message.get('op')
-        if isinstance(additional_parameters,str):
+        if isinstance(additional_parameters, str):
             additional_parameters = [additional_parameters]
         for param in additional_parameters:
             param_value = op.parameters.get(param)

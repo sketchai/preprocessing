@@ -1,25 +1,22 @@
+from sketchgraphs.data import flat_array
+from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
+from src.filters.sink_sequence import SinkSequence
+from src.filters.filter_constraintrefs import FilterConstraintRefs
+from src.filters.filter_count import FilterCount
+from src.filters.filter_checkparamsmetrics import FilterCheckParamsMetrics
+from src.filters.filter_on_op import OpSubPipelineFilter
+from src.filters.filter_checklabel import FilterCheckLabel
+from src.sources.source_fromlist import SourceList
+from src.sources.source_fromflatarray import SourceFromFlatArray
+from src.utils.to_dict import yaml_to_dict
+from filtering_pipeline.factory import pipeline_factory
+from filtering_pipeline.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
+import logging
+import unittest
 import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
-import unittest
-import logging
-
-from filtering_pipeline.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
-from filtering_pipeline.factory import pipeline_factory
-
-from src.utils.to_dict import yaml_to_dict
-from src.sources.source_fromflatarray import SourceFromFlatArray
-from src.sources.source_fromlist import SourceList
-from src.filters.filter_checklabel import FilterCheckLabel
-from src.filters.filter_on_op import OpSubPipelineFilter
-from src.filters.filter_checkparamsmetrics import FilterCheckParamsMetrics
-from src.filters.filter_count import FilterCount
-from src.filters.filter_constraintrefs import FilterConstraintRefs
-from src.filters.sink_sequence import SinkSequence
-
-from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
-from sketchgraphs.data import flat_array
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -80,5 +77,5 @@ class TestIntegrationCoarseGrainedPipeline(unittest.TestCase):
 
         for sequence in output_data:
             self.assertIsInstance(sequence, list)
-        
+
         logger.info(f"Pipeline output is of length {len(output_data)}")
