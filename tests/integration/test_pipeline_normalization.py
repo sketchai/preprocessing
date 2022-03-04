@@ -2,25 +2,22 @@ import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
-import unittest
-import logging
-import numpy as np
-
-from filtering_pipeline.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
-from filtering_pipeline.factory import pipeline_factory
-
-from src.utils.to_dict import yaml_to_dict
-from src.sources.source_fromflatarray import SourceFromFlatArray
-from src.sources.source_fromlist import SourceList
-from src.filters.filter_on_op import OpSubPipelineFilter
-from src.filters.sink_sequence import SinkSequence
-from src.filters.filter_barycenter import FilterBarycenter
-from src.filters.filter_divbymax import FilterDivByMax
-from src.filters.filter_convertmetrics import FilterConvertMetrics
-from src.filters.filter_recenterline import FilterRecenterLine
-
-from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
 from sketchgraphs.data import flat_array
+from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
+from src.filters.filter_recenterline import FilterRecenterLine
+from src.filters.filter_convertmetrics import FilterConvertMetrics
+from src.filters.filter_divbymax import FilterDivByMax
+from src.filters.filter_barycenter import FilterBarycenter
+from src.filters.sink_sequence import SinkSequence
+from src.filters.filter_on_op import OpSubPipelineFilter
+from src.sources.source_fromlist import SourceList
+from src.sources.source_fromflatarray import SourceFromFlatArray
+from src.utils.to_dict import yaml_to_dict
+from filtering_pipeline.factory import pipeline_factory
+from filtering_pipeline.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
+import numpy as np
+import logging
+import unittest
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -54,32 +51,31 @@ class TestIntegrationNormalizationPipeline(unittest.TestCase):
         }
 
         self.d_conf['FilterDivByMax']['parms']['request'] = {
-            ('node',EntityType.Point): ['x', 'y'],
-            ('node',EntityType.Line): ['pntX','pntY','startParam','endParam'],
-            ('node',EntityType.Circle): ['xCenter', 'yCenter', 'radius'],
-            ('node',EntityType.Arc): ['xCenter','yCenter', 'radius'],
-            ('edge',ConstraintType.Distance): 'length',
-            ('edge',ConstraintType.Length): 'length',
-            ('edge',ConstraintType.Diameter): 'length',
-            ('edge',ConstraintType.Radius): 'length',
+            ('node', EntityType.Point): ['x', 'y'],
+            ('node', EntityType.Line): ['pntX', 'pntY', 'startParam', 'endParam'],
+            ('node', EntityType.Circle): ['xCenter', 'yCenter', 'radius'],
+            ('node', EntityType.Arc): ['xCenter', 'yCenter', 'radius'],
+            ('edge', ConstraintType.Distance): 'length',
+            ('edge', ConstraintType.Length): 'length',
+            ('edge', ConstraintType.Diameter): 'length',
+            ('edge', ConstraintType.Radius): 'length',
         }
 
         NB_RGX = r'[-+]?(?:\d*\.\d+|\d+)'
 
         self.d_conf['FilterConvertMetrics']['parms']['request'] = {
-                ('edge', ConstraintType.Distance): {'length': {f'{NB_RGX} METER': 1.,}},
-                ('edge', ConstraintType.Length): {'length': {f'{NB_RGX} METER': 1.}},
-                ('edge', ConstraintType.Diameter): {'length': {f'{NB_RGX} METER': 1.}},
-                ('edge', ConstraintType.Radius): {'length': {f'{NB_RGX} METER': 1.}},
-                ('edge', ConstraintType.Angle): {'angle': {f'{NB_RGX} DEGREE': np.pi/180}},
-                ('edge', ConstraintType.Angle): {'angle': {f'{NB_RGX} DEGREE': np.pi/180}},
+            ('edge', ConstraintType.Distance): {'length': {f'{NB_RGX} METER': 1., }},
+            ('edge', ConstraintType.Length): {'length': {f'{NB_RGX} METER': 1.}},
+            ('edge', ConstraintType.Diameter): {'length': {f'{NB_RGX} METER': 1.}},
+            ('edge', ConstraintType.Radius): {'length': {f'{NB_RGX} METER': 1.}},
+            ('edge', ConstraintType.Angle): {'angle': {f'{NB_RGX} DEGREE': np.pi / 180}},
+            ('edge', ConstraintType.Angle): {'angle': {f'{NB_RGX} DEGREE': np.pi / 180}},
         }
 
         self.d_conf['FilterModuloAngle']['parms']['request'] = {
-            ('node', EntityType.Arc): ["startParam","endParam"],
+            ('node', EntityType.Arc): ["startParam", "endParam"],
             ('edge', ConstraintType.Angle): "angle",
         }
-
 
     def test_pipeline(self):
         pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
@@ -97,5 +93,6 @@ class TestIntegrationNormalizationPipeline(unittest.TestCase):
 
         for sequence in output_data:
             self.assertIsInstance(sequence, list)
-        
+
         logger.info(f"Pipeline output is of length {len(output_data)}")
+        logger.debug([s for s in output_data])

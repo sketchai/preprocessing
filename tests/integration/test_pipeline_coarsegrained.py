@@ -1,3 +1,7 @@
+import sys
+sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filtering-pipeline/')
+
 from sketchgraphs.data import flat_array
 from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
 from src.filters.sink_sequence import SinkSequence
@@ -13,9 +17,6 @@ from filtering_pipeline.factory import pipeline_factory
 from filtering_pipeline.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
 import logging
 import unittest
-import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 
 logging.basicConfig(level=logging.DEBUG)
