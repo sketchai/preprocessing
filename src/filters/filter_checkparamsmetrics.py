@@ -12,6 +12,7 @@ NUMBERS_REGEX = r'[-+]?(?:\d*\.\d+|\d+)|$'
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
+
 class FilterCheckParamsMetrics(FilterFunctionOnParam):
     """
         A filter that checks if metrics are in the right format (e.g. angle are in degree, etc.)

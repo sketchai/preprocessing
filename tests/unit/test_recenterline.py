@@ -1,25 +1,24 @@
+from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType
+from src.filters.filter_recenterline import FilterRecenterLine
+import logging
+import unittest
 import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
-import unittest
-import logging
-
-from src.filters.filter_recenterline import FilterRecenterLine
-from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
 class TestFilterRecenterLine(unittest.TestCase):
-    
+
     def test_process(self):
         op = NodeOp(label=EntityType.Line, parameters={
             'pntX': 1,
             'pntY': 1.,
-            'startParam': -2**0.5/2,
-            'endParam': 2**0.5/2,
+            'startParam': -2**0.5 / 2,
+            'endParam': 2**0.5 / 2,
             'dirX': 2**0.5,
             'dirY': 2**0.5})
 
@@ -34,7 +33,7 @@ class TestFilterRecenterLine(unittest.TestCase):
             'endParam': 2**0.5,
             'dirX': 2**0.5,
             'dirY': 2**0.5
-            }
+        }
 
         op = message.get('op')
         for param, expected_value in expected_params.items():

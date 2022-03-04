@@ -1,19 +1,18 @@
+from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
+from src.filters.filter_barycenter import FilterBarycenter
+import logging
+import unittest
 import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
-import unittest
-import logging
-
-from src.filters.filter_barycenter import FilterBarycenter
-from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
 class TestFilterBarycenter(unittest.TestCase):
-    
+
     def test_last_process(self):
         sequence_1 = [
             NodeOp(label=EntityType.Point, parameters={'x': 2., 'y': 2.}),
@@ -50,7 +49,7 @@ class TestFilterBarycenter(unittest.TestCase):
 
         message = filterx.last_process(message)
         _ = filtery.last_process(message)
-        
+
         self.assertDictEqual(sequence_1[0].parameters, {'x': -1., 'y': -1.})
         self.assertDictEqual(sequence_1[2].parameters, {'xCenter': -1., 'yCenter': 1.})
         self.assertDictEqual(sequence_1[3].parameters, {'xCenter': 1., 'yCenter': -1.})

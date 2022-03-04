@@ -8,6 +8,7 @@ from src.filters.utils.filter_collectparamvalue import FilterCollectParamValue
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
+
 class FilterDivByMax(FilterCollectParamValue):
     """
         A filter that divides all collected parameters by the max absolute value
@@ -19,7 +20,7 @@ class FilterDivByMax(FilterCollectParamValue):
         super().__init__(conf_filter)
         self.name = 'FilterDivByMax'
 
-    def last_process(self,message : object)->object:
+    def last_process(self, message: object) -> object:
         max_value = 0
 
         if self.values.items() is None:
@@ -27,7 +28,7 @@ class FilterDivByMax(FilterCollectParamValue):
 
         for key, values in self.values.items():
             max_value = max(max_value, max(np.abs(values)))
-        
+
         if max_value == 0:
             return message
 
