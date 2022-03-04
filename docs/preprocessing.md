@@ -66,17 +66,23 @@ flowchart LR
 
 Une fois l'étape de filtrage effectuée, le dataset est normalisé selon les critères suivants :
 
-a. Normalization des segments (Constraint Line) - [FilterRecenterLine](../src/filters/filter_recenterline.py)
+### a. Normalization des segments (Constraint Line) - [FilterRecenterLine](../src/filters/filter_recenterline.py).
+Sketchgraphs encode les lignes avec un point au milieu (pntX, pntY), une direction (dirX, dirY) et une longueur dans chaque direction (startParam = -endParam = lenght/2). Les Lines sont converties de façon à avoir un point au départ et une seule longueur.
 
-b. Centrer l'esquisse - [FilterBarycenter](../src/filters/filter_barycenter.py)
+### b. Centrer l'esquisse - [FilterBarycenter](../src/filters/filter_barycenter.py)
+Les coordonnées des primitives sont recentrées autour d'un barycentre. Le calcul du barycentre ne prend en compte que les coordonnées du point de construction de la primitive. Il pourrait être intéressant de calculer un barycentre plus intuitif
 
-c. Conversion des longueurs en mètre - [FilterConvertMetrics](../src/filters/filter_convertmetrics.py)
+### c. Conversion des longueurs en mètre - [FilterConvertMetrics](../src/filters/filter_convertmetrics.py)
+Les valeurs des paramètres 'length' initialement en string sont converties en float.
 
-d. Conversion des angles en degrès - [FilterConvertMetrics](../src/filters/filter_convertmetrics.py)
+### d. Conversion des angles en degrès - [FilterConvertMetrics](../src/filters/filter_convertmetrics.py)
+Idem pour le paramètres 'angle' des contraintes angulaires
 
-e. Normalization des longueurs - [FilterDivByMax](../src/filters/filter_divbymax.py)
+### e. Normalization des longueurs - [FilterDivByMax](../src/filters/filter_divbymax.py)
+Les longueurs sont divisées par le maximum en valeur absolue
 
-f. Conversion des angles pour les noeuds Arc et les contraintes Angle - [FilterModuloAngle](../src/filters/.py)
+### f. Conversion des angles pour les noeuds Arc et les contraintes Angle - [FilterModuloAngle](../src/filters/filter_moduloangle.py)
+Les angles sont replacés dans [0;2pi]
 
 **Dans notre pipeline de preprocessing**
 - les filtres a., c., d. et f. sont des filtres s'appliquant opération par opération.

@@ -19,10 +19,11 @@ OpSubPipelineFilter:
   parms:
     l_filters:
       - FilterRecenterLine
-      - FilterBaryCenter_X
-      - FilterBaryCenter_Y
+      - FilterBarycenter_X
+      - FilterBarycenter_Y
       - FilterConvertMetrics
       - FilterDivByMax
+      - FilterModuloAngle
 
 SourceSub:
   type : SourceList
@@ -37,18 +38,23 @@ FilterConvertMetrics:
   parms:
     request: TO_COMPLETE
 
-FilterBaryCenter_X:
-  type: FilterBaryCenter
+FilterBarycenter_X:
+  type: FilterBarycenter
   parms:
     request: TO_COMPLETE
 
-FilterBaryCenter_Y:
-  type: FilterBaryCenter
+FilterBarycenter_Y:
+  type: FilterBarycenter
   parms:
     request: TO_COMPLETE
 
 FilterDivByMax:
   type: FilterDivByMax
+  parms:
+    request: TO_COMPLETE
+
+FilterModuloAngle:
+  type: FilterModuloAngle
   parms:
     request: TO_COMPLETE
 

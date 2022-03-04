@@ -33,13 +33,13 @@ class TestIntegrationNormalizationPipeline(unittest.TestCase):
         self.catalog_filters = {'SourceFromFlatArray': SourceFromFlatArray,
                                 'OpSubPipelineFilter': OpSubPipelineFilter,
                                 'SourceList': SourceList,
-                                'FilterBaryCenter': FilterBarycenter,
+                                'FilterBarycenter': FilterBarycenter,
                                 'FilterDivByMax': FilterDivByMax,
                                 'FilterConvertMetrics': FilterConvertMetrics,
                                 'FilterRecenterLine': FilterRecenterLine,
                                 'SinkSequence': SinkSequence,
                                 }
-        self.d_conf = yaml_to_dict('config/conf_coarsegrainedpip.yml')
+        self.d_conf = yaml_to_dict('config/conf_normalizationpip.yml')
         self.d_conf['FilterBarycenter_X']['parms']['request'] = {
             ('node', EntityType.Line): 'pntX',
             ('node', EntityType.Point): 'x',
@@ -66,15 +66,18 @@ class TestIntegrationNormalizationPipeline(unittest.TestCase):
 
         NB_RGX = r'[-+]?(?:\d*\.\d+|\d+)'
 
-        self.d_conf['FilterConvertMetrics']= {
-            'request': {
+        self.d_conf['FilterConvertMetrics']['parms']['request'] = {
                 ('edge', ConstraintType.Distance): {'length': {f'{NB_RGX} METER': 1.,}},
                 ('edge', ConstraintType.Length): {'length': {f'{NB_RGX} METER': 1.}},
                 ('edge', ConstraintType.Diameter): {'length': {f'{NB_RGX} METER': 1.}},
                 ('edge', ConstraintType.Radius): {'length': {f'{NB_RGX} METER': 1.}},
                 ('edge', ConstraintType.Angle): {'angle': {f'{NB_RGX} DEGREE': np.pi/180}},
                 ('edge', ConstraintType.Angle): {'angle': {f'{NB_RGX} DEGREE': np.pi/180}},
-            }
+        }
+
+        self.d_conf['FilterModuloAngle']['parms']['request'] = {
+            ('node', EntityType.Arc): ["startParam","endParam"],
+            ('edge', ConstraintType.Angle): "angle",
         }
 
 
@@ -85,7 +88,7 @@ class TestIntegrationNormalizationPipeline(unittest.TestCase):
         logger.debug(f'Pipeline finished and returned {last_message}')
 
         input_path = self.d_conf['Source_A']['parms']['file_path']
-        input_data = flat_array.load_dictionary_flat(input_path)['sequences']
+        input_data = flat_array.load_flat_array(input_path)
 
         logger.info(f"Pipeline input is of length {len(input_data)}")
 
