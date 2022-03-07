@@ -29,7 +29,7 @@ class FilterParamsEncoding(AbstractFilter):
         template_seq = list_of_sequences[0]
         for op in template_seq:
             if isinstance(op, NodeOp):
-                l_params += len(self.nodes_parametrized.get(op.label,[]))
+                l_params += len(self.nodes_parametrized.get(op.label, []))
 
         # fill the params array with the values
         params = np.zeros((n_sequences, l_params))
@@ -37,22 +37,22 @@ class FilterParamsEncoding(AbstractFilter):
             params[i] = self._encode_sequence(seq, l_params)
 
         params = self._normalize(params)
-        
+
         message['params_array'] = params
         return message
-    
+
     def _encode_sequence(self, seq, l_params):
         encoding = np.zeros((l_params,))
         offset = 0
         for op in seq:
             if isinstance(op, NodeOp):
-                list_of_params = self.nodes_parametrized.get(op.label,[])
+                list_of_params = self.nodes_parametrized.get(op.label, [])
                 for j, parameter_name in enumerate(list_of_params):
                     logger.debug(parameter_name)
                     logger.debug(op)
-                    encoding[offset+j] = float(op.parameters.get(parameter_name))
+                    encoding[offset + j] = float(op.parameters.get(parameter_name))
 
-                offset+= len(list_of_params)
+                offset += len(list_of_params)
 
         return encoding
 
