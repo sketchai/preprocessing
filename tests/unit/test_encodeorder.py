@@ -14,22 +14,14 @@ logger = logging.getLogger()
 class TestFilterEncodeOrder(unittest.TestCase):
 
     def test_process(self):
-        l_keep_edge = [ConstraintType.Coincident, ConstraintType.Distance, ConstraintType.Horizontal,
-               ConstraintType.Parallel, ConstraintType.Vertical, ConstraintType.Tangent,
-               ConstraintType.Length, ConstraintType.Perpendicular, ConstraintType.Midpoint,
-               ConstraintType.Equal, ConstraintType.Diameter, ConstraintType.Radius,
-               ConstraintType.Concentric, ConstraintType.Angle, ConstraintType.Subnode]
-        l_keep_node = [EntityType.Point, EntityType.Line,
-               EntityType.Circle, EntityType.Arc,
-               SubnodeType.SN_Start, SubnodeType.SN_End, SubnodeType.SN_Center,
-               EntityType.External, EntityType.Stop]
+        l_keep_edge = [ConstraintType.Coincident, ConstraintType.Distance]
+        l_keep_node = [EntityType.Point, EntityType.Circle,
+               EntityType.Arc]
 
         mock_sequence_1 = [
             NodeOp(label=0),
             EdgeOp(label=3, references=(0,)),
             NodeOp(label=2),
-            EdgeOp(label=0, references=(0,2)),
-            NodeOp(label=6),
         ]
         conf_dict = {'l_keep_node': l_keep_node, 'l_keep_edge': l_keep_edge}
         filter1 = FilterEncodeOrder(conf_filter=conf_dict)
@@ -43,9 +35,5 @@ class TestFilterEncodeOrder(unittest.TestCase):
             filter1.edge_idx_map[3]+edge_offset,
             0+ref_offset,
             filter1.node_idx_map[2],
-            filter1.edge_idx_map[0]+edge_offset,
-            0+ref_offset,
-            2+ref_offset,
-            filter1.node_idx_map[6],
-            ]
-        self.assertEqual(message['encoded_sequence'], expected_encoding)
+        ]
+        self.assertListEqual(message['encoded_sequence'], expected_encoding)
