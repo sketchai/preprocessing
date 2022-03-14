@@ -4,6 +4,7 @@ import logging
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
 from sketchgraphs.data.sequence import NodeOp, EdgeOp, EntityType, ConstraintType
 from src.utils.maps import construct_edge_map, construct_node_map
+from src import OPS_ENCODING_TAG
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -35,5 +36,5 @@ class FilterEncodeOrder(AbstractFilter):
                 encoded_sequence.append(self.edge_idx_map[op.label] + self.edge_idx_offset)
                 for ref in op.references:
                     encoded_sequence.append(ref + self.reference_idx_offset)
-        message['encoded_sequence'] = encoded_sequence
+        message[OPS_ENCODING_TAG] = encoded_sequence
         return message

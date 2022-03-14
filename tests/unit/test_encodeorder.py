@@ -6,6 +6,7 @@ sys.path.append('src/filtering-pipeline/')
 
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType, SubnodeType
 from src.filters.filter_encodeorder import FilterEncodeOrder
+from src import OPS_ENCODING_TAG
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -36,4 +37,4 @@ class TestFilterEncodeOrder(unittest.TestCase):
             0+ref_offset,
             filter1.node_idx_map[2],
         ]
-        self.assertListEqual(message['encoded_sequence'], expected_encoding)
+        self.assertListEqual(message[OPS_ENCODING_TAG], expected_encoding)
