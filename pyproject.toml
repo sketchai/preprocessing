@@ -10,7 +10,7 @@ lz4 = "^4.0.0"
 numpy = "^1.22.2"
 matplotlib = "^3.5.1"
 pygraphviz = "^1.9"
-
+scipy = "^1.6.3"
 
 
 [tool.poetry.dev-dependencies]
