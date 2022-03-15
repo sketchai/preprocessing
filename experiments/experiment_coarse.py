@@ -1,3 +1,19 @@
+import sys
+import os
+
+# Add paths for packages
+sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filtering-pipeline/')
+cur_path = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, cur_path + "/..")
+
+
+import logging
+
+logging.basicConfig(level=logging.WARNING)
+
+print(sys.path)
+
 # Initialization
 from src.filters.sink_sequence import SinkSequence
 from src.filters.filter_constraintrefs import FilterConstraintRefs
@@ -11,16 +27,7 @@ from src.utils.to_dict import yaml_to_dict
 from filtering_pipeline.factory import pipeline_factory
 from sketchgraphs.data import flat_array
 from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
-import sys
-import os
 
-# Add paths for packages
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filteringpipeline/')
-cur_path = os.path.abspath(os.path.dirname(__file__))
-sys.path.insert(0, cur_path + "/..")
-
-print(sys.path)
 
 
 catalog_filters = {'SourceFromFlatArray': SourceFromFlatArray,
@@ -60,7 +67,19 @@ d_conf['FilterCheckParamsMetrics_Angle']['parms']['request'] = {
 }
 # Update some filters
 
-
 # Launch pipeline
 pipeline = pipeline_factory(conf=d_conf, catalog_filter=catalog_filters)
 last_message = pipeline.execute()
+
+input_path = d_conf['Source_A']['parms']['file_path']
+input_data = flat_array.load_dictionary_flat(input_path)['sequences']
+
+print(f"Pipeline input is of length {len(input_data)}")
+
+output_path = d_conf['SinkSequence']['parms']['output_path']
+output_data = flat_array.load_flat_array(output_path)
+
+print(f"Pipeline output is of length {len(output_data)}")
+output_path = d_conf['SinkSequence']['parms']['output_path']
+output_data = flat_array.load_flat_array(output_path)
+
