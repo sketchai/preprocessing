@@ -11,7 +11,7 @@ set -x
 srun hostname
 . /home/f49681/anaconda3/etc/profile.d/conda.sh
 now=$(date +"%m_%d_%Y_%H_%M_%S")
-folder="scripts/experiment_$now"
+folder="scripts/coarse_$now"
 mkdir $folder
 
 conda activate sg_prep
