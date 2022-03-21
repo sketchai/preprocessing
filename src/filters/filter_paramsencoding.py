@@ -4,6 +4,7 @@ import numpy as np
 
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
 from sketchgraphs.data.sequence import NodeOp, EdgeOp, ConstraintType, EntityType
+from collections import OrderedDict
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -18,7 +19,7 @@ class FilterParamsEncoding(AbstractFilter):
     def __init__(self, conf_filter: Dict = {}):
         super().__init__()
         self.name = 'FilterParamsEncoding'
-        self.nodes_parametrized = conf_filter['nodes_parametrized']
+        self.nodes_parametrized = OrderedDict(conf_filter['nodes_parametrized'])
 
     def process(self, message: object) -> object:
         list_of_sequences = message.get('list_of_sequences')

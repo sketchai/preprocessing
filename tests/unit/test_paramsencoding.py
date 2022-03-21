@@ -2,7 +2,6 @@ import logging
 import unittest
 import sys
 import numpy as np
-from collections import OrderedDict
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
@@ -25,7 +24,7 @@ class TestParamsEncoding(unittest.TestCase):
             EntityType.Arc: ['isConstruction', 'xCenter', 'yCenter', 'xDir', 'yDir', 'radius', 'startParam', 'endParam', 'clockwise'],
         }
 
-        self.conf_filter = {'nodes_parametrized': OrderedDict(NODES_PARAMETRIZED)}
+        self.conf_filter = {'nodes_parametrized': NODES_PARAMETRIZED}
 
     def test_process(self):
         filter1 = FilterParamsEncoding(self.conf_filter)
