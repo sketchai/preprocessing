@@ -32,6 +32,6 @@ class TestFilterClusterParamValues(unittest.TestCase):
         filter1 = FilterClusterParamValues()
         result = filter1.process(message)
         weights = result['weights']
-        self.assertAlmostEqual(1., sum(weights))
-        logger.debug(weights)
-        self.assertEqual(3, len(weights))
+        self.assertAlmostEqual(sum(weights), 1.)
+        self.assertEqual(len(weights), 3)
+        logger.debug(weights) # should return [0.5, 0.25, 0.25]
