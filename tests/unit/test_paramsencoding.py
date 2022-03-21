@@ -1,10 +1,10 @@
-import logging
-import unittest
 import sys
-import numpy as np
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
+import logging
+import unittest
+import numpy as np
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
 from src.filters.filter_paramsencoding import FilterParamsEncoding
 

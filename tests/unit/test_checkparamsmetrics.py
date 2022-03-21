@@ -1,11 +1,12 @@
+import sys
+sys.path.append('src/sketchgraphs/')
+sys.path.append('src/filtering-pipeline/')
+
 from filtering_pipeline import KO_FILTER_TAG
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType
 from src.filters.filter_checkparamsmetrics import FilterCheckParamsMetrics
 import logging
 import unittest
-import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 
 logging.basicConfig(level=logging.DEBUG)
