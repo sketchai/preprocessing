@@ -1,9 +1,10 @@
-import unittest
-import logging
-
 import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline')
+
+import unittest
+import logging
+
 
 from src.filters.filter_divbymax import FilterDivByMax
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType

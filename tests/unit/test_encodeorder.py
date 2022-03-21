@@ -1,9 +1,9 @@
-import logging
-import unittest
 import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
+import logging
+import unittest
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType, SubnodeType
 from src.filters.filter_encodeorder import FilterEncodeOrder
 from src import OPS_ENCODING_TAG

@@ -1,9 +1,10 @@
-from src.sources.source_fromflatarray import SourceFromFlatArray
-import logging
-import unittest
 import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
+
+from src.sources.source_fromflatarray import SourceFromFlatArray
+import logging
+import unittest
 
 
 logging.basicConfig(level=logging.DEBUG)
