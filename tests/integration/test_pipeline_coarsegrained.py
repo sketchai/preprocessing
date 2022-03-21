@@ -62,6 +62,10 @@ class TestIntegrationCoarseGrainedPipeline(unittest.TestCase):
         }
         # old label_list : [ConstraintType.Coincident, ConstraintType.Distance, ConstraintType.Horizontal, EntityType.Point, EntityType.Line]
 
+        # change input and output for testing
+        self.d_conf['Source_A']['parms']['file_path'] = 'tests/asset/sg_t16_mini.npy'
+        self.d_conf['SinkSequence']['parms']['output_path'] = 'tests/asset/out/coarse_grained_results.npy'
+        
     def test_pipeline(self):
         pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
         last_message = pipeline.execute()

@@ -77,6 +77,10 @@ class TestIntegrationNormalizationPipeline(unittest.TestCase):
             ('edge', ConstraintType.Angle): "angle",
         }
 
+        # change input and output for testing
+        self.d_conf['Source_A']['parms']['file_path'] = 'tests/asset/out/coarse_grained_results.npy'
+        self.d_conf['SinkSequence']['parms']['output_path'] = 'tests/asset/out/normalization_results.npy'
+
     def test_pipeline(self):
         pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
         last_message = pipeline.execute()

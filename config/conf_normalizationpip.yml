@@ -9,7 +9,7 @@ General:
 Source_A:
   type: SourceFromFlatArray
   parms:
-    file_path: 'tests/asset/out/coarse_grained_results.npy'
+    file_path: 'out/coarse_grained_results.npy'
 
 # Pipeline Filters
 OpSubPipelineFilter:
@@ -62,4 +62,4 @@ FilterModuloAngle:
 SinkSequence:
   type: SinkSequence
   parms:
-    output_path: 'tests/asset/out/normalization_results.npy'
+    output_path: 'out/normalization_results.npy'
