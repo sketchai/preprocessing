@@ -80,6 +80,3 @@ output_path = d_conf['SinkSequence']['parms']['output_path']
 output_data = flat_array.load_flat_array(output_path)
 
 print(f"Pipeline output is of length {len(output_data)}")
-output_path = d_conf['SinkSequence']['parms']['output_path']
-output_data = flat_array.load_flat_array(output_path)
-
