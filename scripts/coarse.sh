@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #SBATCH --job-name=sketchgraphs_preprocessing
-#SBATCH --output=output.out
-#SBATCH --error=output.err
+#SBATCH --output=scripts/output_coarse.out
+#SBATCH --error=scripts/output_coarse.err
 #SBATCH --qos=an_all_short
 #SBATCH --partition=an
 #SBATCH --nodes=1
@@ -20,8 +20,8 @@ STARTTIME=$(date +%s)
 conda activate sg_prep
 srun python experiments/experiment_coarse.py
 
-mv output.err $folder
-mv output.out $folder
+mv scripts/output_coarse.err $folder
+mv scripts/output_coarse.out $folder
 
 ENDTIME=$(date +%s)
 echo "Time spent: $((($ENDTIME - $STARTTIME)/ 60)) minutes"
