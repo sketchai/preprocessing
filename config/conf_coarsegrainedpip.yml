@@ -4,7 +4,7 @@ General:
     - FilterLog
 
   source : Source_A
-  sink : SinkSequence
+  sink : SinkSlices
   n_process : 1
 
 
@@ -75,8 +75,8 @@ FilterLog:
     clean_up: True
 
 # Sink
-SinkSequence:
-  type: SinkSequence
+SinkSlices:
+  type: SinkSlices
   parms:
     output_path: 'out/coarse_grained_train/coarse_grained_results'
     slice_length: 917979

@@ -63,3 +63,4 @@ SinkSequence:
   type: SinkSequence
   parms:
     output_path: 'out/normalization_results.npy'
+    slice_length: 917979
