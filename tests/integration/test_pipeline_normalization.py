@@ -8,7 +8,7 @@ from src.filters.filter_recenterline import FilterRecenterLine
 from src.filters.filter_convertmetrics import FilterConvertMetrics
 from src.filters.filter_divbymax import FilterDivByMax
 from src.filters.filter_barycenter import FilterBarycenter
-from src.filters.sink_sequence import SinkSequence
+from src.filters.sink_slices import SinkSlices
 from src.filters.filter_on_op import OpSubPipelineFilter
 from src.sources.source_fromlist import SourceList
 from src.sources.source_fromflatarray import SourceFromFlatArray
@@ -34,7 +34,7 @@ class TestIntegrationNormalizationPipeline(unittest.TestCase):
                                 'FilterDivByMax': FilterDivByMax,
                                 'FilterConvertMetrics': FilterConvertMetrics,
                                 'FilterRecenterLine': FilterRecenterLine,
-                                'SinkSequence': SinkSequence,
+                                'SinkSlices': SinkSlices,
                                 }
         self.d_conf = yaml_to_dict('config/conf_normalizationpip.yml')
         self.d_conf['FilterBarycenter_X']['parms']['request'] = {
@@ -79,7 +79,7 @@ class TestIntegrationNormalizationPipeline(unittest.TestCase):
 
         # change input and output for testing
         self.d_conf['Source_A']['parms']['file_path'] = 'tests/asset/out/coarse_grained_results.npy'
-        self.d_conf['SinkSequence']['parms']['output_path'] = 'tests/asset/out/normalization_results.npy'
+        self.d_conf['SinkSlices']['parms']['output_path'] = 'tests/asset/out/normalization_results.npy'
 
     def test_pipeline(self):
         pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
@@ -92,7 +92,7 @@ class TestIntegrationNormalizationPipeline(unittest.TestCase):
 
         logger.info(f"Pipeline input is of length {len(input_data)}")
 
-        output_path = self.d_conf['SinkSequence']['parms']['output_path']
+        output_path = self.d_conf['SinkSlices']['parms']['output_path']
         output_data = flat_array.load_flat_array(output_path)
 
         for sequence in output_data:

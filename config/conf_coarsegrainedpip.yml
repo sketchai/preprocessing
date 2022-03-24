@@ -79,4 +79,4 @@ SinkSlices:
   type: SinkSlices
   parms:
     output_path: 'out/coarse_grained_train/coarse_grained_results'
-    slice_length: 917979
+    slice_length: 500000
