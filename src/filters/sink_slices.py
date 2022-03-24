@@ -22,7 +22,7 @@ class SinkSlices(AbstractFilter):
         super().__init__()
         self.output_path: str = conf_filter.get('output_path')
         self.slice_length: int = conf_filter.get('slice_length')
-        self.clean : bool = conf_filter.get('clean', True)
+        self.clean : bool = conf_filter.get('clean_up', True)
 
         directory_path = os.path.dirname(os.path.abspath(self.output_path))
         self.output_dir: str = tempfile.mkdtemp(dir=directory_path, prefix='slices')
