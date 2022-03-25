@@ -1,0 +1,40 @@
+General:
+  l_filters:
+    - FilterParamsEncoding
+    - FilterClusterParamValues
+    - FilterLog
+  source : SourceDict
+  sink : SinkArray
+  n_process : 1
+
+# Source
+SourceDict:
+  type: SourceDict
+  parms:
+    indexes: 'out/indexes_cluster_order.json'
+    data: 'out/normalization_output_train.npy'
+
+FilterClusterParamValues:
+  type: FilterClusterParamValues
+  parms:
+    criterion: 'inconsistent'
+    threshold: 0.2
+    metric: 'cityblock'
+    
+FilterParamsEncoding:
+  type: FilterParamsEncoding
+  parms:
+    nodes_parametrized: TO_COMPLETE
+
+FilterLog:
+  type: FilterLog
+  parms:
+    output_path: 'out/logs'
+    clean_up: True
+
+# Sink
+SinkArray:
+  type: SinkArray
+  parms:
+    output_path: 'out/weight_output_train.json'
+    input_tag: 'weights'
