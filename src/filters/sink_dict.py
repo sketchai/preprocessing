@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
-class SinkDictionnary(AbstractFilter):
+class SinkDict(AbstractFilter):
     """
         A sink filter that saves a dictionnary into a json as a last process
     """

@@ -20,7 +20,8 @@ class SourceDict(SourceFilter):
         indexes = conf.get('indexes')
         data_path = conf.get('data')
         if isinstance(indexes, str):
-            self.d_indexes = json.load(indexes)
+            with open(indexes,'r') as jsonfile:
+                self.d_indexes = json.load(jsonfile)
         elif isinstance(indexes, dict):
             self.d_indexes = indexes
 
@@ -34,7 +35,7 @@ class SourceDict(SourceFilter):
     def generator(self) -> object:
         logger.debug('Start generator')
     
-        for list_of_indexes in self.d_data.values():
-            list_of_sequences = [self.data[i] for i in list_of_indexes]
+        for list_of_indexes in self.d_indexes.values():
+            list_of_sequences = [self.values[i] for i in list_of_indexes]
             yield {'list_of_sequences': list_of_sequences}
         logger.info('Stop generator')
