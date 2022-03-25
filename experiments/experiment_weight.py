@@ -1,12 +1,16 @@
+import argparse
 import sys
 import os
+import logging
 
 if __name__ == '__main__':
     sys.path.append('src/sketchgraphs/')
     sys.path.append('src/filtering-pipeline/')
     cur_path = os.path.abspath(os.path.dirname(__file__))
     sys.path.insert(0, cur_path + "/..")
-
+    logging.basicConfig(level=logging.WARNING)
+else:
+    logging.basicConfig(level=logging.DEBUG)
 
 from sketchgraphs.data import flat_array
 from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
@@ -22,17 +26,15 @@ from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.filters.utils.filter_log import FilterLog
 from src.utils.to_dict import yaml_to_dict
 from filtering_pipeline.factory import pipeline_factory
+from experiments import SKETCHGRAPHS_PATH, INDEXES_PATH, NORMALIZATION_PATH, WEIGHTS_PATH
 import json
 import numpy as np
-import logging
 
-logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
-
 
 class ExperimentClusterOrder():
 
-    def __init__(self):
+    def __init__(self, dataset='train'):
         self.catalog_filters = {
             'SourceFromFlatArray': SourceFromFlatArray,
             'SinkDict': SinkDict,
@@ -54,7 +56,10 @@ class ExperimentClusterOrder():
             EntityType.Circle, EntityType.Arc,
             SubnodeType.SN_Start, SubnodeType.SN_End, SubnodeType.SN_Center,
             EntityType.External, EntityType.Stop]
-        
+
+        self.d_conf['SourceFromFlatArray']['parms']['file_path'] = NORMALIZATION_PATH.format(dataset)
+        self.d_conf['SinkDict']['parms']['output_path'] = INDEXES_PATH.format(dataset)
+
     def run_pipeline(self):
         pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
         last_message = pipeline.execute()
@@ -64,18 +69,22 @@ class ExperimentClusterOrder():
         input_path = self.d_conf['SourceFromFlatArray']['parms']['file_path']
         input_data = flat_array.load_flat_array(input_path)
 
-        logger.info(f'Pipeline input is of length {len(input_data)}')
-
         output_path = self.d_conf['SinkDict']['parms']['output_path']
         with open(output_path, 'r') as dict_file:
             output_data = json.load(dict_file)
-        logger.info(f'Generated {len(output_data)} clusters')
-        n_sequences = sum(len(cluster) for cluster in output_data)
+        n_sequences = sum(len(cluster) for cluster in output_data.values())
+
+        logger.info(f'Pipeline input is of length {len(input_data)}')
         logger.info(f'Number of sequences clustered : {n_sequences}')
+        logger.info(f'Generated {len(output_data)} clusters')
+
+        print(f'Pipeline input is of length {len(input_data)}')
+        print((f'Generated {len(output_data)} clusters'))
+        print(f'Number of sequences clustered : {n_sequences}')
 
 class ExperimentClusterParams():
 
-    def __init__(self):
+    def __init__(self, dataset='train'):
         self.catalog_filters = {
             'SourceDict': SourceDict,
             'FilterClusterParamValues': FilterClusterParamValues,
@@ -92,6 +101,10 @@ class ExperimentClusterParams():
             EntityType.Arc: ['isConstruction', 'xCenter', 'yCenter', 'xDir', 'yDir', 'radius', 'startParam', 'endParam', 'clockwise'],
         } 
 
+        self.d_conf['SourceDict']['parms']['indexes'] = INDEXES_PATH.format(dataset)
+        self.d_conf['SourceDict']['parms']['data'] = NORMALIZATION_PATH.format(dataset)
+        self.d_conf['SinkArray']['parms']['output_path'] = WEIGHTS_PATH.format(dataset)
+        
 
     def run_pipeline(self):
         pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
@@ -102,16 +115,21 @@ class ExperimentClusterParams():
         input_path = self.d_conf['SourceDict']['parms']['data']
         input_data = flat_array.load_flat_array(input_path)
 
-        logger.info(f'Pipeline input is of length {len(input_data)}')
-
         output_path = self.d_conf['SinkArray']['parms']['output_path']
         output_data = np.load(output_path)
 
+        logger.info(f'Pipeline input is of length {len(input_data)}')
         logger.info(f'Pipeline output is of length {len(output_data)}')
 
+        print(f'Pipeline input is of length {len(input_data)}')
+        print(f'Pipeline output is of length {len(output_data)}')
+
 def main():
-    ExperimentClusterOrder().run_pipeline()
-    ExperimentClusterParams().run_pipeline()
+    parser = argparse.ArgumentParser(description='Run Weights pipeline')
+    parser.add_argument('--dataset', help='train, validation or test')
+    args = parser.parse_args()
+    ExperimentClusterOrder(dataset=args.dataset).run_pipeline()
+    ExperimentClusterParams(dataset=args.dataset).run_pipeline()
 
 if __name__ == '__main__':
     main()
