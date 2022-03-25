@@ -49,8 +49,6 @@ class FilterParamsEncoding(AbstractFilter):
             if isinstance(op, NodeOp):
                 list_of_params = self.nodes_parametrized.get(op.label, [])
                 for j, parameter_name in enumerate(list_of_params):
-                    logger.debug(parameter_name)
-                    logger.debug(op)
                     encoding[offset + j] = float(op.parameters.get(parameter_name))
 
                 offset += len(list_of_params)

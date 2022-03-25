@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
-class SinkDictionnary(AbstractFilter):
+class SinkDict(AbstractFilter):
     """
         A sink filter that saves a dictionnary into a json as a last process
     """
@@ -24,5 +24,5 @@ class SinkDictionnary(AbstractFilter):
     def last_process(self, message: Dict) -> Dict:
         dictionnary = message.get(self.input_tag)
         with open(self.output_path, 'w') as output_file:
-            json.dump(dictionnary, output_file)
+            json.dump(dictionnary, output_file, indent=4)
         return message
