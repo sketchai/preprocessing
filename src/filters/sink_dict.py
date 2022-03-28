@@ -24,5 +24,5 @@ class SinkDict(AbstractFilter):
     def last_process(self, message: Dict) -> Dict:
         dictionnary = message.get(self.input_tag)
         with open(self.output_path, 'w') as output_file:
-            json.dump(dictionnary, output_file)
+            json.dump(dictionnary, output_file, indent=4)
         return message

@@ -12,7 +12,8 @@ logger = logging.getLogger()
 
 class SourceDict(SourceFilter):
     """
-        A source that takes a dict of indexes and returns clusters of sequences
+        A source that takes a dict of indexes and a flat array as input
+        Outputs clusters of sequences
     """
 
     def __init__(self, conf: Dict = {}):
