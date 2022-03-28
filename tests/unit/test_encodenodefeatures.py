@@ -28,7 +28,7 @@ class TestFilterEncodeNodeFeatures(unittest.TestCase):
         conf_dict = {'l_keep_node': l_keep_node, 'n_bins': n_bins, 'lMax': lMax}
         filter1 = FilterEncodeNodeFeatures(conf_filter=conf_dict)
         message = {'sequence': mock_sequence_1}
-        filter1.process(message)
+        message = filter1.process(message)
         
         # check that 'node_ops' is padded with 'void' nodes
         self.assertListEqual(message['node_ops'],[node_op_0, node_op_2, NodeOp(label='void'), NodeOp(label='void')])
@@ -51,3 +51,7 @@ class TestFilterEncodeNodeFeatures(unittest.TestCase):
             exp_index, exp_value = expected_result[key].values()
             torch.testing.assert_allclose(index, exp_index)
             torch.testing.assert_allclose(value, exp_value)
+
+        # check mask with len(node_ops) = 2
+        expected_mask = [False]*2 + [True]*(lMax-2)
+        torch.testing.assert_allclose(message['mask_attention'], expected_mask)
