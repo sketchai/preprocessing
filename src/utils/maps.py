@@ -21,3 +21,18 @@ def construct_node_map(l_keep_node: List) -> Dict:
             i += 1
     node_map['void'] = len(node_map)
     return node_map
+
+NODES_PARAMETRIZED = {
+    datalib.EntityType.Point: ['isConstruction', 'x', 'y'],
+    datalib.EntityType.Line: ['isConstruction', 'dirX', 'dirY', 'pntX', 'pntY', 'startParam', 'endParam'],
+    datalib.EntityType.Circle: ['isConstruction', 'xCenter', 'yCenter', 'xDir', 'yDir', 'radius', 'clockwise'],
+    datalib.EntityType.Arc: ['isConstruction', 'xCenter', 'yCenter', 'xDir', 'yDir', 'radius', 'startParam', 'endParam', 'clockwise']
+}
+
+EDGES_PARAMETRIZED = {
+    datalib.ConstraintType.Angle: ['aligned', 'clockwise', 'angle'],
+    datalib.ConstraintType.Length: ['direction', 'length'],
+    datalib.ConstraintType.Distance: ['direction', 'halfSpace0', 'halfSpace1', 'length'],
+    datalib.ConstraintType.Diameter: ['length'],
+    datalib.ConstraintType.Radius: ['length']
+}
