@@ -1,6 +1,7 @@
 General:
   l_filters:
     - OpSubPipelineFilter
+    - FilterDof
     - FilterLog
 
   source : Source_A
@@ -68,6 +69,11 @@ FilterCheckParamsMetrics_Angle:
   parms:
     request: TO_COMPLETE
 
+FilterDof:
+  type: FilterDof
+  parms:
+    max: null
+
 FilterLog:
   type: FilterLog
   parms:
@@ -78,5 +84,5 @@ FilterLog:
 SinkSlices:
   type: SinkSlices
   parms:
-    output_path: 'out/coarse_grained_train/coarse_grained_results'
-    slice_length: 500000
+    output_path: 'out/coarse_grained_output_train.npy'
+    slice_length: 917979
