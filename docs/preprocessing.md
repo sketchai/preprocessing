@@ -100,3 +100,46 @@ flowchart LR
     FilterPipeline--->|message= \n seq, status| ConvertSequence[ConvertSequence: \n Convert length \n Convert angle];
     ConvertSequence--->|message=seq |SaveNormalization;
 ```
+
+# C.  Clustering
+
+L'objectif est de rassembler les séquences similaires et d'attribuer un poids à chaque séquence pour le dataloader
+
+## Clustering 1: clustering sur la séquence​
+
+### [SourceFromFlatArray](../src/sources/source_fromflatarray.py)
+Lit les séquences une à une
+
+### [FilterOpEncoding](../src/filters/filter_sequenceorderencoding.py)
+Encoding de chaque operation​ par un nombre
+
+### [FilterSequenceOrderEncoding](../src/filters/filter_sequenceorderencoding.py)
+Encoding de l’ordre de la sequence​ (passage en string)
+
+### [FilterClusterOrder](../src/filters/filter_clustersequences.py)
+"Clustering" sur cet encoding (rassembler les séquences partageant le même encoding)​
+    ​
+### [SinkDict](../src/filters/sink_dict.py)
+Sauvegarde les indices des séquences par cluster dans un dictionnaire
+
+
+## Clustering 2: clustering sur les paramètres​
+ ​
+### [SourceFromDict](../src/sources/source_fromdict.py):
+Lit séquentiellement les clusters du dictionnaire​. Renvoie la liste de toutes les séquences du cluster
+
+### [FilterParamsEncoding](../src/filters/filter_paramsencoding.py)
+Encoding des paramètres​ dans une array
+
+### [FilterClusterParamValues](../src/filters/filter_clusterparamvalues.py)
+Clustering​ (scipy)
+
+### [SinkArray]
+Sauvegarde les weights dans une array npy
+
+
+## Lancer la Pipeline
+
+Les fichiers de configuration sont [conf_clusterorder.yml](../config/conf_clusterorder.yml) et [conf_clusterparam.yml](../config/conf_clusterparams.yml).
+
+Le fichier pour lancer la pipeline est [experiment_weight.py](../experiments/experiment_weight.py).

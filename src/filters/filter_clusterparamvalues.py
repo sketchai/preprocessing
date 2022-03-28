@@ -4,6 +4,11 @@ from scipy.cluster.hierarchy import fclusterdata
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
 from src import SEQUENCE_ENCODING_TAG, CLUSTER_DICT_TAG
 from collections import Counter
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger()
+
 
 class FilterClusterParamValues(AbstractFilter):
     """
@@ -20,7 +25,7 @@ class FilterClusterParamValues(AbstractFilter):
     def process(self,message: object) -> object: 
         sequence_list = message.get('list_of_sequences')
         if len(sequence_list) == 1:
-            message['weigths'] = [1.]
+            message['weights'] = [1.]
         else:
             params = message.get('params_array')
             clusters = fclusterdata(params, criterion=self.criterion, t=self.threshold, metric=self.metric)
