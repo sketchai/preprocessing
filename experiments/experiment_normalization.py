@@ -19,7 +19,7 @@ from src.filters.filter_recenterline import FilterRecenterLine
 from src.filters.filter_convertmetrics import FilterConvertMetrics
 from src.filters.filter_divbymax import FilterDivByMax
 from src.filters.filter_barycenter import FilterBarycenter
-from src.filters.sink_sequence import SinkSequence
+from src.filters.sink_slices import SinkSlices
 from src.filters.filter_on_op import OpSubPipelineFilter
 from src.filters.utils.filter_log import FilterLog
 from src.sources.source_fromlist import SourceList
@@ -29,7 +29,6 @@ from filtering_pipeline.factory import pipeline_factory
 from filtering_pipeline.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
 import numpy as np
 import logging
-import unittest
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -41,7 +40,7 @@ catalog_filters = {'SourceFromFlatArray': SourceFromFlatArray,
                         'FilterDivByMax': FilterDivByMax,
                         'FilterConvertMetrics': FilterConvertMetrics,
                         'FilterRecenterLine': FilterRecenterLine,
-                        'SinkSequence': SinkSequence,
+                        'SinkSlices': SinkSlices,
                         'FilterLog': FilterLog,
                         }
 d_conf = yaml_to_dict('config/conf_normalizationpip.yml')
@@ -94,7 +93,7 @@ input_data = flat_array.load_flat_array(input_path)
 
 print(f"Pipeline input is of length {len(input_data)}")
 
-output_path = d_conf['SinkSequence']['parms']['output_path']
+output_path = d_conf['SinkSlices']['parms']['output_path']
 output_data = flat_array.load_flat_array(output_path)
 
 print(f"Pipeline output is of length {len(output_data)}")

@@ -15,9 +15,9 @@ class FilterClusterSequences(AbstractFilter):
         self.cluster_dict = defaultdict(list)
 
     def process(self,message: object) -> object:
-        sequence = message.get('sequence')
+        sequence_idx = message.get('sequence_idx')
         key = message.get(SEQUENCE_ENCODING_TAG)
-        self.cluster_dict[key].append(sequence)
+        self.cluster_dict[key].append(sequence_idx)
         return message
 
     def last_process(self, message: object) -> object:

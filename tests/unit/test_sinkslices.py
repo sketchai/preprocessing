@@ -31,7 +31,7 @@ class TestSinkSlices(unittest.TestCase):
         sink = SinkSlices(conf_filter={
             'output_path': self.output_path,
             'slice_length': self.slice_length,
-            'clean': False})
+            'clean_up': False})
 
         for seq in self.list_of_seqs:
             message = {'sequence': seq}

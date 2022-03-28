@@ -1,7 +1,9 @@
 General:
-  l_filters: [OpSubPipelineFilter] 
+  l_filters: 
+    - OpSubPipelineFilter
+    - FilterLog 
   source : Source_A
-  sink : SinkSequence
+  sink : SinkSlices
   n_process : 1
 
 
@@ -9,7 +11,7 @@ General:
 Source_A:
   type: SourceFromFlatArray
   parms:
-    file_path: 'out/coarse_grained_results.npy'
+    file_path: 'out/coarse_grained_output_train.npy'
 
 # Pipeline Filters
 OpSubPipelineFilter:
@@ -58,9 +60,16 @@ FilterModuloAngle:
   parms:
     request: TO_COMPLETE
 
-# Sink
-SinkSequence:
-  type: SinkSequence
+FilterLog:
+  type: FilterLog
   parms:
-    output_path: 'out/normalization_results.npy'
-    slice_length: 917979
+    output_path: 'out/logs'
+    clean_up: True
+
+# Sink
+SinkSlices:
+  type: SinkSlices
+  parms:
+    output_path: 'out/normalization_output_train.npy'
+    slice_length: 500000
+    clean_up: True
