@@ -19,8 +19,7 @@ class SourceFromFlatArray(SourceFilter):
 
     def generator(self) -> object:
         logger.debug('Start generator')
-        if self.counter:
-            cpt = 0
+        cpt = 0
         try:
             logger.info('Load dictionary flat array method')
             data = load_dictionary_flat(self.file_path)['sequences']
@@ -30,10 +29,9 @@ class SourceFromFlatArray(SourceFilter):
 
         for elt in data:
             logger.debug(f'Element : {elt}')
-            yield {'sequence': elt}
-
+            yield {'sequence': elt, 'sequence_idx': cpt}
+            cpt += 1
             if self.counter:
-                cpt += 1
                 if cpt > self.counter:
                     break
         logger.info('Stop generator')
