@@ -1,0 +1,1 @@
+PATH_TO_MINI_SEQUENCE_DATA = 'tests/asset/sg_t16_mini.npy'

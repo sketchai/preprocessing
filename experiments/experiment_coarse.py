@@ -15,19 +15,19 @@ logging.basicConfig(level=logging.WARNING)
 print(sys.path)
 
 # Initialization
-from src.filters.sink_sequence import SinkSequence
+from src.filters.sink_slices import SinkSlices
 from src.filters.filter_constraintrefs import FilterConstraintRefs
 from src.filters.filter_count import FilterCount
 from src.filters.filter_checkparamsmetrics import FilterCheckParamsMetrics
 from src.filters.filter_on_op import OpSubPipelineFilter
 from src.filters.filter_checklabel import FilterCheckLabel
+from src.filters.utils.filter_log import FilterLog
 from src.sources.source_fromlist import SourceList
 from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.utils.to_dict import yaml_to_dict
 from filtering_pipeline.factory import pipeline_factory
 from sketchgraphs.data import flat_array
 from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
-
 
 
 catalog_filters = {'SourceFromFlatArray': SourceFromFlatArray,
@@ -37,7 +37,8 @@ catalog_filters = {'SourceFromFlatArray': SourceFromFlatArray,
                    'SourceList': SourceList,
                    'FilterConstraintRefs': FilterConstraintRefs,
                    'FilterCheckParamsMetrics': FilterCheckParamsMetrics,
-                   'SinkSequence': SinkSequence,
+                   'SinkSlices': SinkSlices,
+                   'FilterLog': FilterLog,
                    }
 # Update conf
 # the nodes and edges that are considered
@@ -76,10 +77,7 @@ input_data = flat_array.load_dictionary_flat(input_path)['sequences']
 
 print(f"Pipeline input is of length {len(input_data)}")
 
-output_path = d_conf['SinkSequence']['parms']['output_path']
+output_path = d_conf['SinkSlices']['parms']['output_path']
 output_data = flat_array.load_flat_array(output_path)
 
 print(f"Pipeline output is of length {len(output_data)}")
-output_path = d_conf['SinkSequence']['parms']['output_path']
-output_data = flat_array.load_flat_array(output_path)
-

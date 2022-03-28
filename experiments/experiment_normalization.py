@@ -21,6 +21,7 @@ from src.filters.filter_divbymax import FilterDivByMax
 from src.filters.filter_barycenter import FilterBarycenter
 from src.filters.sink_sequence import SinkSequence
 from src.filters.filter_on_op import OpSubPipelineFilter
+from src.filters.utils.filter_log import FilterLog
 from src.sources.source_fromlist import SourceList
 from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.utils.to_dict import yaml_to_dict
@@ -41,6 +42,7 @@ catalog_filters = {'SourceFromFlatArray': SourceFromFlatArray,
                         'FilterConvertMetrics': FilterConvertMetrics,
                         'FilterRecenterLine': FilterRecenterLine,
                         'SinkSequence': SinkSequence,
+                        'FilterLog': FilterLog,
                         }
 d_conf = yaml_to_dict('config/conf_normalizationpip.yml')
 d_conf['FilterBarycenter_X']['parms']['request'] = {
@@ -96,4 +98,3 @@ output_path = d_conf['SinkSequence']['parms']['output_path']
 output_data = flat_array.load_flat_array(output_path)
 
 print(f"Pipeline output is of length {len(output_data)}")
-
