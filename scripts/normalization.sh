@@ -18,7 +18,7 @@ mkdir $folder
 STARTTIME=$(date +%s)
 
 conda activate sg_prep
-srun python experiments/experiment_normalization.py
+srun python experiments/experiment_normalization.py --dataset train
 
 mv normalization_output.err $folder
 mv normalization_output.out $folder

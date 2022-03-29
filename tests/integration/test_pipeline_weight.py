@@ -6,14 +6,10 @@ import unittest
 import logging
 
 from experiments.experiment_weight import ExperimentClusterOrder, ExperimentClusterParams
+from tests import MOCK_NORMALIZATION_PATH, MOCK_INDEXES_PATH, MOCK_WEIGHTS_PATH
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
-
-# TODO: move into tests/__init__ (https://gitlab.pleiade.edf.fr/cao_ml/sketchgraphs_for_edf/preprocessing/-/issues/32)
-MOCK_INDEXES_PATH = 'tests/asset/out/indexes_cluster_order.json'
-MOCK_NORMALIZATION_PATH = 'tests/asset/out/normalization_results.npy'
-MOCK_WEIGHTS_PATH = 'tests/asset/out/weights_results.npy'
 
 class TestExperimentClusterOrder(unittest.TestCase):
 

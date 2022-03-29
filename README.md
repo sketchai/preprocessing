@@ -76,8 +76,25 @@ See test coverage : [TO COMPLETE]
 ## Preprocessing pipeline 
 
 - [How does the preprocessing pipeline works?](docs/preprocessing.md)
-- To launch a coarse-grained pipeline, use the  [following script](config/conf_coarsegrainedpip.yml)
 
+Make sure to configure the correct path to the sketchgraphs dataset in the `experiments/__init__.py` file
+
+Launch script on your pc
+```sh
+python experiments/experiment_coarse.py --dataset test
+python experiments/experiment_normalization.py --dataset test
+python experiments/experiment_weight.py --dataset test
+python experiments/experiment_encoding.py --dataset test
+```
+
+Run on HPC (edit the .sh file to change dataset):
+```sh
+# Full pipeline
+sbatch scripts/full_pipeline.sh
+
+# Or
+sbatch scripts/coarse.sh
+```
 
 ## Good pratices 
 

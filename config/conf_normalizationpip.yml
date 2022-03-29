@@ -2,13 +2,13 @@ General:
   l_filters: 
     - OpSubPipelineFilter
     - FilterLog 
-  source : Source_A
+  source : SourceFromFlatArray
   sink : SinkSlices
   n_process : 1
 
 
 # Source
-Source_A:
+SourceFromFlatArray:
   type: SourceFromFlatArray
   parms:
     file_path: 'out/coarse_grained_output_train.npy'
