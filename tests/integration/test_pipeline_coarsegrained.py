@@ -4,7 +4,7 @@ sys.path.append('src/filtering-pipeline/')
 
 from sketchgraphs.data import flat_array
 from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
-from src.filters.sink_sequence import SinkSequence
+from src.filters.sink_slices import SinkSlices
 from src.filters.filter_constraintrefs import FilterConstraintRefs
 from src.filters.filter_count import FilterCount
 from src.filters.filter_checkparamsmetrics import FilterCheckParamsMetrics
@@ -34,7 +34,7 @@ class TestIntegrationCoarseGrainedPipeline(unittest.TestCase):
                                 'SourceList': SourceList,
                                 'FilterConstraintRefs': FilterConstraintRefs,
                                 'FilterCheckParamsMetrics': FilterCheckParamsMetrics,
-                                'SinkSequence': SinkSequence,
+                                'SinkSlices': SinkSlices,
                                 }
         self.d_conf = yaml_to_dict('config/conf_coarsegrainedpip.yml')
         self.d_conf['FilterCheckLabel']['parms']['edge_label_list'] = [
@@ -64,7 +64,7 @@ class TestIntegrationCoarseGrainedPipeline(unittest.TestCase):
 
         # change input and output for testing
         self.d_conf['Source_A']['parms']['file_path'] = 'tests/asset/sg_t16_mini.npy'
-        self.d_conf['SinkSequence']['parms']['output_path'] = 'tests/asset/out/coarse_grained_results.npy'
+        self.d_conf['SinkSlices']['parms']['output_path'] = 'tests/asset/out/coarse_grained_results.npy'
         
     def test_pipeline(self):
         pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
@@ -77,7 +77,7 @@ class TestIntegrationCoarseGrainedPipeline(unittest.TestCase):
 
         logger.info(f"Pipeline input is of length {len(input_data)}")
 
-        output_path = self.d_conf['SinkSequence']['parms']['output_path']
+        output_path = self.d_conf['SinkSlices']['parms']['output_path']
         output_data = flat_array.load_flat_array(output_path)
 
         for sequence in output_data:

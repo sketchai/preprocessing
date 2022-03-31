@@ -1,0 +1,6 @@
+root = ''
+SKETCHGRAPHS_PATH = root + 'data/sg_t16_{}.npy'
+COARSE_PATH = root + 'out/coarse_grained_output_{}.npy'
+NORMALIZATION_PATH = root + 'out/normalization_output_{}.npy'
+INDEXES_PATH = root + 'out/indexes_cluster_order_{}.json'
+WEIGHTS_PATH = root + 'out/weights_output_{}.npy'

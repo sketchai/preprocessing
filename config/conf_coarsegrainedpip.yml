@@ -1,7 +1,11 @@
 General:
-  l_filters: [OpSubPipelineFilter] 
+  l_filters:
+    - OpSubPipelineFilter
+    - FilterDof
+    - FilterLog
+
   source : Source_A
-  sink : SinkSequence
+  sink : SinkSlices
   n_process : 1
 
 
@@ -9,9 +13,9 @@ General:
 Source_A:
   type: SourceFromFlatArray
   parms:
-    file_path: 'data/sg_t16_test.npy'
+    file_path: 'data/sg_t16_train.npy'
     # file_path: 'tests/asset/sg_t16_mini.npy'
-    # counter_for_test: 1
+    # counter_for_test: 30
 
 # Pipeline Filters
 OpSubPipelineFilter:
@@ -65,8 +69,20 @@ FilterCheckParamsMetrics_Angle:
   parms:
     request: TO_COMPLETE
 
-# Sink
-SinkSequence:
-  type: SinkSequence
+FilterDof:
+  type: FilterDof
   parms:
-    output_path: 'out/coarse_grained_results.npy'
+    max: null
+
+FilterLog:
+  type: FilterLog
+  parms:
+    output_path: 'out/logs'
+    clean_up: True
+
+# Sink
+SinkSlices:
+  type: SinkSlices
+  parms:
+    output_path: 'out/coarse_grained_output_train.npy'
+    slice_length: 917979
