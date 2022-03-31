@@ -4,18 +4,16 @@ General:
     - FilterDof
     - FilterLog
 
-  source : Source_A
+  source : SourceFromFlatArray
   sink : SinkSlices
   n_process : 1
 
 
 # Source
-Source_A:
+SourceFromFlatArray:
   type: SourceFromFlatArray
   parms:
-    file_path: 'data/sg_t16_train.npy'
-    # file_path: 'tests/asset/sg_t16_mini.npy'
-    # counter_for_test: 30
+    file_path: TO_COMPLETE
 
 # Pipeline Filters
 OpSubPipelineFilter:
@@ -84,5 +82,5 @@ FilterLog:
 SinkSlices:
   type: SinkSlices
   parms:
-    output_path: 'out/coarse_grained_output_train.npy'
+    output_path: TO_COMPLETE
     slice_length: 917979
