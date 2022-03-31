@@ -1,86 +1,21 @@
 import sys
 sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
+sys.path.append('src/filtering-pipeline')
 
-from sketchgraphs.data import flat_array
-from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
-from src.filters.sink_slices import SinkSlices
-from src.filters.filter_constraintrefs import FilterConstraintRefs
-from src.filters.filter_count import FilterCount
-from src.filters.filter_checkparamsmetrics import FilterCheckParamsMetrics
-from src.filters.filter_on_op import OpSubPipelineFilter
-from src.filters.filter_checklabel import FilterCheckLabel
-from src.sources.source_fromlist import SourceList
-from src.sources.source_fromflatarray import SourceFromFlatArray
-from src.utils.to_dict import yaml_to_dict
-from filtering_pipeline.factory import pipeline_factory
-from filtering_pipeline.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
-import logging
 import unittest
+import logging
 
+from experiments.experiment_coarse import ExperimentCoarse
+from tests import MOCK_COARSE_PATH, PATH_TO_MINI_SEQUENCE_DATA
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
+class TestExperimentCoarse(unittest.TestCase):
 
-class TestIntegrationCoarseGrainedPipeline(unittest.TestCase):
+    def test_run_pipeline(self):
+        experiment = ExperimentCoarse()
+        experiment.d_conf['SourceFromFlatArray']['parms']['file_path'] = PATH_TO_MINI_SEQUENCE_DATA
+        experiment.d_conf['SinkSlices']['parms']['output_path'] = MOCK_COARSE_PATH
 
-    @classmethod
-    def setUp(self):
-        self.catalog_filters = {'SourceFromFlatArray': SourceFromFlatArray,
-                                'OpSubPipelineFilter': OpSubPipelineFilter,
-                                'FilterCheckLabel': FilterCheckLabel,
-                                'FilterCount': FilterCount,
-                                'SourceList': SourceList,
-                                'FilterConstraintRefs': FilterConstraintRefs,
-                                'FilterCheckParamsMetrics': FilterCheckParamsMetrics,
-                                'SinkSlices': SinkSlices,
-                                }
-        self.d_conf = yaml_to_dict('config/conf_coarsegrainedpip.yml')
-        self.d_conf['FilterCheckLabel']['parms']['edge_label_list'] = [
-            ConstraintType.Coincident, ConstraintType.Distance, ConstraintType.Horizontal,
-            ConstraintType.Parallel, ConstraintType.Vertical, ConstraintType.Tangent,
-            ConstraintType.Length, ConstraintType.Perpendicular, ConstraintType.Midpoint,
-            ConstraintType.Equal, ConstraintType.Diameter, ConstraintType.Radius,
-            ConstraintType.Concentric, ConstraintType.Angle, ConstraintType.Subnode]
-
-        self.d_conf['FilterCheckLabel']['parms']['node_label_list'] = [
-            EntityType.Point, EntityType.Line,
-            EntityType.Circle, EntityType.Arc,
-            SubnodeType.SN_Start, SubnodeType.SN_End, SubnodeType.SN_Center,
-            EntityType.External, EntityType.Stop]
-
-        self.d_conf['FilterCheckParamsMetrics_Length']['parms']['request'] = {
-            ('edge', ConstraintType.Distance): {'length': ['.* METER']},
-            ('edge', ConstraintType.Length): {'length': ['.* METER']},
-            ('edge', ConstraintType.Diameter): {'length': ['.* METER']},
-            ('edge', ConstraintType.Radius): {'length': ['.* METER']},
-        }
-
-        self.d_conf['FilterCheckParamsMetrics_Angle']['parms']['request'] = {
-            ('edge', ConstraintType.Angle): {'angle': ['.* DEGREE']},
-        }
-        # old label_list : [ConstraintType.Coincident, ConstraintType.Distance, ConstraintType.Horizontal, EntityType.Point, EntityType.Line]
-
-        # change input and output for testing
-        self.d_conf['Source_A']['parms']['file_path'] = 'tests/asset/sg_t16_mini.npy'
-        self.d_conf['SinkSlices']['parms']['output_path'] = 'tests/asset/out/coarse_grained_results.npy'
-        
-    def test_pipeline(self):
-        pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
-        last_message = pipeline.execute()
-
-        logger.debug(f'Pipeline finished and returned {last_message}')
-
-        input_path = self.d_conf['Source_A']['parms']['file_path']
-        input_data = flat_array.load_dictionary_flat(input_path)['sequences']
-
-        logger.info(f"Pipeline input is of length {len(input_data)}")
-
-        output_path = self.d_conf['SinkSlices']['parms']['output_path']
-        output_data = flat_array.load_flat_array(output_path)
-
-        for sequence in output_data:
-            self.assertIsInstance(sequence, list)
-
-        logger.info(f"Pipeline output is of length {len(output_data)}")
+        experiment.run_pipeline()

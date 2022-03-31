@@ -11,8 +11,8 @@ General:
 SourceDict:
   type: SourceDict
   parms:
-    indexes: 'out/indexes_cluster_order.json'
-    data: 'out/normalization_output_train.npy'
+    indexes: TO_COMPLETE
+    data: TO_COMPLETE
 
 FilterClusterParamValues:
   type: FilterClusterParamValues
@@ -36,5 +36,5 @@ FilterLog:
 SinkArray:
   type: SinkArray
   parms:
-    output_path: 'out/weight_output_train.json'
+    output_path: TO_COMPLETE
     input_tag: 'weights'

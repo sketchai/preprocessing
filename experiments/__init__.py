@@ -1,13 +1,14 @@
+import os
 from sketchgraphs.data.sequence import EntityType, ConstraintType, SubnodeType
 
 ## Paths
 root = ''
-SKETCHGRAPHS_PATH = root + 'data/sg_t16_{}.npy'
-COARSE_PATH = root + 'out/coarse_grained_output_{}.npy'
-NORMALIZATION_PATH = root + 'out/normalization_output_{}.npy'
-INDEXES_PATH = root + 'out/indexes_cluster_order_{}.json'
-WEIGHTS_PATH = root + 'out/weights_output_{}.npy'
-ENCODING_PATH = root + 'out/encoding_output_{}.npy'
+SKETCHGRAPHS_PATH =os.path.join(root,'data/sg_t16_{}.npy')
+COARSE_PATH =os.path.join(root,'out/coarse_grained_output_{}.npy')
+NORMALIZATION_PATH =os.path.join(root,'out/normalization_output_{}.npy')
+INDEXES_PATH =os.path.join(root,'out/indexes_cluster_order_{}.json')
+WEIGHTS_PATH =os.path.join(root,'out/weights_output_{}.npy')
+ENCODING_PATH =os.path.join(root,'out/encoding_output_{}.npy')
 
 ## Global params 
 # (these params can be changed but should stay consistent through the pipeline steps)

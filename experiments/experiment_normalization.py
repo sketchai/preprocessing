@@ -1,17 +1,17 @@
+import argparse
 import sys
 import os
-
-# Add paths for packages
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
-cur_path = os.path.abspath(os.path.dirname(__file__))
-sys.path.insert(0, cur_path + "/..")
-
-
 import logging
 
-logging.basicConfig(level=logging.WARNING)
-
+if __name__ == '__main__':
+    # Add paths for packages
+    sys.path.append('src/sketchgraphs/')
+    sys.path.append('src/filtering-pipeline/')
+    cur_path = os.path.abspath(os.path.dirname(__file__))
+    sys.path.insert(0, cur_path + "/..")
+    logging.basicConfig(level=logging.WARNING)
+else:
+    logging.basicConfig(level=logging.DEBUG)
 
 from sketchgraphs.data import flat_array
 from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
@@ -30,70 +30,82 @@ from filtering_pipeline.filters.catalog_filter.subpipeline_filter import SubPipe
 import numpy as np
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
-catalog_filters = {'SourceFromFlatArray': SourceFromFlatArray,
-                        'OpSubPipelineFilter': OpSubPipelineFilter,
-                        'SourceList': SourceList,
-                        'FilterBarycenter': FilterBarycenter,
-                        'FilterDivByMax': FilterDivByMax,
-                        'FilterConvertMetrics': FilterConvertMetrics,
-                        'FilterRecenterLine': FilterRecenterLine,
-                        'SinkSlices': SinkSlices,
-                        'FilterLog': FilterLog,
-                        }
-d_conf = yaml_to_dict('config/conf_normalizationpip.yml')
-d_conf['FilterBarycenter_X']['parms']['request'] = {
-    ('node', EntityType.Line): 'pntX',
-    ('node', EntityType.Point): 'x',
-    ('node', EntityType.Circle): 'xCenter',
-    ('node', EntityType.Arc): 'xCenter',
-}
-d_conf['FilterBarycenter_Y']['parms']['request'] = {
-    ('node', EntityType.Line): 'pntY',
-    ('node', EntityType.Point): 'y',
-    ('node', EntityType.Circle): 'yCenter',
-    ('node', EntityType.Arc): 'yCenter',
-}
+class ExperimentNormalization():
 
-d_conf['FilterDivByMax']['parms']['request'] = {
-    ('node', EntityType.Point): ['x', 'y'],
-    ('node', EntityType.Line): ['pntX', 'pntY', 'startParam', 'endParam'],
-    ('node', EntityType.Circle): ['xCenter', 'yCenter', 'radius'],
-    ('node', EntityType.Arc): ['xCenter', 'yCenter', 'radius'],
-    ('edge', ConstraintType.Distance): 'length',
-    ('edge', ConstraintType.Length): 'length',
-    ('edge', ConstraintType.Diameter): 'length',
-    ('edge', ConstraintType.Radius): 'length',
-}
+    def __init__(self, dataset='train'):
+        self.catalog_filters = {'SourceFromFlatArray': SourceFromFlatArray,
+                                'OpSubPipelineFilter': OpSubPipelineFilter,
+                                'SourceList': SourceList,
+                                'FilterBarycenter': FilterBarycenter,
+                                'FilterDivByMax': FilterDivByMax,
+                                'FilterConvertMetrics': FilterConvertMetrics,
+                                'FilterRecenterLine': FilterRecenterLine,
+                                'SinkSlices': SinkSlices,
+                                'FilterLog': FilterLog,
+                                }
+        self.d_conf = yaml_to_dict('config/conf_normalizationpip.yml')
+        self.d_conf['FilterBarycenter_X']['parms']['request'] = {
+            ('node', EntityType.Line): 'pntX',
+            ('node', EntityType.Point): 'x',
+            ('node', EntityType.Circle): 'xCenter',
+            ('node', EntityType.Arc): 'xCenter',
+        }
+        self.d_conf['FilterBarycenter_Y']['parms']['request'] = {
+            ('node', EntityType.Line): 'pntY',
+            ('node', EntityType.Point): 'y',
+            ('node', EntityType.Circle): 'yCenter',
+            ('node', EntityType.Arc): 'yCenter',
+        }
 
-NB_RGX = r'[-+]?(?:\d*\.\d+|\d+)'
+        self.d_conf['FilterDivByMax']['parms']['request'] = {
+            ('node', EntityType.Point): ['x', 'y'],
+            ('node', EntityType.Line): ['pntX', 'pntY', 'startParam', 'endParam'],
+            ('node', EntityType.Circle): ['xCenter', 'yCenter', 'radius'],
+            ('node', EntityType.Arc): ['xCenter', 'yCenter', 'radius'],
+            ('edge', ConstraintType.Distance): 'length',
+            ('edge', ConstraintType.Length): 'length',
+            ('edge', ConstraintType.Diameter): 'length',
+            ('edge', ConstraintType.Radius): 'length',
+        }
 
-d_conf['FilterConvertMetrics']['parms']['request'] = {
-    ('edge', ConstraintType.Distance): {'length': {f'{NB_RGX} METER': 1., }},
-    ('edge', ConstraintType.Length): {'length': {f'{NB_RGX} METER': 1.}},
-    ('edge', ConstraintType.Diameter): {'length': {f'{NB_RGX} METER': 1.}},
-    ('edge', ConstraintType.Radius): {'length': {f'{NB_RGX} METER': 1.}},
-    ('edge', ConstraintType.Angle): {'angle': {f'{NB_RGX} DEGREE': np.pi / 180}},
-    ('edge', ConstraintType.Angle): {'angle': {f'{NB_RGX} DEGREE': np.pi / 180}},
-}
+        NB_RGX = r'[-+]?(?:\d*\.\d+|\d+)'
 
-d_conf['FilterModuloAngle']['parms']['request'] = {
-    ('node', EntityType.Arc): ["startParam", "endParam"],
-    ('edge', ConstraintType.Angle): "angle",
-}
+        self.d_conf['FilterConvertMetrics']['parms']['request'] = {
+            ('edge', ConstraintType.Distance): {'length': {f'{NB_RGX} METER': 1., }},
+            ('edge', ConstraintType.Length): {'length': {f'{NB_RGX} METER': 1.}},
+            ('edge', ConstraintType.Diameter): {'length': {f'{NB_RGX} METER': 1.}},
+            ('edge', ConstraintType.Radius): {'length': {f'{NB_RGX} METER': 1.}},
+            ('edge', ConstraintType.Angle): {'angle': {f'{NB_RGX} DEGREE': np.pi / 180}},
+            ('edge', ConstraintType.Angle): {'angle': {f'{NB_RGX} DEGREE': np.pi / 180}},
+        }
 
-# Launch pipeline
-pipeline = pipeline_factory(conf=d_conf, catalog_filter=catalog_filters)
-last_message = pipeline.execute()
+        self.d_conf['FilterModuloAngle']['parms']['request'] = {
+            ('node', EntityType.Arc): ["startParam", "endParam"],
+            ('edge', ConstraintType.Angle): "angle",
+        }
 
-input_path = d_conf['Source_A']['parms']['file_path']
-input_data = flat_array.load_flat_array(input_path)
+    def run_pipeline(self):
+        pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)
+        last_message = pipeline.execute()
 
-print(f"Pipeline input is of length {len(input_data)}")
+        input_path = self.d_conf['SourceFromFlatArray']['parms']['file_path']
+        input_data = flat_array.load_flat_array(input_path)
+        output_path = self.d_conf['SinkSlices']['parms']['output_path']
+        output_data = flat_array.load_flat_array(output_path)
 
-output_path = d_conf['SinkSlices']['parms']['output_path']
-output_data = flat_array.load_flat_array(output_path)
+        logger.info(f"Pipeline input is of length {len(input_data)}")
+        logger.info(f"Pipeline output is of length {len(output_data)}")
 
-print(f"Pipeline output is of length {len(output_data)}")
+        print(f"Pipeline input is of length {len(input_data)}")
+        print(f"Pipeline output is of length {len(output_data)}")
+
+def main():
+    parser = argparse.ArgumentParser(description='Run Coarse pipeline')
+    parser.add_argument('--dataset', help='train, validation or test')
+    args = parser.parse_args()
+    ExperimentNormalization(dataset=args.dataset).run_pipeline()
+
+if __name__ == '__main__':
+    main()

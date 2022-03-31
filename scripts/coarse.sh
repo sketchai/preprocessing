@@ -18,7 +18,7 @@ mkdir $folder
 STARTTIME=$(date +%s)
 
 conda activate sg_prep
-srun python experiments/experiment_coarse.py
+srun python experiments/experiment_coarse.py --dataset train
 
 mv scripts/output_coarse.err $folder
 mv scripts/output_coarse.out $folder
