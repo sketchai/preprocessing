@@ -16,7 +16,7 @@ from sketchgraphs.data import flat_array
 from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.filters.filter_encodeedgefeatures import FilterEncodeEdgeFeatures
 from src.filters.filter_encodenodefeatures import FilterEncodeNodeFeatures
-from src.filters.filter_encodeincidences import FilterEncodeIncidences
+from src.filters.filter_encodegraphconnections import FilterEncodeGraphConnections
 from src.filters.sink_dictflat import SinkDictFlat
 from src.filters.utils.filter_log import FilterLog
 from src.utils.to_dict import yaml_to_dict
@@ -32,7 +32,8 @@ class ExperimentEncoding():
             'SourceFromFlatArray': SourceFromFlatArray,
             'FilterEncodeEdgeFeatures': FilterEncodeEdgeFeatures,
             'FilterEncodeNodeFeatures': FilterEncodeNodeFeatures,
-            'FilterEncodeIncidences': FilterEncodeIncidences,
+            'FilterEncodeGraphConnections': FilterEncodeGraphConnections,
+            'SinkDictFlat': SinkDictFlat,
             'FilterLog': FilterLog,
             }
         self.d_conf = yaml_to_dict('config/conf_encodingpip.yml')
@@ -56,10 +57,10 @@ class ExperimentEncoding():
         output_data = flat_array.load_flat_array(output_path)
 
         logger.info(f'Pipeline input is of length {len(input_data)}')
-        logger.info(f'Generated {len(output_data)} clusters')
+        logger.info(f'Pipeline output is of length {len(output_data)}')
 
         print(f'Pipeline input is of length {len(input_data)}')
-        print((f'Generated {len(output_data)} clusters'))
+        print(f'Pipeline output is of length {len(output_data)}')
 
 
 def main():

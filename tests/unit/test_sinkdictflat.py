@@ -55,5 +55,5 @@ class TestSinkDictFlat(unittest.TestCase):
 
     def tearDown(self):
         # Clean and remove created file
-        if os.path.isfile(self.output_path):
+        if os.path.isfile(self.output_path) and self.clean:
             os.remove(self.output_path)

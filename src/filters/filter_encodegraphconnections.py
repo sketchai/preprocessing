@@ -27,7 +27,7 @@ class FilterEncodeGraphConnections(AbstractFilter):
         i_edges_possible = []
         edges_not_in_graph = [(i,j) for j in range(l) for i in range(j+1)]
         for i, op in enumerate(edge_ops):
-            edges_not_in_graph.remove((op.references[0], op.references[-1]))
+            edges_not_in_graph.remove((min(op.references), max(op.references)))
             if op.label == ConstraintType.Subnode:  # à minima
                 i_edges_given.append(i)
             else:

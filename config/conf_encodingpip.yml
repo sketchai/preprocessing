@@ -2,7 +2,7 @@ General:
   l_filters:
     - FilterEncodeEdgeFeatures
     - FilterEncodeNodeFeatures
-    - FilterEncodeIncidence
+    - FilterEncodeGraphConnections
     - FilterLog
   source: SourceFromFlatArray
   sink: SinkDictFlat
@@ -33,12 +33,13 @@ SinkDictFlat:
       - 'sequence_idx'
     output_path: TO_COMPLETE
     slice_length: 500000
+    clean_up: True
 
 
 FilterEncodeEdgeFeatures:
   type: FilterEncodeEdgeFeatures
   parms:
-
+    l_keep_edge: TO_COMPLETE
 
 FilterEncodeNodeFeatures:
   type: FilterEncodeNodeFeatures
@@ -47,8 +48,14 @@ FilterEncodeNodeFeatures:
     l_keep_node: TO_COMPLETE
     lMax: 60
 
-FilterEncodeIncidence:
-  type: FilterEncodeIncidence
+FilterEncodeGraphConnections:
+  type: FilterEncodeGraphConnections
   parms:
     n_bins: 50
     l_keep_edge: TO_COMPLETE
+
+FilterLog:
+  type: FilterLog
+  parms:
+    output_path: 'out/logs'
+    clean_up: True
