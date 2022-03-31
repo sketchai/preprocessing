@@ -22,7 +22,7 @@ class FilterEncodeNodeFeatures(AbstractFilter):
         l_keep_node = conf_filter['l_keep_node']
         self.lMax = conf_filter.get('lMax',60)
         self.node_idx_map = construct_node_map(l_keep_node)
-        _ , self.params_node = discretization.create_params(n_bins)
+        self.params_node = discretization.create_params_node(n_bins)
 
     def process(self, message: object) -> object:
         sequence = message.get('sequence')

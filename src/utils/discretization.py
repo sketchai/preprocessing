@@ -4,7 +4,7 @@ import torch
 from sketchgraphs.data import sequence, sketch as datalib
 from src.utils.maps import NODES_PARAMETRIZED, EDGES_PARAMETRIZED
 
-def create_params(n_bins=50):
+def create_params_node(n_bins=50):
     """
     Create dictionaries to discretize all the parameters of the primitives and the constraints. The values of the dictionaries are maps.
     n_bins : int, number of bins to discretize angles, positions and lengths.
@@ -12,21 +12,6 @@ def create_params(n_bins=50):
     angle_map = np.linspace(0, 2*np.pi, n_bins)  # values have been normalized first
     length_map = np.linspace(-1, 1, n_bins)  # values have been normalized first
     
-    params_edge = dict([(datalib.ConstraintType.Angle, dict([
-                ('aligned', datalib.BooleanValue),
-                ('clockwise', datalib.BooleanValue),
-                ('angle', angle_map)])),
-            (datalib.ConstraintType.Length, dict([
-                ('direction', datalib.DirectionValue),
-                ('length', length_map)])),
-            (datalib.ConstraintType.Distance, dict([
-                ('direction', datalib.DirectionValue),
-                ('halfSpace0', datalib.HalfSpaceValue),
-                ('halfSpace1', datalib.HalfSpaceValue),
-                ('length', length_map)])),
-            (datalib.ConstraintType.Diameter, dict([('length', length_map)])),
-            (datalib.ConstraintType.Radius, dict([('length', length_map)]))])
-
     params_node = dict([(datalib.EntityType.Point, dict([
                 ('isConstruction', datalib.BooleanValue),
                 ('x', length_map),
@@ -58,7 +43,33 @@ def create_params(n_bins=50):
                 ('endParam', angle_map),
                 ('clockwise', datalib.BooleanValue)])) ])
     
-    return params_edge, params_node
+    return params_node
+
+def create_params_edge(n_bins=50):
+    """
+    Create dictionaries to discretize all the parameters of the primitives and the constraints. The values of the dictionaries are maps.
+    n_bins : int, number of bins to discretize angles, positions and lengths.
+    """
+    angle_map = np.linspace(0, 2*np.pi, n_bins)  # values have been normalized first
+    length_map = np.linspace(-1, 1, n_bins)  # values have been normalized first
+
+    params_edge = dict([(datalib.ConstraintType.Angle, dict([
+                ('aligned', datalib.BooleanValue),
+                ('clockwise', datalib.BooleanValue),
+                ('angle', angle_map)])),
+            (datalib.ConstraintType.Length, dict([
+                ('direction', datalib.DirectionValue),
+                ('length', length_map)])),
+            (datalib.ConstraintType.Distance, dict([
+                ('direction', datalib.DirectionValue),
+                ('halfSpace0', datalib.HalfSpaceValue),
+                ('halfSpace1', datalib.HalfSpaceValue),
+                ('length', length_map)])),
+            (datalib.ConstraintType.Diameter, dict([('length', length_map)])),
+            (datalib.ConstraintType.Radius, dict([('length', length_map)]))])
+
+    return params_edge
+
 
 def feature_dims(params_edge, params_node):
     """
