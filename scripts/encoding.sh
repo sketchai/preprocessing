@@ -18,7 +18,7 @@ mkdir $folder
 STARTTIME=$(date +%s)
 
 conda activate sg_prep
-srun python experiments/experiment_encoding.py
+srun python experiments/experiment_encoding.py --dataset validation
 
 mv scripts/output_encoding.err $folder
 mv scripts/output_encoding.out $folder

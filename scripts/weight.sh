@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #SBATCH --job-name=sketchgraphs_preprocessing
-#SBATCH --output=weight_output.out
-#SBATCH --error=weight_output.err
+#SBATCH --output=scripts/weight_output.out
+#SBATCH --error=scripts/weight_output.err
 #SBATCH --qos=an_all_short
 #SBATCH --partition=an
 #SBATCH --nodes=1
@@ -18,10 +18,10 @@ mkdir $folder
 STARTTIME=$(date +%s)
 
 conda activate sg_prep
-srun python experiments/experiment_weight.py --dataset train
+srun python experiments/experiment_weight.py --dataset test
 
-mv weight_output.err $folder
-mv weight_output.out $folder
+mv scripts/weight_output.err $folder
+mv scripts/weight_output.out $folder
 
 ENDTIME=$(date +%s)
 echo "Time spent: $((($ENDTIME - $STARTTIME)/ 60)) minutes"

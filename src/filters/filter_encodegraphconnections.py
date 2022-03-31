@@ -25,16 +25,17 @@ class FilterEncodeGraphConnections(AbstractFilter):
         l = len(message['node_ops'])
         i_edges_given = []
         i_edges_possible = []
-        edges_not_in_graph = [(i,j) for j in range(l) for i in range(j+1)]
+        edges_exemple = torch.zeros((l, l), dtype=torch.bool)
         for i, op in enumerate(edge_ops):
-            edges_not_in_graph.remove((min(op.references), max(op.references)))
+            edges_exemple[op.references[0], op.references[-1]] = True
+            edges_exemple[op.references[-1], op.references[0]] = True
             if op.label == ConstraintType.Subnode:  # à minima
                 i_edges_given.append(i)
             else:
                 i_edges_possible.append(i)
         i_edges_given = np.array(i_edges_given, dtype=np.int64)
         i_edges_possible = np.array(i_edges_possible, dtype=np.int64)
-        edges_toInf_neg = torch.tensor(edges_not_in_graph, dtype=torch.int64)
+        edges_toInf_neg = torch.nonzero(torch.triu(~edges_exemple))
 
         message['incidences']= incidences
         message['i_edges_given']= i_edges_given
