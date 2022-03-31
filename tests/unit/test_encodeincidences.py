@@ -8,13 +8,13 @@ import logging
 import unittest
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType, SubnodeType
 from sketchgraphs.data._constraint import DirectionValue, HalfSpaceValue
-from src.filters.filter_encodeincidences import FilterEncodeIncidences
+from src.filters.filter_encodegraphconnections import FilterEncodeGraphConnections
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
-class TestFilterEncodeIncidences(unittest.TestCase):
+class TestFilterEncodeGraphConnections(unittest.TestCase):
 
     def test_process(self):
         mock_sequence_1 = [
@@ -24,7 +24,7 @@ class TestFilterEncodeIncidences(unittest.TestCase):
         NodeOp(label=SubnodeType.SN_Center),
         EdgeOp(label=ConstraintType.Subnode, references=(1,2))]
 
-        filter1 = FilterEncodeIncidences(conf_filter={})
+        filter1 = FilterEncodeGraphConnections(conf_filter={})
         edge_ops = [op for op in mock_sequence_1 if isinstance(op, EdgeOp)]
         node_ops = [op for op in mock_sequence_1 if isinstance(op, NodeOp)]
         message = {'sequence': mock_sequence_1, 'node_ops': node_ops, 'edge_ops': edge_ops}

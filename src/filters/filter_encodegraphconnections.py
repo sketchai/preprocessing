@@ -10,7 +10,7 @@ from src.utils import discretization
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
-class FilterEncodeIncidences(AbstractFilter):
+class FilterEncodeGraphConnections(AbstractFilter):
     """
         A filter that encodes the incidences of all edges
     """
