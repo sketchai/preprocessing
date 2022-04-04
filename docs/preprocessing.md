@@ -134,7 +134,7 @@ Encoding des paramètres​ dans une array
 ### [FilterClusterParamValues](../src/filters/filter_clusterparamvalues.py)
 Clustering​ (scipy)
 
-### [SinkArray]
+### [SinkArray](../src/filters/sink_array.py)
 Sauvegarde les weights dans une array npy
 
 
@@ -143,3 +143,23 @@ Sauvegarde les weights dans une array npy
 Les fichiers de configuration sont [conf_clusterorder.yml](../config/conf_clusterorder.yml) et [conf_clusterparam.yml](../config/conf_clusterparams.yml).
 
 Le fichier pour lancer la pipeline est [experiment_weight.py](../experiments/experiment_weight.py).
+
+
+# D. Encoding
+
+La dernière étape de la pipeline encode les données en tenseurs torch et array numpy pour pouvoir les donner au modèle
+
+### [SourceFromFlatArray](../src/sources/source_fromflatarray.py)
+Lit les séquences une à une
+
+### [FilterEncodeNodeFeatures](../src/filters/filter_encodenodefeatures.py)
+Encode les features liées au noeuds et à leurs paramètres
+
+### [FilterEncodeEdgeFeatures](../src/filters/filter_encodeedgefeatures.py)
+Encode les features liées aux arêtes et à leurs paramètres
+
+### [FilterEncodeIncidences](../src/filters/filter_encodeincidences.py)
+Encode les données d'adjacence du graphe
+
+### [SinkDictFlat](../src/filters/sink_dictflat.py)
+Sauvegarde les données sous la forme d'une liste de dictionnaires. Les fichiers sont découpés en slices puis regroupés.

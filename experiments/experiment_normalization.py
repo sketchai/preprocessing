@@ -27,6 +27,7 @@ from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.utils.to_dict import yaml_to_dict
 from filtering_pipeline.factory import pipeline_factory
 from filtering_pipeline.filters.catalog_filter.subpipeline_filter import SubPipelineFilter
+from experiments import COARSE_PATH, NORMALIZATION_PATH
 import numpy as np
 import logging
 
@@ -85,6 +86,10 @@ class ExperimentNormalization():
             ('node', EntityType.Arc): ["startParam", "endParam"],
             ('edge', ConstraintType.Angle): "angle",
         }
+
+        self.d_conf['SourceFromFlatArray']['parms']['file_path'] = COARSE_PATH.format(dataset)
+        self.d_conf['SinkSlices']['parms']['output_path'] = NORMALIZATION_PATH.format(dataset)
+
 
     def run_pipeline(self):
         pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)

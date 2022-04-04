@@ -37,5 +37,6 @@ class FilterEncodeNodeFeatures(AbstractFilter):
         message['node_ops'] = node_ops
         message['node_features'] = node_features
         message['sparse_node_features'] = sparse_node_features
-        message['mask_attention']= mask_attention
+        message['mask_attention'] = mask_attention
+        message['length'] = l
         return message
