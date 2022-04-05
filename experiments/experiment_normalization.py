@@ -21,6 +21,7 @@ from src.filters.filter_divbymax import FilterDivByMax
 from src.filters.filter_barycenter import FilterBarycenter
 from src.filters.sink_slices import SinkSlices
 from src.filters.filter_on_op import OpSubPipelineFilter
+from src.filters.filter_moduloangle import FilterModuloAngle
 from src.filters.utils.filter_log import FilterLog
 from src.sources.source_fromlist import SourceList
 from src.sources.source_fromflatarray import SourceFromFlatArray
@@ -39,6 +40,7 @@ class ExperimentNormalization():
         self.catalog_filters = {'SourceFromFlatArray': SourceFromFlatArray,
                                 'OpSubPipelineFilter': OpSubPipelineFilter,
                                 'SourceList': SourceList,
+                                'FilterModuloAngle': FilterModuloAngle,
                                 'FilterBarycenter': FilterBarycenter,
                                 'FilterDivByMax': FilterDivByMax,
                                 'FilterConvertMetrics': FilterConvertMetrics,
