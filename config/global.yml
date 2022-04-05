@@ -4,7 +4,7 @@ path:
   normalization_path: 'out/normalization_output_{}.npy'
   indexes_path: 'out/indexes_cluster_order_{}.json'
   weights_path: 'out/weights_output_{}.npy'
-  encoding_path: 'out/encoding_output_{}.npy'
+  encoding_path: 'out/sg_{}_final.npy'
   parameters_path: 'out/preprocessing_params.pkl'
 
 # TODO: set the params in the conf_xxx_pip.yml files
