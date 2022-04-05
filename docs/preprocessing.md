@@ -1,10 +1,11 @@
 # SketchGraph: data preprocessing
 
 La pipeline de preprocessing s'appuie sur 4 grandes étapes :
-A. Une étape de filtrage selon les critéres détaillés ci-dessous,
-B. Une étape de normalisation des données,
-C. Une étape finale de tri dont le but est de retirer les esquisses les plus proches,
-D. Une étape de conversion dans un format binaire compatible pour l'entraînement avec un modèle torch.
+
+* A. Une étape de filtrage
+* B. Une étape de normalisation des données,
+* C. Une étape finale de tri dont le but est de retirer les esquisses les plus proches,
+* D. Une étape de conversion dans un format binaire compatible pour l'entraînement avec un modèle torch.
 
 L'intégralité de l'étape de preprocessing permet de générer à partir d'un fichier binaire .npy contenant des esquisses au format SketchGraph un nouveau fichier binaire compatible pour un entraînement avec pytorch.
 
@@ -12,37 +13,32 @@ L'intégralité de l'étape de preprocessing permet de générer à partir d'un 
 
 Les données sont filtrés selon les critères suivants :
 
-a. un Noeud doit appartenir à la liste suivante (9 éléments):
+### a. un Noeud doit appartenir à la liste suivante (9 éléments):
 ```python
-    keep_node = [datalib.EntityType.Point, datalib.EntityType.Line,
-              datalib.EntityType.Circle, datalib.EntityType.Arc,
-             datalib.SubnodeType.SN_Start, datalib.SubnodeType.SN_End, datalib.SubnodeType.SN_Center,
-             datalib.EntityType.External, datalib.EntityType.Stop]
+    keep_node = [EntityType.Point, EntityType.Line,
+              EntityType.Circle, EntityType.Arc,
+             SubnodeType.SN_Start, SubnodeType.SN_End, SubnodeType.SN_Center,
+             EntityType.External, EntityType.Stop]
 ```
 
-b. une Arête appartenir à la liste suivante (15 éléments):
+### b. une Arête doit appartenir à la liste suivante (15 éléments):
 ```python
-    keep_edge = [datalib.ConstraintType.Coincident, datalib.ConstraintType.Distance, datalib.ConstraintType.Horizontal,
-             datalib.ConstraintType.Parallel, datalib.ConstraintType.Vertical, datalib.ConstraintType.Tangent,
-             datalib.ConstraintType.Length, datalib.ConstraintType.Perpendicular, datalib.ConstraintType.Midpoint,
-             datalib.ConstraintType.Equal, datalib.ConstraintType.Diameter, datalib.ConstraintType.Radius,
-             datalib.ConstraintType.Concentric, datalib.ConstraintType.Angle, datalib.ConstraintType.Subnode]
+    keep_edge = [ConstraintType.Coincident, ConstraintType.Distance, ConstraintType.Horizontal,
+             ConstraintType.Parallel, ConstraintType.Vertical, ConstraintType.Tangent,
+             ConstraintType.Length, ConstraintType.Perpendicular, ConstraintType.Midpoint,
+             ConstraintType.Equal, ConstraintType.Diameter, ConstraintType.Radius,
+             ConstraintType.Concentric, ConstraintType.Angle, ConstraintType.Subnode]
 ```
 
-c. une contrainte ne doit pas avoir 3 références
+### c. une contrainte ne doit pas avoir 3 références
 
-d. la séquence doit contenir au moins une contrainte
+### d. la séquence doit contenir au moins une contrainte
 
-e. la séquence doit avoir nbre de noeuds compris entre ```n_min``` et ```n_max```.
+### e. la séquence doit avoir nbre de noeuds compris entre ```n_min``` et ```n_max```.
 
-f. la séquence doit avoir un DoF inférieur ou égale à ```dof_max```
+### f. la séquence doit avoir un DoF inférieur ou égale à ```dof_max```
 
-g. les angles doivent être en degrés et les distances en métres
-
-*Remarques :* 
-- Le test sur la référence est == et non >=. Doit-on modifier ce test ? 
-- Des étapes de filtrations sont également contenues dans la partie normalization du code d'Odilon. Il paraît plus logique de les basculer dans le A.
-
+### g. les angles doivent être en degrés et les distances en métres
 
 **Dans notre pipeline de preprocessing**
 - les filtres a., b., c. et g. sont des filtres s'appliquant opération par opération.
@@ -138,13 +134,6 @@ Clustering​ (scipy)
 Sauvegarde les weights dans une array npy
 
 
-## Lancer la Pipeline
-
-Les fichiers de configuration sont [conf_clusterorder.yml](../config/conf_clusterorder.yml) et [conf_clusterparam.yml](../config/conf_clusterparams.yml).
-
-Le fichier pour lancer la pipeline est [experiment_weight.py](../experiments/experiment_weight.py).
-
-
 # D. Encoding
 
 La dernière étape de la pipeline encode les données en tenseurs torch et array numpy pour pouvoir les donner au modèle
@@ -163,3 +152,5 @@ Encode les données d'adjacence du graphe
 
 ### [SinkDictFlat](../src/filters/sink_dictflat.py)
 Sauvegarde les données sous la forme d'une liste de dictionnaires. Les fichiers sont découpés en slices puis regroupés.
+
+
