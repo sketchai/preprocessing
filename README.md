@@ -39,7 +39,7 @@ To update package dependencies,
 
 2. Install our gitlab package [FilteringPipeline](https://gitlab.pam-retd.fr/cao_ml/python_packages/abstractfilters/filteringpipeline):
 ```bash
-    pip install -e git+ssh://gitlab.pleiade.edf.fr/cao_ml/toolbox/filteringpipeline.git#egg=filteringpipeline
+    pip install -e git+https://gitlab.pleiade.edf.fr/cao_ml/toolbox/filteringpipeline.git#egg=filtering-pipeline
 ```
 
 3. Install sktechgraphs: to avoid unwanted evolution, use a cloned version on the EDF repo:
@@ -55,22 +55,6 @@ Otherwise, use the original github repository:
 ```
 
 
-## Problème de gestion du package sketchgraphs
-
-- Test 1: Ajouter 
-```python
-import sys
-sys.path.append('src/sketchgraphs')
-```
-dans le script python
-
-- Test 2 : Ajouter 
-```
-torch=""
-sketchgraphs = {path = "./src/sketchgraphs", develop = true}
-```
-dans le pytoml (mais il y a un problème avec le setup de sketchgraph).
-
 ## Testing 
 
 For running all the tests:
@@ -84,14 +68,41 @@ For running a specific test:
     poetry run pytest path/my_test
 ```
 
+We use a small 5 sequence long dataset extracted from the sg_t16_test.npy file to do the testing. It is located under tests/asset/sg_t16_mini.npy
 
 See test coverage : [TO COMPLETE]
 
 
 ## Preprocessing pipeline 
 
-- [How does the preprocessing pipeline works?](docs/pipeline_preprocessing/pipeline.md)
+- [How does the preprocessing pipeline works?](docs/preprocessing.md)
 
+An easy way to change the paths to your data folder is to use the following symbolic link (on linux).
+
+```sh
+ln -s path/to/your/data/folder data
+```
+
+The corresponding folder should contain the `sg_t16_train` `test` and `validation.npy` files.
+Otherwise make sure to configure the correct paths to the sketchgraphs dataset in the `config/global.yml` file
+
+
+Launch script on your pc
+```sh
+python experiments/experiment_coarse.py --dataset test
+python experiments/experiment_normalization.py --dataset test
+python experiments/experiment_weight.py --dataset test
+python experiments/experiment_encoding.py --dataset test
+```
+
+Run on HPC:
+```sh
+# Full pipeline
+sbatch scripts/full_pipeline.sh train
+
+# Or
+sbatch scripts/coarse.sh validation
+```
 
 ## Good pratices 
 

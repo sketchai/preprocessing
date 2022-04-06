@@ -10,7 +10,7 @@ lz4 = "^4.0.0"
 numpy = "^1.22.2"
 matplotlib = "^3.5.1"
 pygraphviz = "^1.9"
-
+scipy = "^1.6.3"
 
 
 [tool.poetry.dev-dependencies]
@@ -36,7 +36,7 @@ log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 
 [tool.autopep8]
 max_line_length = 120
-ignore = "E501,W6"  # or ["E501", "W6"]
+ignore = "E501,W6,E402"  # or ["E501", "W6"]
 in-place = true
 recursive = true
 aggressive = 3

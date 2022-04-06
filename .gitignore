@@ -16,5 +16,5 @@ nosetests.xml
 coverage.xml
 
 # Remove gitlab installation
-src/filteringpipeline
+src/filtering-pipeline
 src/sketchgraphs

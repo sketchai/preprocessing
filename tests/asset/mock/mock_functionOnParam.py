@@ -2,7 +2,7 @@ from typing import Dict
 import logging
 
 from src.filters.utils.filter_functiononparam import FilterFunctionOnParam
-from src.filteringpipeline.src.filters import KO_FILTER_TAG
+from filtering_pipeline import KO_FILTER_TAG
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
