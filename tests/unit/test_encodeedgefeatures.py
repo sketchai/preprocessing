@@ -50,17 +50,19 @@ class TestFilterEncodeEdgeFeatures(unittest.TestCase):
                 'value': angle_params},
                 
             # the rest are empty tensors
-            ConstraintType.Angle: {'index': torch.tensor([]),
-                'value': torch.zeros((0,3))},
-            ConstraintType.Length: {'index': torch.tensor([]),
-                'value': torch.zeros((0,2))},
-            ConstraintType.Diameter: {'index': torch.tensor([]),
-                'value': torch.zeros((0,1))},
-            ConstraintType.Radius: {'index': torch.tensor([]),
-                'value': torch.zeros((0,1))},
+            ConstraintType.Angle: {'index': torch.tensor([], dtype=torch.int64),
+                'value': torch.zeros((0,3), dtype=torch.int64)},
+            ConstraintType.Length: {'index': torch.tensor([], dtype=torch.int64),
+                'value': torch.zeros((0,2), dtype=torch.int64)},
+            ConstraintType.Diameter: {'index': torch.tensor([], dtype=torch.int64),
+                'value': torch.zeros((0,1), dtype=torch.int64)},
+            ConstraintType.Radius: {'index': torch.tensor([], dtype=torch.int64),
+                'value': torch.zeros((0,1), dtype=torch.int64)},
             }
         for key, subdict in message['sparse_edge_features'].items():
             index, value = subdict.values()
             exp_index, exp_value = expected_result[key].values()
+            logger.debug(f'{(index,value,exp_index,exp_value)}')
+
             torch.testing.assert_allclose(index, exp_index)
             torch.testing.assert_allclose(value, exp_value)

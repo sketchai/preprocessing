@@ -18,7 +18,7 @@ mkdir $folder
 STARTTIME=$(date +%s)
 
 conda activate sg_prep
-srun python experiments/experiment_weight.py --dataset test
+srun python experiments/experiment_weight.py --dataset $1
 
 mv scripts/weight_output.err $folder
 mv scripts/weight_output.out $folder

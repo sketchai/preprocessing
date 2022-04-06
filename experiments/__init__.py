@@ -1,23 +1,20 @@
-import os
-from sketchgraphs.data.sequence import EntityType, ConstraintType, SubnodeType
-
+from src.utils.to_dict import yaml_to_dict
 ## Paths
-root = ''
-SKETCHGRAPHS_PATH =os.path.join(root,'data/sg_t16_{}.npy')
-COARSE_PATH =os.path.join(root,'out/coarse_grained_output_{}.npy')
-NORMALIZATION_PATH =os.path.join(root,'out/normalization_output_{}.npy')
-INDEXES_PATH =os.path.join(root,'out/indexes_cluster_order_{}.json')
-WEIGHTS_PATH =os.path.join(root,'out/weights_output_{}.npy')
-ENCODING_PATH =os.path.join(root,'out/encoding_output_{}.npy')
+d_conf = yaml_to_dict('config/global.yml')
+SKETCHGRAPHS_PATH = d_conf['path']['sketchgraphs_path']
+COARSE_PATH = d_conf['path']['coarse_path']
+NORMALIZATION_PATH = d_conf['path']['normalization_path']
+INDEXES_PATH = d_conf['path']['indexes_path']
+WEIGHTS_PATH = d_conf['path']['weights_path']
+ENCODING_PATH = d_conf['path']['encoding_path']
+PARAMETERS_PATH = d_conf['path']['parameters_path']
 
 ## Global params 
 # (these params can be changed but should stay consistent through the pipeline steps)
-L_KEEP_EDGE = [ConstraintType.Coincident, ConstraintType.Distance, ConstraintType.Horizontal,
-               ConstraintType.Parallel, ConstraintType.Vertical, ConstraintType.Tangent,
-               ConstraintType.Length, ConstraintType.Perpendicular, ConstraintType.Midpoint,
-               ConstraintType.Equal, ConstraintType.Diameter, ConstraintType.Radius,
-               ConstraintType.Concentric, ConstraintType.Angle, ConstraintType.Subnode]
-L_KEEP_NODE = [EntityType.Point, EntityType.Line,
-               EntityType.Circle, EntityType.Arc,
-               SubnodeType.SN_Start, SubnodeType.SN_End, SubnodeType.SN_Center,
-               EntityType.External, EntityType.Stop]
+L_MAX = d_conf['parameters']['lMax']
+L_MIN = d_conf['parameters']['lMin']
+DOF_MAX = d_conf['parameters']['dof_max']
+N_BINS = d_conf['parameters']['n_bins']
+
+L_KEEP_EDGE = d_conf['keep']['l_keep_edge']
+L_KEEP_NODE = d_conf['keep']['l_keep_node']

@@ -77,7 +77,15 @@ See test coverage : [TO COMPLETE]
 
 - [How does the preprocessing pipeline works?](docs/preprocessing.md)
 
-Make sure to configure the correct path to the sketchgraphs dataset in the `experiments/__init__.py` file
+An easy way to change the paths to your data folder is to use the following symbolic link (on linux).
+
+```sh
+ln -s path/to/your/data/folder data
+```
+
+The corresponding folder should contain the `sg_t16_train` `test` and `validation.npy` files.
+Otherwise make sure to configure the correct paths to the sketchgraphs dataset in the `config/global.yml` file
+
 
 Launch script on your pc
 ```sh
@@ -87,13 +95,13 @@ python experiments/experiment_weight.py --dataset test
 python experiments/experiment_encoding.py --dataset test
 ```
 
-Run on HPC (edit the .sh file to change dataset):
+Run on HPC:
 ```sh
 # Full pipeline
-sbatch scripts/full_pipeline.sh
+sbatch scripts/full_pipeline.sh train
 
 # Or
-sbatch scripts/coarse.sh
+sbatch scripts/coarse.sh validation
 ```
 
 ## Good pratices 

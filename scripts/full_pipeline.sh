@@ -16,7 +16,7 @@ now=$(date +"%m_%d_%Y_%H_%M_%S")
 folder="scripts/full_pipeline_$now"
 mkdir $folder
 STARTTIME=$(date +%s)
-dataset="test"
+dataset=$1
 
 conda activate sg_prep
 srun python experiments/experiment_coarse.py --dataset $dataset
