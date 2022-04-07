@@ -17,8 +17,7 @@ from sketchgraphs.data import flat_array
 from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
 from src.filters.filter_recenterline import FilterRecenterLine
 from src.filters.filter_convertmetrics import FilterConvertMetrics
-from src.filters.filter_divbymax import FilterDivByMax
-from src.filters.filter_barycenter import FilterBarycenter
+from src.filters.filter_boundingbox import FilterBoundingBox
 from src.filters.sink_slices import SinkSlices
 from src.filters.filter_on_op import OpSubPipelineFilter
 from src.filters.filter_moduloangle import FilterModuloAngle
@@ -41,28 +40,14 @@ class ExperimentNormalization():
                                 'OpSubPipelineFilter': OpSubPipelineFilter,
                                 'SourceList': SourceList,
                                 'FilterModuloAngle': FilterModuloAngle,
-                                'FilterBarycenter': FilterBarycenter,
-                                'FilterDivByMax': FilterDivByMax,
                                 'FilterConvertMetrics': FilterConvertMetrics,
                                 'FilterRecenterLine': FilterRecenterLine,
                                 'SinkSlices': SinkSlices,
                                 'FilterLog': FilterLog,
+                                'FilterBoundingBox': FilterBoundingBox,
                                 }
         self.d_conf = yaml_to_dict('config/conf_normalizationpip.yml')
-        self.d_conf['FilterBarycenter_X']['parms']['request'] = {
-            ('node', EntityType.Line): 'pntX',
-            ('node', EntityType.Point): 'x',
-            ('node', EntityType.Circle): 'xCenter',
-            ('node', EntityType.Arc): 'xCenter',
-        }
-        self.d_conf['FilterBarycenter_Y']['parms']['request'] = {
-            ('node', EntityType.Line): 'pntY',
-            ('node', EntityType.Point): 'y',
-            ('node', EntityType.Circle): 'yCenter',
-            ('node', EntityType.Arc): 'yCenter',
-        }
-
-        self.d_conf['FilterDivByMax']['parms']['request'] = {
+        self.d_conf['FilterBoundingBox']['parms']['request'] = {
             ('node', EntityType.Point): ['x', 'y'],
             ('node', EntityType.Line): ['pntX', 'pntY', 'startParam', 'endParam'],
             ('node', EntityType.Circle): ['xCenter', 'yCenter', 'radius'],
