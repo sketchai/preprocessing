@@ -25,6 +25,7 @@ class FilterBoundingBox(FilterCollectParamValue):
     def __init__(self, conf_filter: Dict = {}):
         super().__init__(conf_filter)
         self.name = 'FilterBoundingBox'
+        self.ratio = conf_filter.get('ratio', 2**-0.5)
         self.x_coords = []
         self.y_coords = []
 
@@ -50,6 +51,8 @@ class FilterBoundingBox(FilterCollectParamValue):
 
         if np.isclose(l_max,0.):
             l_max = 1.
+
+        l_max /= self.ratio
 
         for key, reference_list in self.references.items():
             if key in ['x','pntX','xCenter']:
