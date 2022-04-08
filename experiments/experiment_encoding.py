@@ -12,7 +12,7 @@ if __name__ == '__main__':
 else:
     logging.basicConfig(level=logging.DEBUG)
 
-from sketchgraphs.data import flat_array
+from src.utils.flat_array import load_flat_array
 from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.filters.filter_encodeedgefeatures import FilterEncodeEdgeFeatures
 from src.filters.filter_encodenodefeatures import FilterEncodeNodeFeatures
@@ -51,16 +51,17 @@ class ExperimentEncoding():
         logger.debug(f'Pipeline finished and returned {last_message}')
 
         input_path = self.d_conf['SourceFromFlatArray']['parms']['file_path']
-        input_data = flat_array.load_flat_array(input_path)
+        input_data = load_flat_array(input_path)
 
         output_path = self.d_conf['SinkDictFlat']['parms']['output_path']
-        output_data = flat_array.load_flat_array(output_path)
+        output_data = load_flat_array(output_path)
 
         logger.info(f'Pipeline input is of length {len(input_data)}')
         logger.info(f'Pipeline output is of length {len(output_data)}')
 
         print(f'Pipeline input is of length {len(input_data)}')
         print(f'Pipeline output is of length {len(output_data)}')
+
 
 
 def main():
