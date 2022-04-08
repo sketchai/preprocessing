@@ -9,8 +9,8 @@ def create_params_node(n_bins=50):
     Create dictionaries to discretize all the parameters of the primitives and the constraints. The values of the dictionaries are maps.
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
-    angle_map = np.linspace(0, 2*np.pi, n_bins)  # values have been normalized first
-    length_map = np.linspace(-1, 1, n_bins)  # values have been normalized first
+    angle_map = np.linspace(0.001, 2.001*np.pi, n_bins)  # values have been normalized first
+    length_map = np.linspace(-0.999, 1.001, n_bins)  # values have been normalized first
     
     params_node = dict([(datalib.EntityType.Point, dict([
                 ('isConstruction', datalib.BooleanValue),
@@ -50,8 +50,8 @@ def create_params_edge(n_bins=50):
     Create dictionaries to discretize all the parameters of the primitives and the constraints. The values of the dictionaries are maps.
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
-    angle_map = np.linspace(0, 2*np.pi, n_bins)  # values have been normalized first
-    length_map = np.linspace(-1, 1, n_bins)  # values have been normalized first
+    angle_map = np.linspace(0.001, 2.001*np.pi, n_bins)  # values have been normalized first
+    length_map = np.linspace(-0.999, 1.001, n_bins)  # values have been normalized first
 
     params_edge = dict([(datalib.ConstraintType.Angle, dict([
                 ('aligned', datalib.BooleanValue),
