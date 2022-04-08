@@ -31,9 +31,9 @@ class FilterEncodeOrder(AbstractFilter):
         encoded_sequence = []
         for op in sequence:
             if isinstance(op, NodeOp): 
-                encoded_sequence.append(self.node_idx_map[op.label])
+                encoded_sequence.append(self.node_idx_map[op.label.name])
             elif isinstance(op, EdgeOp):
-                encoded_sequence.append(self.edge_idx_map[op.label] + self.edge_idx_offset)
+                encoded_sequence.append(self.edge_idx_map[op.label.name] + self.edge_idx_offset)
                 for ref in op.references:
                     encoded_sequence.append(ref + self.reference_idx_offset)
         message[OPS_ENCODING_TAG] = encoded_sequence
