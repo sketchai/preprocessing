@@ -34,15 +34,18 @@ class TestPreprocessingParams(unittest.TestCase):
         self.assertEqual(d_params['dof_max'],DOF_MAX)
         self.assertEqual(d_params['n_bins'],N_BINS)
 
+        l_name_primitive = [key.name for key in EntityType]
+        l_name_primitive.extend([key.name for key in SubnodeType])
         for key, d in d_params['node_feature_dimensions'].items():
-            self.assertTrue(key in EntityType or key in SubnodeType)
+            self.assertTrue(key in l_name_primitive)
             self.assertIsInstance(d, dict)
             for k,v in d.items():
                 self.assertIsInstance(k,str)
                 self.assertIsInstance(v,int)
 
+        l_name_constraint = [key.name for key in ConstraintType]
         for key, d in d_params['edge_feature_dimensions'].items():
-            self.assertIn(key, ConstraintType)
+            self.assertTrue(key in l_name_constraint)
             self.assertIsInstance(d, dict)
             for k,v in d.items():
                 self.assertIsInstance(k,str)
@@ -52,11 +55,11 @@ class TestPreprocessingParams(unittest.TestCase):
             if key == 'void':
                 pass
             else:
-                self.assertTrue(key in EntityType or key in SubnodeType)
+                self.assertTrue(key in l_name_primitive)
             self.assertIsInstance(n, int)
         
         for key, n in d_params['edge_idx_map'].items():
-            self.assertIn(key, ConstraintType)
+            self.assertTrue(key in l_name_constraint)
             self.assertIsInstance(n, int)
 
         self.assertEqual(d_params['padding_idx'], len(d_params['node_idx_map'])-1)

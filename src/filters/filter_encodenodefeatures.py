@@ -29,7 +29,13 @@ class FilterEncodeNodeFeatures(AbstractFilter):
         node_ops = [op for op in sequence if isinstance(op, NodeOp)]
         l = len(node_ops)            
         node_ops += [NodeOp('void')]*(self.lMax-l)
-        node_features = torch.tensor([self.node_idx_map[op.label] for op in node_ops], dtype=torch.int64)
+        node_features = []
+        for op in node_ops:
+            if op.label != 'void':
+                node_features.append(self.node_idx_map[op.label.name])
+            else :
+                node_features.append(self.node_idx_map[op.label])
+        node_features = torch.tensor(node_features, dtype=torch.int64)
         sparse_node_features = discretization.discretization_nodes(node_ops, self.params_node)
 
         mask_attention = torch.ones(self.lMax, dtype=torch.bool)
