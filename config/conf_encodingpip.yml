@@ -18,8 +18,6 @@ SinkDictFlat:
   type: SinkDictFlat
   parms:
     l_keys:
-      - 'node_ops'
-      - 'edge_ops'
       - 'length'
       - 'node_features'
       - 'sparse_node_features'
