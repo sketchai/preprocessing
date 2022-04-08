@@ -11,7 +11,7 @@ General:
 SourceFromFlatArray:
   type: SourceFromFlatArray
   parms:
-    file_path: 'out/coarse_grained_output_train.npy'
+    file_path: TO_COMPLETE
 
 # Pipeline Filters
 OpSubPipelineFilter:
@@ -21,10 +21,8 @@ OpSubPipelineFilter:
   parms:
     l_filters:
       - FilterRecenterLine
-      - FilterBarycenter_X
-      - FilterBarycenter_Y
       - FilterConvertMetrics
-      - FilterDivByMax
+      - FilterBoundingBox
       - FilterModuloAngle
 
 SourceSub:
@@ -40,18 +38,8 @@ FilterConvertMetrics:
   parms:
     request: TO_COMPLETE
 
-FilterBarycenter_X:
-  type: FilterBarycenter
-  parms:
-    request: TO_COMPLETE
-
-FilterBarycenter_Y:
-  type: FilterBarycenter
-  parms:
-    request: TO_COMPLETE
-
-FilterDivByMax:
-  type: FilterDivByMax
+FilterBoundingBox:
+  type: FilterBoundingBox
   parms:
     request: TO_COMPLETE
 
@@ -70,6 +58,6 @@ FilterLog:
 SinkSlices:
   type: SinkSlices
   parms:
-    output_path: 'out/normalization_output_train.npy'
+    output_path: TO_COMPLETE
     slice_length: 500000
     clean_up: True
