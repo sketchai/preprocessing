@@ -81,6 +81,7 @@ class ExperimentCoarse():
 
         print(f"Pipeline input is of length {len(input_data)}")
         print(f"Pipeline output is of length {len(output_data)}")
+        print(f"Data saved: {output_path}")
 
 def main():
     parser = argparse.ArgumentParser(description='Run Coarse pipeline')

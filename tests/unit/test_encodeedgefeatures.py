@@ -46,17 +46,17 @@ class TestFilterEncodeEdgeFeatures(unittest.TestCase):
         angle_params = torch.tensor(
             [[DirectionValue['MINIMUM'], HalfSpaceValue['LEFT'],HalfSpaceValue['RIGHT'], n_bins-1]])
         expected_result = {
-            ConstraintType.Distance: { 'index': torch.tensor([1]),
+            'Distance': { 'index': torch.tensor([1]),
                 'value': angle_params},
                 
             # the rest are empty tensors
-            ConstraintType.Angle: {'index': torch.tensor([], dtype=torch.int64),
+            'Angle': {'index': torch.tensor([], dtype=torch.int64),
                 'value': torch.zeros((0,3), dtype=torch.int64)},
-            ConstraintType.Length: {'index': torch.tensor([], dtype=torch.int64),
+            'Length': {'index': torch.tensor([], dtype=torch.int64),
                 'value': torch.zeros((0,2), dtype=torch.int64)},
-            ConstraintType.Diameter: {'index': torch.tensor([], dtype=torch.int64),
+            'Diameter': {'index': torch.tensor([], dtype=torch.int64),
                 'value': torch.zeros((0,1), dtype=torch.int64)},
-            ConstraintType.Radius: {'index': torch.tensor([], dtype=torch.int64),
+            'Radius': {'index': torch.tensor([], dtype=torch.int64),
                 'value': torch.zeros((0,1), dtype=torch.int64)},
             }
         for key, subdict in message['sparse_edge_features'].items():

@@ -93,6 +93,7 @@ python experiments/experiment_coarse.py --dataset test
 python experiments/experiment_normalization.py --dataset test
 python experiments/experiment_weight.py --dataset test
 python experiments/experiment_encoding.py --dataset test
+python experiments/preprocessing_params.py
 ```
 
 Run on HPC:

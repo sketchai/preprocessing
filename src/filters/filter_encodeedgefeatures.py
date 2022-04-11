@@ -26,7 +26,7 @@ class FilterEncodeEdgeFeatures(AbstractFilter):
     def process(self, message: object) -> object:
         sequence = message.get('sequence')
         edge_ops = [op for op in sequence if isinstance(op, EdgeOp)]
-        edge_features = torch.tensor([self.edge_idx_map[op.label] for op in edge_ops], dtype=torch.int64)
+        edge_features = torch.tensor([self.edge_idx_map[op.label.name] for op in edge_ops], dtype=torch.int64)
         sparse_edge_features = discretization.discretization_edges(edge_ops, self.params_edge)
         message['edge_ops'] = edge_ops
         message['edge_features'] = edge_features

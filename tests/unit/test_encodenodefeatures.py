@@ -27,8 +27,11 @@ class TestFilterEncodeNodeFeatures(unittest.TestCase):
 
         conf_dict = {'l_keep_node': l_keep_node, 'n_bins': n_bins, 'lMax': lMax}
         filter1 = FilterEncodeNodeFeatures(conf_filter=conf_dict)
+        
         message = {'sequence': mock_sequence_1}
         message = filter1.process(message)
+
+        
         
         # check that 'node_ops' is padded with 'void' nodes
         self.assertListEqual(message['node_ops'],[node_op_0, node_op_2, NodeOp(label='void'), NodeOp(label='void')])
@@ -41,10 +44,10 @@ class TestFilterEncodeNodeFeatures(unittest.TestCase):
         #  0. -> n_bins // 2
         #  1. -> n_bins - 1
         expected_result = {
-            EntityType.Point : { 'index': torch.tensor([0]), 'value': torch.tensor([[0, n_bins//2, n_bins-1]])},
-            EntityType.Line: {'index': torch.tensor([1]), 'value': torch.tensor([[0, n_bins//2, n_bins-1, n_bins//2, n_bins//2, n_bins//2, n_bins-1]])},
-            EntityType.Circle: {'index': torch.tensor([], dtype=torch.int64), 'value': torch.zeros((0,7), dtype=torch.int64)},
-            EntityType.Arc: {'index': torch.tensor([], dtype=torch.int64), 'value': torch.zeros((0,9), dtype=torch.int64)},
+            'Point' : { 'index': torch.tensor([0]), 'value': torch.tensor([[0, n_bins//2, n_bins-1]])},
+            'Line': {'index': torch.tensor([1]), 'value': torch.tensor([[0, n_bins//2, n_bins-1, n_bins//2, n_bins//2, n_bins//2, n_bins-1]])},
+            'Circle': {'index': torch.tensor([], dtype=torch.int64), 'value': torch.zeros((0,7), dtype=torch.int64)},
+            'Arc': {'index': torch.tensor([], dtype=torch.int64), 'value': torch.zeros((0,9), dtype=torch.int64)},
             }
         for key, subdict in message['sparse_node_features'].items():
             index, value = subdict.values()

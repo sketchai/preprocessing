@@ -12,11 +12,11 @@ def create_params_node(n_bins=50):
     angle_map = np.linspace(0.001, 2.001*np.pi, n_bins)  # values have been normalized first
     length_map = np.linspace(-0.999, 1.001, n_bins)  # values have been normalized first
     
-    params_node = dict([(datalib.EntityType.Point, dict([
+    params_node = dict([(datalib.EntityType.Point.name, dict([
                 ('isConstruction', datalib.BooleanValue),
                 ('x', length_map),
                 ('y', length_map)])),
-            (datalib.EntityType.Line, dict([
+            (datalib.EntityType.Line.name, dict([
                 ('isConstruction', datalib.BooleanValue),
                 ('dirX', length_map),
                 ('dirY', length_map),
@@ -24,7 +24,7 @@ def create_params_node(n_bins=50):
                 ('pntY', length_map),
                 ('startParam', length_map),
                 ('endParam', length_map)])),
-            (datalib.EntityType.Circle, dict([
+            (datalib.EntityType.Circle.name, dict([
                 ('isConstruction', datalib.BooleanValue),
                 ('xCenter', length_map),
                 ('yCenter', length_map),
@@ -32,7 +32,7 @@ def create_params_node(n_bins=50):
                 ('yDir', length_map),
                 ('radius', length_map),
                 ('clockwise', datalib.BooleanValue)])),
-           (datalib.EntityType.Arc, dict([
+           (datalib.EntityType.Arc.name, dict([
                 ('isConstruction', datalib.BooleanValue),
                 ('xCenter', length_map),
                 ('yCenter', length_map),
@@ -53,20 +53,20 @@ def create_params_edge(n_bins=50):
     angle_map = np.linspace(0.001, 2.001*np.pi, n_bins)  # values have been normalized first
     length_map = np.linspace(-0.999, 1.001, n_bins)  # values have been normalized first
 
-    params_edge = dict([(datalib.ConstraintType.Angle, dict([
+    params_edge = dict([(datalib.ConstraintType.Angle.name, dict([
                 ('aligned', datalib.BooleanValue),
                 ('clockwise', datalib.BooleanValue),
                 ('angle', angle_map)])),
-            (datalib.ConstraintType.Length, dict([
+            (datalib.ConstraintType.Length.name, dict([
                 ('direction', datalib.DirectionValue),
                 ('length', length_map)])),
-            (datalib.ConstraintType.Distance, dict([
+            (datalib.ConstraintType.Distance.name, dict([
                 ('direction', datalib.DirectionValue),
                 ('halfSpace0', datalib.HalfSpaceValue),
                 ('halfSpace1', datalib.HalfSpaceValue),
                 ('length', length_map)])),
-            (datalib.ConstraintType.Diameter, dict([('length', length_map)])),
-            (datalib.ConstraintType.Radius, dict([('length', length_map)]))])
+            (datalib.ConstraintType.Diameter.name, dict([('length', length_map)])),
+            (datalib.ConstraintType.Radius.name, dict([('length', length_map)]))])
 
     return params_edge
 
@@ -101,17 +101,17 @@ def discretization_edges(ops, params_edge):
             continue
             
         num_feat = []
-        for param, map_ in params_edge[op.label].items():
+        for param, map_ in params_edge[op.label.name].items():
             if isinstance(map_, np.ndarray):
                 value = np.searchsorted(map_, op.parameters[param])
             else:
                 value = int(map_[op.parameters[param]])
             num_feat.append(value)
             
-        edge_features[op.label]['index'].append(i)
-        edge_features[op.label]['value'].append(num_feat)
+        edge_features[op.label.name]['index'].append(i)
+        edge_features[op.label.name]['value'].append(num_feat)
         
-    for k in params_edge.keys():
+    for k in edge_features.keys():
         edge_features[k]['index'] = torch.tensor(edge_features[k]['index'], dtype=torch.int64)
         if edge_features[k]['value']:
             edge_features[k]['value'] = torch.tensor(edge_features[k]['value'], dtype=torch.int64)
@@ -132,17 +132,17 @@ def discretization_nodes(ops, params_node):
             continue
             
         num_feat = []
-        for param, map_ in params_node[op.label].items():
+        for param, map_ in params_node[op.label.name].items():
             if isinstance(map_, np.ndarray):
                 value = np.searchsorted(map_, op.parameters[param])
             else:
                 value = int(map_[op.parameters[param]])
             num_feat.append(value)
             
-        node_features[op.label]['index'].append(i)
-        node_features[op.label]['value'].append(num_feat)
+        node_features[op.label.name]['index'].append(i)
+        node_features[op.label.name]['value'].append(num_feat)
         
-    for k in params_node.keys():
+    for k in node_features.keys():
         node_features[k]['index'] = torch.tensor(node_features[k]['index'], dtype=torch.int64)
         if node_features[k]['value']:
             node_features[k]['value'] = torch.tensor(node_features[k]['value'], dtype=torch.int64)
