@@ -19,7 +19,7 @@ STARTTIME=$(date +%s)
 dataset=$1
 
 conda activate sg_prep
-srun python experiments/experiment_coarse.py --dataset $dataset
+# srun python experiments/experiment_coarse.py --dataset $dataset
 srun python experiments/experiment_normalization.py --dataset $dataset
 srun python experiments/experiment_weight.py --dataset $dataset
 srun python experiments/experiment_encoding.py --dataset $dataset
