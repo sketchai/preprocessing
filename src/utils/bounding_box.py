@@ -1,8 +1,8 @@
 import math
 import numpy as np
-from sketchgraphs.data.sequence import EntityType
+from sketchgraphs.data.sequence import EntityType, ConstraintType
 
-def compute_coords_of_op(op):
+def compute_coords_of_entity(op):
     x_coords = []
     y_coords = []
     if op.label == EntityType.Point:
@@ -51,7 +51,8 @@ def compute_coords_of_op(op):
         if (alpha < 1.5*np.pi and beta > 1.5*np.pi) or (beta > 3.5*np.pi):
             y_coords.append(yCenter - radius)
 
-        # add xcenter and ycenter for now because the radius might be greater than expected
+        # add xcenter and ycenter 
+        # This is not part of the bb but the radius might be greater than 1
         x_coords.append(xCenter)
         y_coords.append(yCenter)
 
@@ -65,5 +66,4 @@ def compute_coords_of_op(op):
         y_coords.append(yCenter - radius)
 
     return x_coords, y_coords
-
 

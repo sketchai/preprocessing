@@ -104,7 +104,10 @@ def discretization_edges(ops, params_edge):
         for param, map_ in params_edge[op.label.name].items():
             if isinstance(map_, np.ndarray):
                 value = np.searchsorted(map_, op.parameters[param])
-                assert value < len(map_)
+                try:
+                    assert value < len(map_)
+                except Exception:
+                    raise Exception(f'{(op.label.name,param)}')
             else:
                 value = int(map_[op.parameters[param]])
             num_feat.append(value)
@@ -136,6 +139,10 @@ def discretization_nodes(ops, params_node):
         for param, map_ in params_node[op.label.name].items():
             if isinstance(map_, np.ndarray):
                 value = np.searchsorted(map_, op.parameters[param])
+                try:
+                    assert value < len(map_)
+                except Exception:
+                    raise Exception(f'{(op.label.name,param)}')
             else:
                 value = int(map_[op.parameters[param]])
             num_feat.append(value)
