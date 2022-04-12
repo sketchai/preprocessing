@@ -20,10 +20,19 @@ class FilterParamsEncoding(AbstractFilter):
         super().__init__()
         self.name = 'FilterParamsEncoding'
         self.nodes_parametrized = OrderedDict(conf_filter['nodes_parametrized'])
+        self.max_cluster_size = conf_filter.get('max_cluster_size',10000)
 
     def process(self, message: object) -> object:
         list_of_sequences = message.get('list_of_sequences')
         n_sequences = len(list_of_sequences)
+        logger.debug(n_sequences)
+        np.random.seed(0)
+        if n_sequences<=self.max_cluster_size:
+            indexes = range(n_sequences)
+        else:
+            indexes = np.random.choice(n_sequences,self.max_cluster_size)
+            n_sequences = self.max_cluster_size
+
         l_params = 0
 
         # count the nb of param
@@ -34,12 +43,14 @@ class FilterParamsEncoding(AbstractFilter):
 
         # fill the params array with the values
         params = np.zeros((n_sequences, l_params))
-        for i, seq in enumerate(list_of_sequences):
+        for i, index in enumerate(indexes):
+            seq = list_of_sequences[index]
             params[i] = self._encode_sequence(seq, l_params)
 
         params = self._normalize(params)
 
         message['params_array'] = params
+        message['params_indexes'] = indexes
         return message
 
     def _encode_sequence(self, seq, l_params):

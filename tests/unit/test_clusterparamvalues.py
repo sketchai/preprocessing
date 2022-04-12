@@ -23,15 +23,17 @@ class TestFilterClusterParamValues(unittest.TestCase):
         message = {
             'list_of_sequences': [
                 [NodeOp(0, parameters={'isConstruction': True, 'x': 0.1, 'y': 0.1}), EdgeOp(8, references=(0,)), ],
+                ['this sequence should not be selected'],
                 [NodeOp(0, parameters={'isConstruction': False, 'x': 0.3, 'y': 0.6}), EdgeOp(8, references=(0,)), ],
                 [NodeOp(0, parameters={'isConstruction': False, 'x': 0.5, 'y': -0.4}), EdgeOp(8, references=(0,)), ],
             ],
             'params_array': array,
+            'params_indexes': [0,2,3]
         }
-
         filter1 = FilterClusterParamValues()
         result = filter1.process(message)
         weights = result['weights']
         self.assertAlmostEqual(sum(weights), 1.)
-        self.assertEqual(len(weights), 3)
-        logger.debug(weights) # should return [0.5, 0.25, 0.25]
+        self.assertEqual(len(weights), 4)
+        np.testing.assert_allclose(weights,[0.5, 0., 0.25, 0.25])
+        logger.debug(weights)
