@@ -24,9 +24,10 @@ class TestParamsEncoding(unittest.TestCase):
             EntityType.Arc: ['isConstruction', 'xCenter', 'yCenter', 'xDir', 'yDir', 'radius', 'startParam', 'endParam', 'clockwise'],
         }
 
-        self.conf_filter = {'nodes_parametrized': NODES_PARAMETRIZED}
+        self.conf_filter = {'nodes_parametrized': NODES_PARAMETRIZED, 'max_cluster_size': 5}
 
     def test_process(self):
+        # Test with n<=max_cluster_size
         filter1 = FilterParamsEncoding(self.conf_filter)
         message = {'list_of_sequences': [
             [NodeOp(0, parameters={'isConstruction': True, 'x': 0.1, 'y': 0.1}), EdgeOp(8, references=(0,)), ],
@@ -36,15 +37,44 @@ class TestParamsEncoding(unittest.TestCase):
 
         answer = filter1.process(message)
 
-        result = message['params_array']
+        result = answer['params_array']
         expected = np.array([
             [1., 0., 0.5],
             [0., 0.5, 1.],
             [0., 1., 0.]
         ])
 
-        for value, check in zip(result.flatten(), expected.flatten()):
-            self.assertAlmostEqual(value, check)
+        np.testing.assert_allclose(result,expected)
+        self.assertEqual(answer['params_indexes'],range(3))
+
+
+        # Test with n>max_sequence_size
+        filter1 = FilterParamsEncoding(self.conf_filter)
+        message = {'list_of_sequences': [
+            [NodeOp(0, parameters={'isConstruction': True, 'x': 0.1, 'y': 0.1}), EdgeOp(8, references=(0,)), ],
+            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.3, 'y': 0.6}), EdgeOp(8, references=(0,)), ],
+            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.5, 'y': -0.4}), EdgeOp(8, references=(0,)), ],
+            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.5, 'y': -0.4}), EdgeOp(8, references=(0,)), ],
+            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.5, 'y': -0.4}), EdgeOp(8, references=(0,)), ],
+            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.5, 'y': -0.4}), EdgeOp(8, references=(0,)), ],
+        ]}
+
+        answer = filter1.process(message)
+
+        result = answer['params_array']
+        indexes = answer['params_indexes']
+        logger.debug(f'{result}, {indexes}')
+        expected = np.array([
+            [1., 0., 0.5],
+            [0., 0.5, 1.],
+            [0., 1., 0.],
+            [0., 1., 0.],
+            [0., 1., 0.],
+            [0., 1., 0.],
+        ])
+        expected_reindexed = filter1._normalize(expected[indexes])
+        np.testing.assert_allclose(expected_reindexed,result)
+
 
     def test_encode_sequence(self):
         seq = [
