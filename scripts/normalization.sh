@@ -13,12 +13,12 @@ set -x
 srun hostname
 . /home/f49681/anaconda3/etc/profile.d/conda.sh
 now=$(date +"%m_%d_%Y_%H_%M_%S")
-folder="scripts/normalization_$now"
+folder="scripts/normalization_$1_$now"
 mkdir $folder
 STARTTIME=$(date +%s)
 
 conda activate sg_prep
-srun python experiments/experiment_normalization.py --dataset train
+srun python experiments/experiment_normalization.py --dataset $1
 
 mv normalization_output.err $folder
 mv normalization_output.out $folder
