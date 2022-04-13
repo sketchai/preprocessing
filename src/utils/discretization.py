@@ -6,38 +6,44 @@ from src.utils.maps import NODES_PARAMETRIZED, EDGES_PARAMETRIZED
 
 def create_params_node(n_bins=50):
     """
-    Create dictionaries to discretize all the parameters of the primitives and the constraints. The values of the dictionaries are maps.
+    Create dictionaries to discretize all the parameters of the primitives and the constraints.
+    The values of the dictionaries are maps.
+    The margin is used to take the floating point approx into account 
+    so that -0.9999 gives 0 and 1.0001 give n_bins-1
+
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
-    angle_map = np.linspace(0.001, 2.001*np.pi, n_bins)  # values have been normalized first
-    length_map = np.linspace(-0.999, 1.001, n_bins)  # values have been normalized first
+    margin = 1e-3
+    angle_map = np.linspace(0, 2*np.pi, n_bins) + margin  # values have been normalized first
+    length_map = np.linspace(-2**.5, 2**.5, n_bins)  + margin# values have been normalized first
+    coords_map = np.linspace(-1, 1, n_bins) + margin # values have been normalized first
     
     params_node = dict([(datalib.EntityType.Point.name, dict([
                 ('isConstruction', datalib.BooleanValue),
-                ('x', length_map),
-                ('y', length_map)])),
+                ('x', coords_map),
+                ('y', coords_map)])),
             (datalib.EntityType.Line.name, dict([
                 ('isConstruction', datalib.BooleanValue),
-                ('dirX', length_map),
-                ('dirY', length_map),
-                ('pntX', length_map),
-                ('pntY', length_map),
+                ('dirX', coords_map),
+                ('dirY', coords_map),
+                ('pntX', coords_map),
+                ('pntY', coords_map),
                 ('startParam', length_map),
                 ('endParam', length_map)])),
             (datalib.EntityType.Circle.name, dict([
                 ('isConstruction', datalib.BooleanValue),
-                ('xCenter', length_map),
-                ('yCenter', length_map),
-                ('xDir', length_map),
-                ('yDir', length_map),
+                ('xCenter', coords_map),
+                ('yCenter', coords_map),
+                ('xDir', coords_map),
+                ('yDir', coords_map),
                 ('radius', length_map),
                 ('clockwise', datalib.BooleanValue)])),
            (datalib.EntityType.Arc.name, dict([
                 ('isConstruction', datalib.BooleanValue),
-                ('xCenter', length_map),
-                ('yCenter', length_map),
-                ('xDir', length_map),
-                ('yDir', length_map),
+                ('xCenter', coords_map),
+                ('yCenter', coords_map),
+                ('xDir', coords_map),
+                ('yDir', coords_map),
                 ('radius', length_map),
                 ('startParam', angle_map),
                 ('endParam', angle_map),
@@ -50,8 +56,9 @@ def create_params_edge(n_bins=50):
     Create dictionaries to discretize all the parameters of the primitives and the constraints. The values of the dictionaries are maps.
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
-    angle_map = np.linspace(0.001, 2.001*np.pi, n_bins)  # values have been normalized first
-    length_map = np.linspace(-0.999, 1.001, n_bins)  # values have been normalized first
+    margin = 1e-3
+    angle_map = np.linspace(0, 2*np.pi, n_bins) + margin  # values have been normalized first
+    length_map = np.linspace(-2**.5, 2**.5, n_bins)  + margin# values have been normalized first
 
     params_edge = dict([(datalib.ConstraintType.Angle.name, dict([
                 ('aligned', datalib.BooleanValue),
@@ -104,6 +111,10 @@ def discretization_edges(ops, params_edge):
         for param, map_ in params_edge[op.label.name].items():
             if isinstance(map_, np.ndarray):
                 value = np.searchsorted(map_, op.parameters[param])
+                try:
+                    assert value < len(map_)
+                except Exception:
+                    raise Exception(f'{(op.label.name,param)}')
             else:
                 value = int(map_[op.parameters[param]])
             num_feat.append(value)
@@ -135,6 +146,10 @@ def discretization_nodes(ops, params_node):
         for param, map_ in params_node[op.label.name].items():
             if isinstance(map_, np.ndarray):
                 value = np.searchsorted(map_, op.parameters[param])
+                try:
+                    assert value < len(map_)
+                except Exception:
+                    raise Exception(f'{(op.label.name,param)}')
             else:
                 value = int(map_[op.parameters[param]])
             num_feat.append(value)

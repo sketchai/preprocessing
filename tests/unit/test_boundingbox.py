@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline')
 
@@ -6,9 +7,10 @@ import unittest
 import logging
 import numpy as np
 
-from src.utils.bounding_box import compute_coords_of_op
+from src.utils.bounding_box import compute_coords_of_entity
 from src.filters.filter_boundingbox import FilterBoundingBox
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType
+from filtering_pipeline import KO_FILTER_TAG
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -53,7 +55,7 @@ class TestFilterBoundingBox(unittest.TestCase):
 
         # check that the NodeOps are in the box
         for op in sequence_1:
-            x_coords, y_coords = compute_coords_of_op(op)
+            x_coords, y_coords = compute_coords_of_entity(op)
             for coord in x_coords + y_coords:
                 self.assertGreater(coord,-0.0001)
                 self.assertLess(coord,1.0001)
@@ -66,5 +68,8 @@ class TestFilterBoundingBox(unittest.TestCase):
             sequence_1[5].parameters['length'],
         ]
         for parameter in constraints_parameter:
-            self.assertGreater(parameter,-0.0001)
-            self.assertLess(parameter,1.0001)
+            self.assertGreater(parameter,-2**0.5 + 1e-4)
+            self.assertLess(parameter,2**0.5 + 1e-4)
+
+        # check that the filter has not returned KO
+        self.assertIsNone(message.get(KO_FILTER_TAG))

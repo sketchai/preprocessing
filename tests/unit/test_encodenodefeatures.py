@@ -21,8 +21,8 @@ class TestFilterEncodeNodeFeatures(unittest.TestCase):
         
         node_op_0 = NodeOp(label=EntityType.Point, parameters={'isConstruction':0, 'x':0.,'y':1.})
         edge_op_1 = EdgeOp(label=3, references=(0,))
-        node_op_2 = NodeOp(label=EntityType.Line, parameters={'isConstruction': 0,'pntX': 0,
-                'pntY': 0., 'startParam': 0, 'endParam': 1, 'dirX': 0, 'dirY': 1})
+        node_op_2 = NodeOp(label=EntityType.Line, parameters={'isConstruction': 0,'dirX': 0, 'dirY': 1,
+        'pntX': 0, 'pntY': 0., 'startParam': 0, 'endParam': 2**.5})
         mock_sequence_1 = [node_op_0, edge_op_1, node_op_2]
 
         conf_dict = {'l_keep_node': l_keep_node, 'n_bins': n_bins, 'lMax': lMax}
@@ -39,10 +39,12 @@ class TestFilterEncodeNodeFeatures(unittest.TestCase):
         # check that the label is encoded with ints. 'void' is encoded by len(l_keep_node)
         torch.testing.assert_allclose(message['node_features'], torch.tensor([0, 1, len(l_keep_node), len(l_keep_node)]))
 
-        # distance parameters are encoded from [-1,1] (float) to [0,n_bins-1] (int):
+        # coords parameters are encoded from [-1,1] (float) to [0,n_bins-1] (int):
         # -1. -> 0
         #  0. -> n_bins // 2
         #  1. -> n_bins - 1
+
+        # length parameters are encoded from [-srt(2),sqrt(2)] to [0,n_bins-1]
         expected_result = {
             'Point' : { 'index': torch.tensor([0]), 'value': torch.tensor([[0, n_bins//2, n_bins-1]])},
             'Line': {'index': torch.tensor([1]), 'value': torch.tensor([[0, n_bins//2, n_bins-1, n_bins//2, n_bins//2, n_bins//2, n_bins-1]])},

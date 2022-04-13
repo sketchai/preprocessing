@@ -13,7 +13,7 @@ set -x
 srun hostname
 . /home/f49681/anaconda3/etc/profile.d/conda.sh
 now=$(date +"%m_%d_%Y_%H_%M_%S")
-folder="scripts/weight_$now"
+folder="scripts/weight_$1_$now"
 mkdir $folder
 STARTTIME=$(date +%s)
 
