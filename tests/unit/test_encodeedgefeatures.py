@@ -23,7 +23,7 @@ class TestFilterEncodeEdgeFeatures(unittest.TestCase):
         node_op_1 = NodeOp(label=EntityType.Line,)
         edge_op_2 = EdgeOp(label=ConstraintType.Horizontal, references=(0,))
         edge_op_3 = EdgeOp(label=ConstraintType.Distance, references=(0,1), parameters= {
-            'direction': 'MINIMUM', 'halfSpace0': 'LEFT', 'halfSpace1': 'RIGHT', 'length': 1.})
+            'direction': 'MINIMUM', 'halfSpace0': 'LEFT', 'halfSpace1': 'RIGHT', 'length': 2**0.5})
         mock_sequence_1 = [node_op_0, node_op_1, edge_op_2, edge_op_3]
 
         conf_dict = {'l_keep_edge': l_keep_edge, 'n_bins': n_bins}
