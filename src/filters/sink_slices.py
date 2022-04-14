@@ -23,7 +23,6 @@ class SinkSlices(AbstractFilter):
         self.output_path: str = conf_filter.get('output_path')
         self.slice_length: int = conf_filter.get('slice_length')
         self.clean : bool = conf_filter.get('clean_up', True)
-        self.nthreads : int = conf_filter.get('n_threads', 12)
 
         directory_path = os.path.dirname(os.path.abspath(self.output_path))
         self.output_dir: str = tempfile.mkdtemp(dir=directory_path, prefix='slices')
@@ -31,7 +30,7 @@ class SinkSlices(AbstractFilter):
         self.collect_data = []
 
     def process(self, message: Dict) -> Dict:
-        self.collect_data.append(message.get('sequence'),self.nthreads)
+        self.collect_data.append(message.get('sequence'))
         if len(self.collect_data)>=self.slice_length:
             self._save_slice()
         return message
