@@ -8,6 +8,7 @@ INDEXES_PATH = d_conf['path']['indexes_path']
 WEIGHTS_PATH = d_conf['path']['weights_path']
 ENCODING_PATH = d_conf['path']['encoding_path']
 PARAMETERS_PATH = d_conf['path']['parameters_path']
+EXCHANGE_PATH = d_conf['path']['convert_exchange_path']
 
 ## Global params 
 # (these params can be changed but should stay consistent through the pipeline steps)
