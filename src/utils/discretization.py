@@ -8,12 +8,12 @@ def create_params_node(n_bins=50):
     """
     Create dictionaries to discretize all the parameters of the primitives and the constraints.
     The values of the dictionaries are maps.
-    The margin is used to take the floating point approx into account 
-    so that -0.9999 gives 0 and 1.0001 give n_bins-1
+    The margin is used to take the float16 approx into account 
+    so that -0.999 gives 0 and 1.001 give n_bins-1
 
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
-    margin = 1e-3
+    margin = 1e-2
     angle_map = np.linspace(0, 2*np.pi, n_bins) + margin  # values have been normalized first
     length_map = np.linspace(-2**.5, 2**.5, n_bins)  + margin# values have been normalized first
     coords_map = np.linspace(-1, 1, n_bins) + margin # values have been normalized first
@@ -56,7 +56,7 @@ def create_params_edge(n_bins=50):
     Create dictionaries to discretize all the parameters of the primitives and the constraints. The values of the dictionaries are maps.
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
-    margin = 1e-3
+    margin = 1e-2
     angle_map = np.linspace(0, 2*np.pi, n_bins) + margin  # values have been normalized first
     length_map = np.linspace(-2**.5, 2**.5, n_bins)  + margin# values have been normalized first
 

@@ -39,7 +39,7 @@ class FilterEncodeNodeFeatures(AbstractFilter):
         node_features = torch.tensor(node_features, dtype=torch.int64)
         try:
             sparse_node_features = discretization.discretization_nodes(node_ops, self.params_node)
-        except ValueError:
+        except Exception:
             message[KO_FILTER_TAG] = self.name
             return message
 

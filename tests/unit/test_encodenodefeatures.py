@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
@@ -7,6 +8,7 @@ import logging
 import unittest
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType, SubnodeType
 from src.filters.filter_encodenodefeatures import FilterEncodeNodeFeatures
+from filtering_pipeline import KO_FILTER_TAG
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -60,3 +62,9 @@ class TestFilterEncodeNodeFeatures(unittest.TestCase):
         # check mask with len(node_ops) = 2
         expected_mask = [False]*2 + [True]*(lMax-2)
         torch.testing.assert_allclose(message['mask_attention'], expected_mask)
+
+        # Test msg with an incorrect param value
+        message = {'sequence': [NodeOp(label=EntityType.Point, parameters={'isConstruction':0, 'x':0.,'y':1.02})]}
+
+        answer = filter1.process(message=message)
+        self.assertEqual(filter1.name,answer[KO_FILTER_TAG])
