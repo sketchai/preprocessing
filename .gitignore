@@ -18,3 +18,5 @@ coverage.xml
 # Remove gitlab installation
 src/filtering-pipeline
 src/sketchgraphs
+sketch_data
+src/sketchgraphvsexchangeformat
