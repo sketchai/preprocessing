@@ -90,6 +90,7 @@ Otherwise make sure to configure the correct paths to the sketchgraphs dataset i
 Launch script on your pc
 ```sh
 python experiments/experiment_coarse.py --dataset test
+python experiments/experiment_convert_exchangeformat.py --dataset test
 python experiments/experiment_normalization.py --dataset test
 python experiments/experiment_weight.py --dataset test
 python experiments/experiment_encoding.py --dataset test

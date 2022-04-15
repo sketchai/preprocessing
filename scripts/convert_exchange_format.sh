@@ -13,15 +13,15 @@ set -x
 srun hostname
 . /home/f49681/anaconda3/etc/profile.d/conda.sh
 now=$(date +"%m_%d_%Y_%H_%M_%S")
-folder="scripts/coarse_$1_$now"
+folder="scripts/convert_exchange_format_$1_$now"
 mkdir $folder
 STARTTIME=$(date +%s)
 
 conda activate sg_prep
-srun python experiments/experiment_coarse.py --dataset $1
+srun python experiments/experiment_convert_exchange_format.py --dataset $1
 
-mv scripts/output_coarse.err $folder
-mv scripts/output_coarse.out $folder
+mv scripts/output_exchangeform.err $folder
+mv scripts/output_exchangeform.out $folder
 
 ENDTIME=$(date +%s)
 echo "Time spent: $((($ENDTIME - $STARTTIME)/ 60)) minutes"
