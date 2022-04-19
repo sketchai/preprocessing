@@ -20,8 +20,6 @@ OpSubPipelineFilter:
   sink : None
   parms:
     l_filters:
-      - FilterRecenterLine
-      - FilterConvertMetrics
       - FilterBoundingBox
       - FilterModuloAngle
 
@@ -29,14 +27,7 @@ SourceSub:
   type : SourceList
   parms:
     l_data : TO_COMPLETE
-
-FilterRecenterLine:
-  type: FilterRecenterLine
    
-FilterConvertMetrics:
-  type: FilterConvertMetrics
-  parms:
-    request: TO_COMPLETE
 
 FilterBoundingBox:
   type: FilterBoundingBox
