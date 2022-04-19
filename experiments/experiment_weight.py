@@ -4,7 +4,7 @@ import os
 import logging
 
 if __name__ == '__main__':
-    sys.path.append('src/sketchgraphs/')
+    sys.path.append('sketch_data/')
     sys.path.append('src/filtering-pipeline/')
     cur_path = os.path.abspath(os.path.dirname(__file__))
     sys.path.insert(0, cur_path + "/..")
@@ -13,10 +13,16 @@ else:
     logging.basicConfig(level=logging.DEBUG)
 
 from sketchgraphs.data import flat_array
-from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
-from src.filters.sink_array import SinkArray
+from sketch_data.primitive import PrimitiveType
+from sketch_data.constraint import ConstraintType
+from sketch_data.catalog_primitive import Arc, Line, Circle, Point
+from sketch_data.catalog_constraint import *
+
+from src.sinks.sink_array import SinkArray
+from src.sinks.sink_dict import SinkDict
+
 from src.sources.source_fromdict import SourceDict
-from src.filters.sink_dict import SinkDict
+
 from src.filters.filter_clusterparamvalues import FilterClusterParamValues
 from src.filters.filter_paramsencoding import FilterParamsEncoding
 from src.filters.filter_sequenceorderencoding import FilterSequenceOrderEncoding
@@ -26,7 +32,7 @@ from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.filters.utils.filter_log import FilterLog
 from src.utils.to_dict import yaml_to_dict
 from filtering_pipeline.factory import pipeline_factory
-from experiments import SKETCHGRAPHS_PATH, INDEXES_PATH, NORMALIZATION_PATH, WEIGHTS_PATH
+from experiments import INDEXES_PATH, NORMALIZATION_PATH, WEIGHTS_PATH
 import json
 import numpy as np
 
@@ -45,17 +51,15 @@ class ExperimentClusterOrder():
             }
         self.d_conf = yaml_to_dict('config/conf_clusterorder.yml')
         self.d_conf['FilterEncodeOrder']['parms']['l_keep_edge'] = [
-            ConstraintType.Coincident, ConstraintType.Distance, ConstraintType.Horizontal,
-            ConstraintType.Parallel, ConstraintType.Vertical, ConstraintType.Tangent,
-            ConstraintType.Length, ConstraintType.Perpendicular, ConstraintType.Midpoint,
-            ConstraintType.Equal, ConstraintType.Diameter, ConstraintType.Radius,
-            ConstraintType.Concentric, ConstraintType.Angle, ConstraintType.Subnode]
+            ConstraintType.COINCIDENT, ConstraintType.DISTANCE, ConstraintType.HORIZONTAL, 
+            ConstraintType.PARALLEL, ConstraintType.VERTICAL, ConstraintType.TANGENT,
+            ConstraintType.LENGTH, ConstraintType.HORIZONTAL_LENGTH, ConstraintType.VERTICAL_LENGTH,
+            ConstraintType.PERPENDICULAR, ConstraintType.MIDPOINT,
+            ConstraintType.EQUAL, ConstraintType.RADIUS, ConstraintType.ANGLE]
 
         self.d_conf['FilterEncodeOrder']['parms']['l_keep_node'] = [
-            EntityType.Point, EntityType.Line,
-            EntityType.Circle, EntityType.Arc,
-            SubnodeType.SN_Start, SubnodeType.SN_End, SubnodeType.SN_Center,
-            EntityType.External, EntityType.Stop]
+            PrimitiveType.POINT, PrimitiveType.LINE,
+            PrimitiveType.CIRCLE, PrimitiveType.ARC]
 
         self.d_conf['SourceFromFlatArray']['parms']['file_path'] = NORMALIZATION_PATH.format(dataset)
         self.d_conf['SinkDict']['parms']['output_path'] = INDEXES_PATH.format(dataset)
@@ -95,10 +99,10 @@ class ExperimentClusterParams():
         self.d_conf = yaml_to_dict('config/conf_clusterparams.yml')
 
         self.d_conf['FilterParamsEncoding']['parms']['nodes_parametrized'] = {
-            EntityType.Point: ['isConstruction', 'x', 'y'],
-            EntityType.Line: ['isConstruction', 'dirX', 'dirY', 'pntX', 'pntY', 'startParam', 'endParam'],
-            EntityType.Circle: ['isConstruction', 'xCenter', 'yCenter', 'xDir', 'yDir', 'radius', 'clockwise'],
-            EntityType.Arc: ['isConstruction', 'xCenter', 'yCenter', 'xDir', 'yDir', 'radius', 'startParam', 'endParam', 'clockwise'],
+            Point: ['status_construction', 'x', 'y'],
+            Line: ['status_construction', 'pnt1', 'pnt2'],
+            Circle: ['status_construction', 'center', 'radius'],
+            Arc: ['status_construction', 'center', 'radius','angle_start', 'angle_end']
         } 
 
         self.d_conf['SourceDict']['parms']['indexes'] = INDEXES_PATH.format(dataset)

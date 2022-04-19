@@ -4,7 +4,7 @@ import os
 import logging
 
 if __name__ == '__main__':
-    sys.path.append('src/sketchgraphs/')
+    sys.path.append('sketch_data/')
     sys.path.append('src/filtering-pipeline/')
     cur_path = os.path.abspath(os.path.dirname(__file__))
     sys.path.insert(0, cur_path + "/..")
@@ -17,7 +17,7 @@ from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.filters.filter_encodeedgefeatures import FilterEncodeEdgeFeatures
 from src.filters.filter_encodenodefeatures import FilterEncodeNodeFeatures
 from src.filters.filter_encodegraphconnections import FilterEncodeGraphConnections
-from src.filters.sink_dictflat import SinkDictFlat
+from src.sinks.sink_dictflat import SinkDictFlat
 from src.filters.utils.filter_log import FilterLog
 from src.utils.to_dict import yaml_to_dict
 from filtering_pipeline.factory import pipeline_factory
