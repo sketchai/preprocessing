@@ -1,6 +1,7 @@
 General:
   l_filters: 
     - OpSubPipelineFilter
+    - FilterCheckNorm
     - FilterLog 
   source : SourceFromFlatArray
   sink : SinkSlices
@@ -24,7 +25,6 @@ OpSubPipelineFilter:
       - FilterConvertMetrics
       - FilterBoundingBox
       - FilterModuloAngle
-      - FilterCheckNorm
 
 SourceSub:
   type : SourceList

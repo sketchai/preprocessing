@@ -27,19 +27,21 @@ class FilterCheckNorm(AbstractFilter):
         self.edge_params = create_params_edge(n_bins)
 
     def process(self, message):
-        op = message['op']
-        label = op.label.name
-        if isinstance(op,NodeOp):
-            d_param_map_ = self.node_params.get(label)
-        elif isinstance(op,EdgeOp):
-            d_param_map_ = self.edge_params.get(label)
-        if d_param_map_ is None:
-            return message
-        check = self.params_are_in_map_(
-            op.parameters,
-            d_param_map_)
-        if not check:
-            message[KO_FILTER_TAG] = self.name
+        sequence = message['sequence']
+        for op in sequence:
+            label = op.label.name
+            if isinstance(op,NodeOp):
+                d_param_map_ = self.node_params.get(label)
+            elif isinstance(op,EdgeOp):
+                d_param_map_ = self.edge_params.get(label)
+            if d_param_map_ is None:
+                return message
+            check = self.params_are_in_map_(
+                op.parameters,
+                d_param_map_)
+            if not check:
+                message[KO_FILTER_TAG] = self.name
+                return message
         return message
 
     def params_are_in_map_(self,params,d_param_map_):

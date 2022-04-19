@@ -26,7 +26,7 @@ class TestSource(unittest.TestCase):
         for _ in range(self.nb_elements):
             try:
                 m = next(gen)
-                out.append(m.get('data'))
+                out.append(m.get('sequence'))
             except StopIteration:
                 logger.debug('Stop generator')
                 break
