@@ -2,7 +2,8 @@ from typing import Dict
 import logging
 
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
-from sketchgraphs.data.sequence import NodeOp, EdgeOp, EntityType, ConstraintType
+from sketch_data.primitive import Primitive
+from sketch_data.constraint import Constraint
 from src.utils.maps import construct_edge_map, construct_node_map
 from src import OPS_ENCODING_TAG
 
@@ -24,17 +25,16 @@ class FilterEncodeOrder(AbstractFilter):
         self.edge_idx_offset = len(self.node_idx_map)
         self.reference_idx_offset = len(self.node_idx_map) + len(self.edge_idx_map)
 
-        logger.debug(self.edge_idx_map)
-        logger.debug(self.node_idx_map)
+
     def process(self, message: object) -> object:
         sequence = message.get('sequence')
         encoded_sequence = []
         for op in sequence:
-            if isinstance(op, NodeOp): 
-                encoded_sequence.append(self.node_idx_map[op.label.name])
-            elif isinstance(op, EdgeOp):
-                encoded_sequence.append(self.edge_idx_map[op.label.name] + self.edge_idx_offset)
-                for ref in op.references:
-                    encoded_sequence.append(ref + self.reference_idx_offset)
+            if isinstance(op, Primitive): 
+                encoded_sequence.append(self.node_idx_map[op.type.name])
+            elif isinstance(op, Constraint):
+                encoded_sequence.append(self.edge_idx_map[op.type.name] + self.edge_idx_offset)
+                # for ref in op.references:
+                #     encoded_sequence.append(ref + self.reference_idx_offset)
         message[OPS_ENCODING_TAG] = encoded_sequence
         return message
