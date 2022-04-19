@@ -6,12 +6,13 @@ import numpy as np
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType
 from src.filters.utils.filter_functiononparam import FilterFunctionOnParam
 from filtering_pipeline import KO_FILTER_TAG
-from src.utils.discretization import create_params_edge, create_params_node
+from src.utils.discretization import create_params_edge, create_params_node, MARGIN
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
+CHECK_MARGIN = MARGIN/10 # margin is smaller during checking
 
 class FilterCheckNorm(AbstractFilter):
     """
@@ -35,7 +36,7 @@ class FilterCheckNorm(AbstractFilter):
             elif isinstance(op,EdgeOp):
                 d_param_map_ = self.edge_params.get(label)
             if d_param_map_ is None:
-                return message
+                continue
             check = self.params_are_in_map_(
                 op.parameters,
                 d_param_map_)
@@ -48,13 +49,14 @@ class FilterCheckNorm(AbstractFilter):
         for parameter, value in params.items():
             map_ = d_param_map_[parameter]
             if isinstance(map_,np.ndarray):
-                min_value, max_value = map_
+                min_value, max_value = map_ + np.array([-CHECK_MARGIN,CHECK_MARGIN])
                 if value < min_value or value > max_value:
-                    logger.debug(f'not in array {value},{min_value},{max_value}')
+                    logger.debug(f'In {parameter}, found {value} not in array {min_value},{max_value}')
                     return False
             elif issubclass(map_,enum.IntEnum):
                 try:
                     int(map_[value])
                 except Exception:
+                    logger.debug(f'{value} is not part of {map_}')
                     return False
         return True

@@ -4,6 +4,8 @@ import torch
 from sketchgraphs.data import sequence, sketch as datalib
 from src.utils.maps import NODES_PARAMETRIZED, EDGES_PARAMETRIZED
 
+MARGIN = 1e-2
+
 def create_params_node(n_bins=50):
     """
     Create dictionaries to discretize all the parameters of the primitives and the constraints.
@@ -13,10 +15,9 @@ def create_params_node(n_bins=50):
 
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
-    margin = 1e-2
-    angle_map = np.linspace(0, 2*np.pi, n_bins) + margin  # values have been normalized first
-    length_map = np.linspace(-2**.5, 2**.5, n_bins)  + margin# values have been normalized first
-    coords_map = np.linspace(-1, 1, n_bins) + margin # values have been normalized first
+    angle_map = np.linspace(0, 2*np.pi, n_bins)  # values have been normalized first
+    length_map = np.linspace(-2**.5, 2**.5, n_bins)# values have been normalized first
+    coords_map = np.linspace(-1, 1, n_bins) # values have been normalized first
     
     params_node = dict([(datalib.EntityType.Point.name, dict([
                 ('isConstruction', datalib.BooleanValue),
@@ -56,9 +57,9 @@ def create_params_edge(n_bins=50):
     Create dictionaries to discretize all the parameters of the primitives and the constraints. The values of the dictionaries are maps.
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
-    margin = 1e-2
-    angle_map = np.linspace(0, 2*np.pi, n_bins) + margin  # values have been normalized first
-    length_map = np.linspace(-2**.5, 2**.5, n_bins)  + margin# values have been normalized first
+    margin = 1e-3
+    angle_map = np.linspace(0, 2*np.pi, n_bins)   # values have been normalized first
+    length_map = np.linspace(-2**.5, 2**.5, n_bins)  # values have been normalized first
 
     params_edge = dict([(datalib.ConstraintType.Angle.name, dict([
                 ('aligned', datalib.BooleanValue),
@@ -102,7 +103,6 @@ def discretization_edges(ops, params_edge):
     params_edge : as returned by the function create_params.
     """
     edge_features = {k: {'index': [], 'value':[]} for k in params_edge.keys()}
-    
     for i, op in enumerate(ops):
         if op.label not in EDGES_PARAMETRIZED:
             continue
@@ -110,8 +110,10 @@ def discretization_edges(ops, params_edge):
         num_feat = []
         for param, map_ in params_edge[op.label.name].items():
             if isinstance(map_, np.ndarray):
-                value = np.searchsorted(map_, op.parameters[param])
-                if value >= len(map_):
+                value = np.searchsorted(map_, op.parameters[param]-MARGIN)
+                try:
+                    assert value < len(map_)
+                except Exception:
                     raise Exception(f'{(op.label.name,param)}')
             else:
                 value = int(map_[op.parameters[param]])
@@ -143,8 +145,10 @@ def discretization_nodes(ops, params_node):
         num_feat = []
         for param, map_ in params_node[op.label.name].items():
             if isinstance(map_, np.ndarray):
-                value = np.searchsorted(map_, op.parameters[param])
-                if value >= len(map_):
+                value = np.searchsorted(map_, op.parameters[param]-MARGIN)
+                try:
+                    assert value < len(map_)
+                except Exception:
                     raise Exception(f'{(op.label.name,param)}')
             else:
                 value = int(map_[op.parameters[param]])
