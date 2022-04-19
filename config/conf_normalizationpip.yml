@@ -24,6 +24,7 @@ OpSubPipelineFilter:
       - FilterConvertMetrics
       - FilterBoundingBox
       - FilterModuloAngle
+      - FilterCheckNorm
 
 SourceSub:
   type : SourceList
@@ -48,6 +49,10 @@ FilterModuloAngle:
   parms:
     request: TO_COMPLETE
 
+FilterCheckNorm:
+  type: FilterCheckNorm
+  parms:
+    
 FilterLog:
   type: FilterLog
   parms:
