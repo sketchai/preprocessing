@@ -14,9 +14,9 @@ def create_params_node(n_bins=50):
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
     margin = 1e-3
-    angle_map = np.linspace(0, 2*np.pi, n_bins) + margin  # values have been normalized first
-    length_map = np.linspace(-2**.5, 2**.5, n_bins)  + margin# values have been normalized first
-    coords_map = np.linspace(-1, 1, n_bins) + margin # values have been normalized first
+    angle_map = np.linspace(0 - margin, 2*np.pi + margin, n_bins)  # values have been normalized first
+    length_map = np.linspace(-2**.5 - margin, 2**.5 + margin, n_bins)# values have been normalized first
+    coords_map = np.linspace(-1 - margin, 1 + margin, n_bins) # values have been normalized first
     
     params_node = dict([(datalib.EntityType.Point.name, dict([
                 ('isConstruction', datalib.BooleanValue),
@@ -57,8 +57,8 @@ def create_params_edge(n_bins=50):
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
     margin = 1e-3
-    angle_map = np.linspace(0, 2*np.pi, n_bins) + margin  # values have been normalized first
-    length_map = np.linspace(-2**.5, 2**.5, n_bins)  + margin# values have been normalized first
+    angle_map = np.linspace(0 - margin, 2*np.pi + margin, n_bins)   # values have been normalized first
+    length_map = np.linspace(-2**.5 - margin, 2**.5 + margin, n_bins)  # values have been normalized first
 
     params_edge = dict([(datalib.ConstraintType.Angle.name, dict([
                 ('aligned', datalib.BooleanValue),

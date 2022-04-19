@@ -18,34 +18,34 @@ class TestFilterCheckNorm(unittest.TestCase):
     def test_process(self):
         filter1 = FilterCheckNorm()
         # Test msg with an incorrect edge param value
-        message = {'op': EdgeOp(label=ConstraintType.Distance, references=(0,1), parameters= {
-            'direction': '%#-~@g', 'halfSpace0': 'LEFT', 'halfSpace1': 'RIGHT', 'length': 2**0.5})}
+        message = {'sequence': [EdgeOp(label=ConstraintType.Distance, references=(0,1), parameters= {
+            'direction': '%#-~@g', 'halfSpace0': 'LEFT', 'halfSpace1': 'RIGHT', 'length': 2**0.5})]}
 
         answer = filter1.process(message=message)
         self.assertEqual(filter1.name,answer[KO_FILTER_TAG])
 
         # Test msg with an incorrect edge param value
-        message = {'op': EdgeOp(label=ConstraintType.Distance, references=(0,1), parameters= {
-            'direction': 'MINIMUM', 'halfSpace0': 'LEFT', 'halfSpace1': 'RIGHT', 'length': 2**0.5+0.1})}
+        message = {'sequence': [EdgeOp(label=ConstraintType.Distance, references=(0,1), parameters= {
+            'direction': 'MINIMUM', 'halfSpace0': 'LEFT', 'halfSpace1': 'RIGHT', 'length': 2**0.5+0.1})]}
 
         answer = filter1.process(message=message)
         self.assertEqual(filter1.name,answer[KO_FILTER_TAG])
 
         # Test msg with correct edge param values
-        message = {'op': EdgeOp(label=ConstraintType.Distance, references=(0,1), parameters= {
-            'direction': 'MINIMUM', 'halfSpace0': 'LEFT', 'halfSpace1': 'RIGHT', 'length': 2**0.5})}
+        message = {'sequence': [EdgeOp(label=ConstraintType.Distance, references=(0,1), parameters= {
+            'direction': 'MINIMUM', 'halfSpace0': 'LEFT', 'halfSpace1': 'RIGHT', 'length': 2**0.5})]}
 
         answer = filter1.process(message=message)
         self.assertIsNone(answer.get(KO_FILTER_TAG))
 
         # Test msg with an incorrect node param value
-        message = {'op': NodeOp(label=EntityType.Point, parameters={'isConstruction':0, 'x':0.,'y':1.02})}
+        message = {'sequence': [NodeOp(label=EntityType.Point, parameters={'isConstruction':0, 'x':0.,'y':1.02})]}
 
         answer = filter1.process(message=message)
         self.assertEqual(filter1.name,answer[KO_FILTER_TAG])
 
         # Test msg with correct node param values
-        message = {'op': NodeOp(label=EntityType.Point, parameters={'isConstruction':0, 'x':0.,'y':1.})}
+        message = {'sequence': [NodeOp(label=EntityType.Point, parameters={'isConstruction':0, 'x':0.,'y':1.})]}
 
         answer = filter1.process(message=message)
         self.assertIsNone(answer.get(KO_FILTER_TAG))
