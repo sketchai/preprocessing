@@ -23,7 +23,7 @@ from src.filters.filter_on_op import OpSubPipelineFilter
 from src.sources.source_fromlist import SourceList
 from src.filters.filter_convertmetrics import FilterConvertMetrics
 from src.filters.utils.filter_log import FilterLog
-from src.filters.sink_slices import SinkSlices
+from src.sinks.sink_slices import SinkSlices
 from src.utils.to_dict import yaml_to_dict
 from src.utils import flat_array
 
