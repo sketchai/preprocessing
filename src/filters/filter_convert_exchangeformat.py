@@ -31,5 +31,5 @@ class FilterConvertSequence(AbstractFilter):
         if convert_seq is None or nb_edges < self.nb_edges:
             message[KO_FILTER_TAG]=self.name
         else :
-            message['sequence'] = convert_seq
+            message['sequence'] = convert_seq.sequence
         return message

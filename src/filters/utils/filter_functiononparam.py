@@ -46,6 +46,7 @@ class FilterFunctionOnParam(AbstractFilter):
         If the operation corresponds to one of the requested couple (type, label), apply function self.apply_function()
         """
         op = message.get('op')
+        
         for couple, additional_parameters in self.request.items():
             if self._check_couple(op, requested_type=couple[0], requested_label=couple[1]):
                 message = self.apply_function(message, additional_parameters)
