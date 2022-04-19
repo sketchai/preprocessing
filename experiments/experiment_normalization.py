@@ -20,6 +20,7 @@ from src.filters.filter_convertmetrics import FilterConvertMetrics
 from src.filters.filter_boundingbox import FilterBoundingBox
 from src.filters.sink_slices import SinkSlices
 from src.filters.filter_on_op import OpSubPipelineFilter
+from src.filters.filter_checknorm import FilterCheckNorm
 from src.filters.filter_moduloangle import FilterModuloAngle
 from src.filters.utils.filter_log import FilterLog
 from src.sources.source_fromlist import SourceList
@@ -42,6 +43,7 @@ class ExperimentNormalization():
                                 'FilterModuloAngle': FilterModuloAngle,
                                 'FilterConvertMetrics': FilterConvertMetrics,
                                 'FilterRecenterLine': FilterRecenterLine,
+                                'FilterCheckNorm': FilterCheckNorm,
                                 'SinkSlices': SinkSlices,
                                 'FilterLog': FilterLog,
                                 'FilterBoundingBox': FilterBoundingBox,
