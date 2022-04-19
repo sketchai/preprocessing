@@ -14,7 +14,7 @@ else:
 
 # Initialization
 import argparse
-from src.filters.sink_slices import SinkSlices
+from src.sinks.sink_slices import SinkSlices
 from src.filters.filter_constraintrefs import FilterConstraintRefs
 from src.filters.filter_count import FilterCount
 from src.filters.filter_checkparamsmetrics import FilterCheckParamsMetrics

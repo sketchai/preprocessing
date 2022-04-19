@@ -45,10 +45,10 @@ class TestFilterCount(unittest.TestCase):
         self.assertIsNone(answer.get(KO_FILTER_TAG))
 
         sketch = answer.get('sequence')
-        self.assertEqual(len(sketch.sequence), 3)
-        self.assertTrue(isinstance(sketch.sequence[0], Circle))
-        self.assertTrue(isinstance(sketch.sequence[1], Circle))
-        self.assertTrue(isinstance(sketch.sequence[2], Coincident))
+        self.assertEqual(len(sketch), 3)
+        self.assertTrue(isinstance(sketch[0], Circle))
+        self.assertTrue(isinstance(sketch[1], Circle))
+        self.assertTrue(isinstance(sketch[2], Coincident))
 
 
         
