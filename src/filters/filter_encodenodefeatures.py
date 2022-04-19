@@ -46,7 +46,7 @@ class FilterEncodeNodeFeatures(AbstractFilter):
         sequence = message.get('sequence')
         node_ops = [op for op in sequence if isinstance(op, Primitive)]
         l = len(node_ops)            
-        node_ops += [PrimitiveVoid('void')]*(self.lMax-l)
+        node_ops += [PrimitiveVoid()]*(self.lMax-l)
         node_features = []
         for op in node_ops:
             if op.type != 'void':
