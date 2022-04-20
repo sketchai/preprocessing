@@ -6,6 +6,7 @@ from filtering_pipeline.filters.abstract_filter import AbstractFilter
 from sketchgraphs.data.sequence import NodeOp
 from src.utils.maps import construct_edge_map, construct_node_map
 from src.utils import discretization
+from filtering_pipeline import KO_FILTER_TAG
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -36,7 +37,11 @@ class FilterEncodeNodeFeatures(AbstractFilter):
             else :
                 node_features.append(self.node_idx_map[op.label])
         node_features = torch.tensor(node_features, dtype=torch.int64)
-        sparse_node_features = discretization.discretization_nodes(node_ops, self.params_node)
+        try:
+            sparse_node_features = discretization.discretization_nodes(node_ops, self.params_node)
+        except Exception:
+            message[KO_FILTER_TAG] = self.name
+            return message
 
         mask_attention = torch.ones(self.lMax, dtype=torch.bool)
         mask_attention[:l] = False

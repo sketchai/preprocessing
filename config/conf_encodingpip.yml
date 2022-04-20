@@ -30,7 +30,7 @@ SinkDictFlat:
       - 'mask_attention'
       - 'sequence_idx'
     output_path: TO_COMPLETE
-    slice_length: 500000
+    slice_length: 100000
     clean_up: True
 
 

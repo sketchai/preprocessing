@@ -1,5 +1,5 @@
 from typing import Dict
-
+import numpy as np
 from scipy.cluster.hierarchy import fclusterdata
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
 from src import SEQUENCE_ENCODING_TAG, CLUSTER_DICT_TAG
@@ -31,7 +31,11 @@ class FilterClusterParamValues(AbstractFilter):
             clusters = fclusterdata(params, criterion=self.criterion, t=self.threshold, metric=self.metric)
             n_clusters = max(clusters)
             count_elts = Counter(clusters)
-            weights = [1./count_elts[idx]/n_clusters for idx in clusters]
+            weights = np.zeros((len(sequence_list),))
+            params_indexes = message.get('params_indexes')
+            for i,seq_idx in enumerate(params_indexes):
+                idx_cluster = clusters[i]
+                weights[seq_idx] = 1./count_elts[idx_cluster]/n_clusters
             message['weights'] = weights
 
         return message

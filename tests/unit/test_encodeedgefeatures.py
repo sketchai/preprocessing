@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
@@ -8,6 +9,7 @@ import unittest
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType, SubnodeType
 from sketchgraphs.data._constraint import DirectionValue, HalfSpaceValue
 from src.filters.filter_encodeedgefeatures import FilterEncodeEdgeFeatures
+from filtering_pipeline import KO_FILTER_TAG
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -66,3 +68,10 @@ class TestFilterEncodeEdgeFeatures(unittest.TestCase):
 
             torch.testing.assert_allclose(index, exp_index)
             torch.testing.assert_allclose(value, exp_value)
+
+        # Test msg with an incorrect param value
+        message = {'sequence': [EdgeOp(label=ConstraintType.Distance, references=(0,1), parameters= {
+            'direction': 'MINIMUM', 'halfSpace0': 'LEFT', 'halfSpace1': 'RIGHT', 'length': 2**0.5+0.1})]}
+
+        answer = filter1.process(message=message)
+        self.assertEqual(filter1.name,answer[KO_FILTER_TAG])

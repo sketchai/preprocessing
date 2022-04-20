@@ -20,9 +20,9 @@ class TestFilterEncodeOrder(unittest.TestCase):
                EntityType.Arc]
 
         mock_sequence_1 = [
-            NodeOp(label=0),
-            EdgeOp(label=3, references=(0,)),
-            NodeOp(label=2),
+            NodeOp(label=EntityType.Point),
+            EdgeOp(label=ConstraintType.Distance, references=(0,)),
+            NodeOp(label=EntityType.Circle),
         ]
         conf_dict = {'l_keep_node': l_keep_node, 'l_keep_edge': l_keep_edge}
         filter1 = FilterEncodeOrder(conf_filter=conf_dict)
@@ -32,9 +32,9 @@ class TestFilterEncodeOrder(unittest.TestCase):
         edge_offset = len(l_keep_node) + 1
         ref_offset = len(l_keep_node) + 1 + len(l_keep_edge)
         expected_encoding = [
-            filter1.node_idx_map[0],
-            filter1.edge_idx_map[3]+edge_offset,
+            filter1.node_idx_map[EntityType.Point.name],
+            filter1.edge_idx_map[ConstraintType.Distance.name]+edge_offset,
             0+ref_offset,
-            filter1.node_idx_map[2],
+            filter1.node_idx_map[EntityType.Circle.name],
         ]
         self.assertListEqual(message[OPS_ENCODING_TAG], expected_encoding)
