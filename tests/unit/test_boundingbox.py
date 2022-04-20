@@ -71,5 +71,3 @@ class TestFilterBoundingBox(unittest.TestCase):
             self.assertGreater(parameter,-2**0.5 + 1e-4)
             self.assertLess(parameter,2**0.5 + 1e-4)
 
-        # check that the filter has not returned KO
-        self.assertIsNone(message.get(KO_FILTER_TAG))
