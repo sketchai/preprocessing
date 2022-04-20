@@ -64,21 +64,4 @@ class FilterBoundingBox(FilterCollectParamValue):
                 for reference in reference_list:
                     reference[key] = reference[key]/l_max
 
-        if not self._check_normalization():
-            message[KO_FILTER_TAG] = self.name
-
         return message
-
-    def _check_normalization(self,margin = 1e-4)->bool:
-        for key, reference_list in self.references.items():
-            if key in ['x','pntX','xCenter','y','pntY','yCenter']:
-                for reference in reference_list:
-                    value = reference[key]
-                    if value < (0 - margin) or value > (1+ margin):
-                        return False
-            elif key in ['length','radius','startParam','endParam']:
-                for reference in reference_list:
-                    value = reference[key]
-                    if value < (-2**.5 - margin) or value > (2**.5+ margin):
-                        return False
-        return True
