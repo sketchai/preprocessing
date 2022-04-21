@@ -3,7 +3,7 @@ import logging
 import numpy as np
 
 from sketchgraphs.data import flat_array
-from src.filters.sink_slices import SinkSlices
+from src.sinks.sink_slices import SinkSlices
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()

@@ -7,7 +7,7 @@ import unittest
 import numpy as np
 import os
 
-from src.filters.sink_array import SinkArray
+from src.sinks.sink_array import SinkArray
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()

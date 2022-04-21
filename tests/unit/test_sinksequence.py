@@ -4,7 +4,7 @@ sys.path.append('src/filtering-pipeline/')
 
 from sketchgraphs.data.sequence import NodeOp, EdgeOp
 from sketchgraphs.data import flat_array
-from src.filters.sink_sequence import SinkSequence
+from src.sinks.sink_sequence import SinkSequence
 import os
 import logging
 import unittest
