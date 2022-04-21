@@ -52,8 +52,8 @@ def create_params_node(n_bins=50):
                 ('center_x', coords_map),
                 ('center_y', coords_map),
                 ('radius', length_map),
-                ('start_angle', angle_map),
-                ('end_angle', angle_map)])) ])
+                ('angle_start', angle_map),
+                ('angle_end', angle_map)])) ])
     
     return params_node
 
