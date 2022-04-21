@@ -6,7 +6,7 @@ from typing import Dict
 import logging
 import numpy as np
 
-from sketchgraphs.data import flat_array
+from src.utils import flat_array
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
 
 logging.basicConfig(level=logging.DEBUG)

@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.append('src/sketch_data/')
+sys.path.append('sketch_data/')
 sys.path.append('src/filtering-pipeline/')
 
 import logging
