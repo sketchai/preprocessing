@@ -106,16 +106,16 @@ def discretization_edges(ops, params_edge):
             continue
             
         num_feat = []
-        for param, map_ in params_edge[op.label.name].items():
+        for param, map_ in params_edge[op.type.name].items():
             if isinstance(map_, np.ndarray):
-                value = np.searchsorted(map_, op.parameters[param])
+                value = np.searchsorted(map_, op.__dict__[param])
                 assert value < len(map_)
             else:
-                value = int(map_[op.parameters[param]])
+                value = int(map_[op.__dict__[param]])
             num_feat.append(value)
             
-        edge_features[op.label.name]['index'].append(i)
-        edge_features[op.label.name]['value'].append(num_feat)
+        edge_features[op.type.name]['index'].append(i)
+        edge_features[op.type.name]['value'].append(num_feat)
         
     for k in edge_features.keys():
         edge_features[k]['index'] = torch.tensor(edge_features[k]['index'], dtype=torch.int64)
