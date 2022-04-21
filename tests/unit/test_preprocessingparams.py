@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.append('src/sketchgraphs/')
+sys.path.append('src/sketch_data/')
 sys.path.append('src/filtering-pipeline/')
 
 import logging
@@ -9,8 +9,8 @@ import unittest
 import pickle
 from experiments import DOF_MAX, L_MAX, L_MIN, N_BINS
 from experiments.preprocessing_params import export_parameters
-from sketchgraphs.data.sequence import EntityType, ConstraintType, SubnodeType
-
+from sketch_data.primitive import PrimitiveType
+from sketch_data.constraint import ConstraintType
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -34,8 +34,7 @@ class TestPreprocessingParams(unittest.TestCase):
         self.assertEqual(d_params['dof_max'],DOF_MAX)
         self.assertEqual(d_params['n_bins'],N_BINS)
 
-        l_name_primitive = [key.name for key in EntityType]
-        l_name_primitive.extend([key.name for key in SubnodeType])
+        l_name_primitive = [key.name for key in PrimitiveType]
         for key, d in d_params['node_feature_dimensions'].items():
             self.assertTrue(key in l_name_primitive)
             self.assertIsInstance(d, dict)
@@ -52,14 +51,17 @@ class TestPreprocessingParams(unittest.TestCase):
                 self.assertIsInstance(v,int)
             
         for key, n in d_params['node_idx_map'].items():
-            if key == 'void':
+            if key in ['void','SN_pnt1','SN_pnt2','SN_center']:
                 pass
             else:
                 self.assertTrue(key in l_name_primitive)
             self.assertIsInstance(n, int)
         
         for key, n in d_params['edge_idx_map'].items():
-            self.assertTrue(key in l_name_constraint)
+            if key == 'Subnode':
+                pass
+            else:
+                self.assertTrue(key in l_name_constraint)
             self.assertIsInstance(n, int)
 
         self.assertEqual(d_params['padding_idx'], len(d_params['node_idx_map'])-1)

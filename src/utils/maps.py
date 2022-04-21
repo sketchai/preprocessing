@@ -5,23 +5,30 @@ from sketch_data.catalog_constraint import *
 
 from src.utils.logger import logger
 
-def construct_edge_map(l_keep_edge: List) -> Dict:
+def construct_edge_map(l_keep_edge: List, encoding=False) -> Dict:
     edge_map = {}
     i = 0
     for t in l_keep_edge:
         edge_map[t.name] = i
         i += 1
+    if encoding:
+        edge_map['Subnode'] = len(edge_map)
     return edge_map
 
 
-def construct_node_map(l_keep_node: List) -> Dict:
+def construct_node_map(l_keep_node: List, encoding=False) -> Dict:
     node_map = {}
     i = 0
     for t in l_keep_node:
-
         node_map[t.name] = i
         i += 1
-    node_map['void'] = len(node_map)
+    if encoding:
+        new_nodes = {
+            'SN_pnt1':i,
+            'SN_pnt2':i+1,
+            'SN_center':i+2,
+            'void':i+3}
+        node_map.update(new_nodes)
     return node_map
 
 NODES_PARAMETRIZED = {

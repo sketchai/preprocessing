@@ -23,8 +23,8 @@ def export_parameters(fo=PARAMETERS_PATH, lMax=L_MAX, lMin=L_MIN, dof_max=DOF_MA
     params_edge = discretization.create_params_edge(n_bins=n_bins)
     params_node = discretization.create_params_node(n_bins=n_bins)
     edge_feature_dimensions, node_feature_dimensions = discretization.feature_dims(params_edge=params_edge, params_node=params_node)
-    node_idx_map = maps.construct_node_map(l_keep_node=L_KEEP_NODE)
-    edge_idx_map = maps.construct_edge_map(l_keep_edge=L_KEEP_EDGE)
+    node_idx_map = maps.construct_node_map(l_keep_node=L_KEEP_NODE, encoding=True)
+    edge_idx_map = maps.construct_edge_map(l_keep_edge=L_KEEP_EDGE, encoding=True)
     with open(fo, 'wb') as f:
         pickle.dump({
             'lMax': lMax,
