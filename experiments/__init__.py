@@ -19,3 +19,5 @@ N_BINS = d_conf['parameters']['n_bins']
 
 L_KEEP_EDGE = d_conf['keep']['l_keep_edge']
 L_KEEP_NODE = d_conf['keep']['l_keep_node']
+L_KEEP_EDGE_SG = d_conf['keep']['l_keep_edge_SG']
+L_KEEP_NODE_SG = d_conf['keep']['l_keep_node_SG']
