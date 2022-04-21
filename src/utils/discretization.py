@@ -13,6 +13,9 @@ BooleanValue = enum.IntEnum(
     'BooleanValue',
     [('FALSE', 0), ('TRUE', 1), ('False', 0), ('True', 1)]
 )
+BooleanValue._member_map_[False] = BooleanValue.FALSE
+BooleanValue._member_map_[True] = BooleanValue.TRUE
+
 
 def create_params_node(n_bins=50):
     """
@@ -99,17 +102,14 @@ def discretization_edges(ops, params_edge):
     edge_features = {k: {'index': [], 'value':[]} for k in params_edge.keys()}
     
     for i, op in enumerate(ops):
-        if op.label not in EDGES_PARAMETRIZED:
+        if type(op) not in EDGES_PARAMETRIZED:
             continue
             
         num_feat = []
         for param, map_ in params_edge[op.label.name].items():
             if isinstance(map_, np.ndarray):
                 value = np.searchsorted(map_, op.parameters[param])
-                try:
-                    assert value < len(map_)
-                except Exception:
-                    raise Exception(f'{(op.label.name,param)}')
+                assert value < len(map_)
             else:
                 value = int(map_[op.parameters[param]])
             num_feat.append(value)
@@ -134,14 +134,9 @@ def discretization_nodes(ops, params_node):
     node_features = {k: {'index': [], 'value':[]} for k in params_node.keys()}
     l_subnodes = []
     for i, op in enumerate(ops):
-        if op.type not in NODES_PARAMETRIZED:
+        if type(op) not in NODES_PARAMETRIZED:
             continue
-        if op.type == [PrimitiveType.LINE,PrimitiveType.ARC]  :
-            l_subnodes.append(op.pnt1)
-            l_subnodes.append(op.pnt2)
-        elif op.type in [PrimitiveType.CIRCLE,PrimitiveType.ARC] :
-            l_subnodes.append(op.center)
-            
+        logger.debug(f'{op.type}')
         num_feat = []
         logger.info(f'op: {op}, type {op.type.name}')
         for param, map_ in params_node[op.type.name].items():
@@ -154,10 +149,7 @@ def discretization_nodes(ops, params_node):
             logger.info(f'param: {param}, op_param: {op_parms}')
             if isinstance(map_, np.ndarray):
                 value = np.searchsorted(map_, op_parms)
-                try:
-                    assert value < len(map_)
-                except Exception:
-                    raise Exception(f'{(op.type.name,param)}')
+                assert value < len(map_)
             else:
                 value = int(map_[op_parms])
             num_feat.append(value)

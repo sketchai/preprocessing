@@ -13,7 +13,9 @@ class PrimitiveVoid(Primitive):
     """Void Primitive."""
 
     def __init__(self, status_construction: bool = False):
-        super(PrimitiveVoid, self).__init__(elt_type='void', status_construction=status_construction)
+        type_ = lambda _:None
+        type_.name = 'void'
+        super(PrimitiveVoid, self).__init__(elt_type=type_, status_construction=status_construction)
 
     def __repr__(self):
         return f"Void"
@@ -45,17 +47,13 @@ class FilterEncodeNodeFeatures(AbstractFilter):
     def process(self, message: object) -> object:
         sequence = message.get('sequence')
         node_ops = [op for op in sequence if isinstance(op, Primitive)]
-        l = len(node_ops)            
+        l = len(node_ops)
         node_ops += [PrimitiveVoid()]*(self.lMax-l)
         node_features = []
         for op in node_ops:
-            if op.type != 'void':
-                node_features.append(self.node_idx_map[op.type.name])
-            else :
-                node_features.append(self.node_idx_map[op.type])
+            node_features.append(self.node_idx_map[op.type.name])
         node_features = torch.tensor(node_features, dtype=torch.int64)
 
-        x = node_ops
         sparse_node_features = discretization.discretization_nodes(node_ops, self.params_node)
 
         mask_attention = torch.ones(self.lMax, dtype=torch.bool)
