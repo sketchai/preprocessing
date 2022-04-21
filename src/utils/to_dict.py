@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import Dict
 import collections.abc
 import yaml
@@ -15,11 +16,14 @@ try:
     SG_CONSTRAINT_TYPE_MAPPING = {c.name: c for c in SG_ConstraintType}
     SG_SUBNODE_TYPE_MAPPING = {s.name: s for s in SubnodeType}
 
-    yaml.add_constructor(u'!SGEntityType', (lambda l,n : SG_ENTITY_TYPE_MAPPING[l.construct_scalar(n)]))
-    yaml.add_constructor(u'!SGConstraintType', (lambda l,n : SG_CONSTRAINT_TYPE_MAPPING[l.construct_scalar(n)]))
-    yaml.add_constructor(u'!SGSubnodeType', (lambda l,n : SG_SUBNODE_TYPE_MAPPING[l.construct_scalar(n)]))
 except ModuleNotFoundError:
-    pass
+    SG_ENTITY_TYPE_MAPPING = defaultdict(lambda : None)
+    SG_CONSTRAINT_TYPE_MAPPING = defaultdict(lambda : None)
+    SG_SUBNODE_TYPE_MAPPING = defaultdict(lambda : None)
+
+yaml.add_constructor(u'!SGEntityType', (lambda l,n : SG_ENTITY_TYPE_MAPPING[l.construct_scalar(n)]))
+yaml.add_constructor(u'!SGConstraintType', (lambda l,n : SG_CONSTRAINT_TYPE_MAPPING[l.construct_scalar(n)]))
+yaml.add_constructor(u'!SGSubnodeType', (lambda l,n : SG_SUBNODE_TYPE_MAPPING[l.construct_scalar(n)]))
 
 def yaml_to_dict(file_path: str) -> Dict:
     with open(file_path, "r") as yamlfile:

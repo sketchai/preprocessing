@@ -4,7 +4,7 @@ sys.path.append('src/filtering-pipeline/')
 
 import torch
 import numpy as np
-from sketchgraphs.data import flat_array
+from src.utils import flat_array
 from src.sinks.sink_dictflat import SinkDictFlat
 import os
 import logging

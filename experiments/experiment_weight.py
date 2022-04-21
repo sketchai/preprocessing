@@ -12,7 +12,7 @@ if __name__ == '__main__':
 else:
     logging.basicConfig(level=logging.DEBUG)
 
-from sketchgraphs.data import flat_array
+from src.utils import flat_array
 from sketch_data.primitive import PrimitiveType
 from sketch_data.constraint import ConstraintType
 from sketch_data.catalog_primitive import Arc, Line, Circle, Point
