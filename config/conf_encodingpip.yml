@@ -1,5 +1,6 @@
 General:
   l_filters:
+    - FilterFormatEncoding
     - FilterEncodeEdgeFeatures
     - FilterEncodeNodeFeatures
     - FilterEncodeGraphConnections
@@ -33,6 +34,10 @@ SinkDictFlat:
     slice_length: 100000
     clean_up: True
 
+FilterFormatEncoding:
+  type: FilterFormatEncoding
+  parms:
+    
 
 FilterEncodeEdgeFeatures:
   type: FilterEncodeEdgeFeatures

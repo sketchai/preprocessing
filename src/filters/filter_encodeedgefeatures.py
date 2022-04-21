@@ -18,7 +18,7 @@ class FilterEncodeEdgeFeatures(AbstractFilter):
         self.name = 'FilterEncodeEdgeFeatures'
         n_bins = conf_filter.get('n_bins', 50)
         l_keep_edge = conf_filter['l_keep_edge']
-        self.edge_idx_map = construct_edge_map(l_keep_edge, subnode=True)
+        self.edge_idx_map = construct_edge_map(l_keep_edge, encoding=True)
         self.params_edge = discretization.create_params_edge(n_bins)
 
     def process(self, message: object) -> object:
