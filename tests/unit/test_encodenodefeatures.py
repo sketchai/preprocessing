@@ -32,13 +32,14 @@ class TestFilterEncodeNodeFeatures(unittest.TestCase):
         # check that 'node_ops' is padded with 'void' nodes
         self.assertEqual(message['node_ops'][0], node_op_0)
         self.assertEqual(message['node_ops'][1], node_op_2)
-        self.assertEqual(message['node_ops'][2].subnode_type, 'pnt1')
-        self.assertEqual(message['node_ops'][3].subnode_type, 'pnt2')
+        self.assertEqual(message['node_ops'][2].subnode_type, 'SN_pnt1')
+        self.assertEqual(message['node_ops'][3].subnode_type, 'SN_pnt2')
         self.assertTrue(isinstance(message['node_ops'][4], PrimitiveVoid))
         self.assertTrue(isinstance(message['node_ops'][5], PrimitiveVoid))
         
-        # check that the label is encoded with ints. 'void' is encoded by len(l_keep_node)
-        torch.testing.assert_allclose(message['node_features'], torch.tensor([0, 1, 0, 0, len(l_keep_node), len(l_keep_node)]))
+        # check that the label is encoded with ints.
+        # 'SN_pnt1' 'SN_pnt2' and 'void' should have encoding 3,4 and 6 resp.
+        torch.testing.assert_allclose(message['node_features'], torch.tensor([0, 1, 3, 4, 6, 6]))
 
         # coords parameters are encoded from [-1,1] (float) to [0,n_bins-1] (int):
         # -1. -> 0

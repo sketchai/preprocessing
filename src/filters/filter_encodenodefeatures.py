@@ -41,7 +41,7 @@ class FilterEncodeNodeFeatures(AbstractFilter):
         n_bins = conf_filter.get('n_bins', 50)
         l_keep_node = conf_filter['l_keep_node']
         self.lMax = conf_filter.get('lMax',60)
-        self.node_idx_map = construct_node_map(l_keep_node)
+        self.node_idx_map = construct_node_map(l_keep_node, encoding=True)
         self.params_node = discretization.create_params_node(n_bins)
 
     def process(self, message: object) -> object:
@@ -51,7 +51,11 @@ class FilterEncodeNodeFeatures(AbstractFilter):
         node_ops += [PrimitiveVoid()]*(self.lMax-l)
         node_features = []
         for op in node_ops:
-            node_features.append(self.node_idx_map[op.type.name])
+            if hasattr(op, 'subnode_type'):
+                type_ = op.subnode_type
+            else:
+                type_ = op.type.name 
+            node_features.append(self.node_idx_map[type_])
         node_features = torch.tensor(node_features, dtype=torch.int64)
 
         sparse_node_features = discretization.discretization_nodes(node_ops, self.params_node)
