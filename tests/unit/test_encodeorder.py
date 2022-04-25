@@ -31,9 +31,9 @@ class TestFilterEncodeOrder(unittest.TestCase):
         message = {'sequence': mock_sequence_1}
         filter1.process(message)
         
-        edge_offset = len(l_keep_node) + 1
-        ref_offset = len(l_keep_node) + 1 + len(l_keep_edge)
-        expected_encoding = [ 0, 5 , 2 ]
+        edge_offset = len(l_keep_node) 
+        ref_offset = len(l_keep_node) + len(l_keep_edge)
+        expected_encoding = [ 0, 4 , 2 ]
         #     filter1.node_idx_map[0],
         #     filter1.edge_idx_map[3]+edge_offset,
         #     0+ref_offset,

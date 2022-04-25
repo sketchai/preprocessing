@@ -1,62 +1,64 @@
+import math
 import sys
+from weakref import ref
 sys.path.append('src/sketchgraphs/')
+sys.path.append('sketch_data/')
 sys.path.append('src/filtering-pipeline/')
 
 import torch
-import logging
 import unittest
-from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType, SubnodeType
-from sketchgraphs.data._constraint import DirectionValue, HalfSpaceValue
+from sketch_data.primitive import Primitive, PrimitiveType
+from sketch_data.constraint import Constraint, ConstraintType
+from sketch_data.catalog_primitive import Arc, Line, Circle, Point
+from sketch_data.catalog_constraint import *
+from src.filters.filter_encodenodefeatures import PrimitiveVoid
 from src.filters.filter_encodeedgefeatures import FilterEncodeEdgeFeatures
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
+from src.utils.logger import logger
+from src.filters.filter_formatencoding import SubnodeConstraint
 
 
 class TestFilterEncodeEdgeFeatures(unittest.TestCase):
 
     def test_process(self):
         n_bins = 50
-        l_keep_edge = [ConstraintType.Horizontal, ConstraintType.Vertical, ConstraintType.Distance]
+        l_keep_edge = [ConstraintType.HORIZONTAL, ConstraintType.VERTICAL, ConstraintType.LENGTH]
         
-        node_op_0 = NodeOp(label=EntityType.Line,)
-        node_op_1 = NodeOp(label=EntityType.Line,)
-        edge_op_2 = EdgeOp(label=ConstraintType.Horizontal, references=(0,))
-        edge_op_3 = EdgeOp(label=ConstraintType.Distance, references=(0,1), parameters= {
-            'direction': 'MINIMUM', 'halfSpace0': 'LEFT', 'halfSpace1': 'RIGHT', 'length': 2**0.5})
-        mock_sequence_1 = [node_op_0, node_op_1, edge_op_2, edge_op_3]
-
+        node_op_0 = Line(status_construction=False, pnt1=[0.,0.], pnt2=[1.,1.])
+        node_op_1 = Point(status_construction=False, point=[0., 0.])
+        edge_op_2 = SubnodeConstraint(references=[node_op_0,node_op_1])
+        node_op_3 = Point(status_construction=False, point=[0., 0.])
+        edge_op_4 = SubnodeConstraint(references=[node_op_0,node_op_3])
+        edge_op_5 = Horizontal(references=[node_op_0])
+        edge_op_6 = Length(references=[node_op_0], length=math.sqrt(2))
+        mock_sequence_1 = [node_op_0, node_op_1, edge_op_2, node_op_3, edge_op_4, edge_op_5, edge_op_6]
         conf_dict = {'l_keep_edge': l_keep_edge, 'n_bins': n_bins}
         filter1 = FilterEncodeEdgeFeatures(conf_filter=conf_dict)
         message = {'sequence': mock_sequence_1}
         filter1.process(message)
         
         # check that 'edge_ops' contains all edges
-        self.assertListEqual(message['edge_ops'],[edge_op_2, edge_op_3])
+        self.assertListEqual(message['edge_ops'],[edge_op_2, edge_op_4, edge_op_5, edge_op_6])
 
         # check that the label is encoded with ints (according to l_keep_edge)
         logger.debug(filter1.edge_idx_map)
-        torch.testing.assert_allclose(message['edge_features'], torch.tensor([0, 2]))
+        len_edg = len(l_keep_edge)
+        torch.testing.assert_allclose(
+            message['edge_features'],
+            torch.tensor([len_edg, len_edg, 0, 2]))
 
         # the length is encoded from [-1,1] (float) to [0,n_bins-1] (int):
         # -1. -> 0
         #  0. -> n_bins // 2
         #  1. -> n_bins - 1
-        # the enum params (DirectionValue and HalfSpaceValue) are encoded as ints too
-        angle_params = torch.tensor(
-            [[DirectionValue['MINIMUM'], HalfSpaceValue['LEFT'],HalfSpaceValue['RIGHT'], n_bins-1]])
         expected_result = {
-            'Distance': { 'index': torch.tensor([1]),
-                'value': angle_params},
+            'LENGTH': { 
+                'index': torch.tensor([3]),
+                'value': torch.tensor([[n_bins-1]])},
                 
             # the rest are empty tensors
-            'Angle': {'index': torch.tensor([], dtype=torch.int64),
-                'value': torch.zeros((0,3), dtype=torch.int64)},
-            'Length': {'index': torch.tensor([], dtype=torch.int64),
-                'value': torch.zeros((0,2), dtype=torch.int64)},
-            'Diameter': {'index': torch.tensor([], dtype=torch.int64),
+            'ANGLE': {'index': torch.tensor([], dtype=torch.int64),
                 'value': torch.zeros((0,1), dtype=torch.int64)},
-            'Radius': {'index': torch.tensor([], dtype=torch.int64),
+            'RADIUS': {'index': torch.tensor([], dtype=torch.int64),
                 'value': torch.zeros((0,1), dtype=torch.int64)},
             }
         for key, subdict in message['sparse_edge_features'].items():

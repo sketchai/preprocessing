@@ -5,6 +5,7 @@ import logging
 if __name__ == '__main__':
     # Add paths for packages
     sys.path.append('src/sketchgraphs/')
+    sys.path.append('sketch_data/')
     sys.path.append('src/filtering-pipeline/')
     cur_path = os.path.abspath(os.path.dirname(__file__))
     sys.path.insert(0, cur_path + "/..")
@@ -25,9 +26,9 @@ from src.sources.source_fromlist import SourceList
 from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.utils.to_dict import yaml_to_dict
 from filtering_pipeline.factory import pipeline_factory
-from sketchgraphs.data import flat_array
+from src.utils import flat_array
 from sketchgraphs.data.sequence import ConstraintType, EntityType, SubnodeType
-from experiments import SKETCHGRAPHS_PATH, COARSE_PATH, L_KEEP_EDGE, L_KEEP_NODE
+from experiments import L_KEEP_EDGE_SG, L_KEEP_NODE_SG, SKETCHGRAPHS_PATH, COARSE_PATH
 
 logger = logging.getLogger()
 
@@ -47,8 +48,8 @@ class ExperimentCoarse():
             }
         # Update conf
         # the nodes and edges that are considered
-        l_keep_edge = L_KEEP_EDGE
-        l_keep_node = L_KEEP_NODE
+        l_keep_edge = L_KEEP_EDGE_SG
+        l_keep_node = L_KEEP_NODE_SG
 
         self.d_conf = yaml_to_dict('config/conf_coarsegrainedpip.yml')
         self.d_conf['FilterCheckLabel']['parms']['edge_label_list'] = l_keep_edge

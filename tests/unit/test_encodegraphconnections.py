@@ -1,13 +1,18 @@
 import sys
-sys.path.append('src/sketchgraphs/')
+sys.path.append('sketch_data/')
 sys.path.append('src/filtering-pipeline/')
 
 import numpy as np
 import torch
 import logging
 import unittest
-from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType, SubnodeType
-from sketchgraphs.data._constraint import DirectionValue, HalfSpaceValue
+from sketch_data.primitive import Primitive, PrimitiveType
+from sketch_data.constraint import Constraint, ConstraintType
+from sketch_data.catalog_primitive import Arc, Line, Circle, Point
+from sketch_data.catalog_constraint import *
+from src.filters.filter_encodenodefeatures import PrimitiveVoid
+from src.utils.logger import logger
+from src.filters.filter_formatencoding import SubnodeConstraint
 from src.filters.filter_encodegraphconnections import FilterEncodeGraphConnections
 
 logging.basicConfig(level=logging.DEBUG)
@@ -17,27 +22,29 @@ logger = logging.getLogger()
 class TestFilterEncodeGraphConnections(unittest.TestCase):
 
     def test_process(self):
-        mock_sequence_1 = [
-        NodeOp(label=EntityType.Point,),
-        NodeOp(label=EntityType.Circle,),
-        EdgeOp(label=ConstraintType.Radius, references=(1,)),
-        NodeOp(label=SubnodeType.SN_Center),
-        EdgeOp(label=ConstraintType.Subnode, references=(1,2))]
 
+        op_0 = Point(point=[0.,0.])
+        op_1 = Circle(center=[0.,0.], radius=1.)
+        op_2 = Point(point=[0.,0.])
+        op_3 = SubnodeConstraint(references=[op_1,op_2])
+        op_4 = Radius(radius=1, references=[op_1])
+        mock_sequence_1 = [op_0, op_1, op_2, op_3, op_4]
+        for i,op in enumerate([op_0,op_1,op_2]):
+            op.node_index = i
         filter1 = FilterEncodeGraphConnections(conf_filter={})
-        edge_ops = [op for op in mock_sequence_1 if isinstance(op, EdgeOp)]
-        node_ops = [op for op in mock_sequence_1 if isinstance(op, NodeOp)]
+        edge_ops = [op for op in mock_sequence_1 if isinstance(op, Constraint)]
+        node_ops = [op for op in mock_sequence_1 if isinstance(op, Primitive)]
         message = {'sequence': mock_sequence_1, 'node_ops': node_ops, 'edge_ops': edge_ops}
         filter1.process(message)
         
         # check that 'incidences' contains all edges
-        np.testing.assert_allclose(message['incidences'], [[1,1],[1,2]])
+        np.testing.assert_allclose(message['incidences'], [[1,2],[1,1]])
 
         # subnodes
-        np.testing.assert_allclose(message['i_edges_given'], [1])
+        np.testing.assert_allclose(message['i_edges_given'], [0])
         
         # other edges
-        np.testing.assert_allclose(message['i_edges_possible'], [0])
+        np.testing.assert_allclose(message['i_edges_possible'], [1])
 
         # edges not in the graph
         torch.testing.assert_allclose(message['edges_toInf_neg'],

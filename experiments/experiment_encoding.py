@@ -17,6 +17,7 @@ from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.filters.filter_encodeedgefeatures import FilterEncodeEdgeFeatures
 from src.filters.filter_encodenodefeatures import FilterEncodeNodeFeatures
 from src.filters.filter_encodegraphconnections import FilterEncodeGraphConnections
+from src.filters.filter_formatencoding import FilterFormatEncoding
 from src.sinks.sink_dictflat import SinkDictFlat
 from src.filters.utils.filter_log import FilterLog
 from src.utils.to_dict import yaml_to_dict
@@ -30,6 +31,7 @@ class ExperimentEncoding():
     def __init__(self, dataset='train'):
         self.catalog_filters = {
             'SourceFromFlatArray': SourceFromFlatArray,
+            'FilterFormatEncoding': FilterFormatEncoding,
             'FilterEncodeEdgeFeatures': FilterEncodeEdgeFeatures,
             'FilterEncodeNodeFeatures': FilterEncodeNodeFeatures,
             'FilterEncodeGraphConnections': FilterEncodeGraphConnections,
