@@ -49,7 +49,7 @@ class ExperimentNormalization():
                 Point : ['x', 'y'],
                 Line : ['pnt1', 'pnt2'],
                 Circle : 'center',
-                Arc : 'center',
+                Arc : ['pnt1', 'pnt2','center'],
             },
             'request_length': {
                 Circle : 'radius',

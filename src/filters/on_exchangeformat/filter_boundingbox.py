@@ -8,9 +8,12 @@ from filtering_pipeline.filters.abstract_filter import AbstractFilter
 from src.utils.bounding_box import compute_coords_of_entity
 from src.utils.normalize import normalize_op
 from filtering_pipeline import KO_FILTER_TAG
+from src.utils.discretization import MARGIN
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
+
+CHECK_MARGIN = MARGIN/10 # margin is smaller during checking
 
 def update_dict(d) :
     for key,elt in d.items():
@@ -99,7 +102,7 @@ class FilterBoundingBox(AbstractFilter):
 
         return message
 
-    def _check_normalization(self,margin = 1e-4)->bool:
+    def _check_normalization(self,margin = CHECK_MARGIN)->bool:
         for key, reference_list in self.references.items():
             if key in ['x', 'y']: # coordinates
                 for reference in reference_list:

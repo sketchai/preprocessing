@@ -53,9 +53,9 @@ class TestFilterEncodeNodeFeatures(unittest.TestCase):
                                                 [0, n_bins//2,  n_bins//2],
                                                 [0, n_bins-1,   n_bins-1],])
                         },
-            'LINE': {'index': torch.tensor([1]), 'value': torch.tensor([[0, n_bins//2,  n_bins//2, n_bins-1, n_bins-1]])},
-            'CIRCLE': {'index': torch.tensor([], dtype=torch.int64), 'value': torch.zeros((0,4), dtype=torch.int64)},
-            'ARC': {'index': torch.tensor([], dtype=torch.int64), 'value': torch.zeros((0,6), dtype=torch.int64)},
+            'LINE': {'index': torch.tensor([1]), 'value': torch.tensor([[0]])},
+            'CIRCLE': {'index': torch.tensor([], dtype=torch.int64), 'value': torch.zeros((0,2), dtype=torch.int64)},
+            'ARC': {'index': torch.tensor([], dtype=torch.int64), 'value': torch.zeros((0,4), dtype=torch.int64)},
             }
         
         x = message['sparse_node_features']

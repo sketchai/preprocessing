@@ -12,7 +12,7 @@ class FilterRecenterLine(FilterFunctionOnParam):
     def __init__(self, conf_filter: Dict = None):
         self.name = 'FilterRecenterLine'
         assert conf_filter is None, f'{self.name}\'s conf filter should not have parms'
-        default_conf_filter = {'request': {op: None}}
+        default_conf_filter = {'request': {('node', EntityType.Line): None}}
         super().__init__(default_conf_filter)
 
     def apply_function(self, message: object, additional_parameters) -> object:

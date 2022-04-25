@@ -2,6 +2,7 @@ from typing import Dict
 import torch
 
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
+from filtering_pipeline import KO_FILTER_TAG
 from sketch_data.primitive import Primitive
 from src.utils.maps import construct_node_map
 from src.utils import discretization
@@ -57,9 +58,11 @@ class FilterEncodeNodeFeatures(AbstractFilter):
                 type_ = op.type.name 
             node_features.append(self.node_idx_map[type_])
         node_features = torch.tensor(node_features, dtype=torch.int64)
-
-        sparse_node_features = discretization.discretization_nodes(node_ops, self.params_node)
-
+        try:
+            sparse_node_features = discretization.discretization_nodes(node_ops, self.params_node)
+        except Exception:
+            message[KO_FILTER_TAG] = self.name
+            
         mask_attention = torch.ones(self.lMax, dtype=torch.bool)
         mask_attention[:l] = False
         message['node_ops'] = node_ops
