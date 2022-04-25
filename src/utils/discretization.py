@@ -16,6 +16,7 @@ BooleanValue = enum.IntEnum(
 BooleanValue._member_map_[False] = BooleanValue.FALSE
 BooleanValue._member_map_[True] = BooleanValue.TRUE
 
+MARGIN=1e-3
 
 MARGIN = 1e-2
 
@@ -28,29 +29,31 @@ def create_params_node(n_bins=50):
 
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
-    angle_map = np.linspace(0, 2*np.pi, n_bins)  # values have been normalized first
-    length_map = np.linspace(-2**.5, 2**.5, n_bins)# values have been normalized first
+    angle_map = np.linspace(0, 2*np.pi, n_bins) # values have been normalized first
+    length_map = np.linspace(-2**.5, 2**.5, n_bins) # values have been normalized first
     coords_map = np.linspace(-1, 1, n_bins) # values have been normalized first
     
     params_node = dict([(PrimitiveType.POINT.name, dict([
                 ('status_construction', BooleanValue),
                 ('x', coords_map),
-                ('y', coords_map)])),
+                ('y', coords_map)
+                ])),
             (PrimitiveType.LINE.name, dict([
                 ('status_construction', BooleanValue),
-                ('pnt1_x', coords_map),
-                ('pnt1_y', coords_map),
-                ('pnt2_x', coords_map),
-                ('pnt2_y', coords_map)])),
+                # ('pnt1_x', coords_map),
+                # ('pnt1_y', coords_map),
+                # ('pnt2_x', coords_map),
+                # ('pnt2_y', coords_map)
+                ])),
             (PrimitiveType.CIRCLE.name, dict([
                 ('status_construction', BooleanValue),
-                ('center_x', coords_map),
-                ('center_y', coords_map),
+                # ('center_x', coords_map),
+                # ('center_y', coords_map),
                 ('radius', length_map)])),
            (PrimitiveType.ARC.name, dict([
                 ('status_construction', BooleanValue),
-                ('center_x', coords_map),
-                ('center_y', coords_map),
+                # ('center_x', coords_map),
+                # ('center_y', coords_map),
                 ('radius', length_map),
                 ('angle_start', angle_map),
                 ('angle_end', angle_map)])) ])
@@ -62,9 +65,8 @@ def create_params_edge(n_bins=50):
     Create dictionaries to discretize all the parameters of the primitives and the constraints. The values of the dictionaries are maps.
     n_bins : int, number of bins to discretize angles, positions and lengths.
     """
-    margin = 1e-3
-    angle_map = np.linspace(0, 2*np.pi, n_bins)   # values have been normalized first
-    length_map = np.linspace(-2**.5, 2**.5, n_bins)  # values have been normalized first
+    angle_map = np.linspace(0, 2*np.pi, n_bins) # values have been normalized first
+    length_map = np.linspace(-2**.5, 2**.5, n_bins) # values have been normalized first
 
     params_edge = dict([(ConstraintType.ANGLE.name, dict([
                 ('angle', angle_map)])),
@@ -108,8 +110,8 @@ def discretization_edges(ops, params_edge):
         num_feat = []
         for param, map_ in params_edge[op.type.name].items():
             if isinstance(map_, np.ndarray):
-                value = np.searchsorted(map_, op.__dict__[param])
-                assert value < len(map_)
+                value = np.searchsorted(map_, op.__dict__[param]-MARGIN)
+                assert value < len(map_), f'{map_}'
             else:
                 value = int(map_[op.__dict__[param]])
             num_feat.append(value)
@@ -148,8 +150,8 @@ def discretization_nodes(ops, params_node):
                 op_parms = op.__dict__.get(param)
             logger.info(f'param: {param}, op_param: {op_parms}')
             if isinstance(map_, np.ndarray):
-                value = np.searchsorted(map_, op_parms)
-                assert value < len(map_)
+                value = np.searchsorted(map_, op_parms-MARGIN)
+                assert value < len(map_), f'{(value,op,param)}'
             else:
                 value = int(map_[op_parms])
             num_feat.append(value)

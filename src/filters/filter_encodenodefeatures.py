@@ -2,6 +2,7 @@ from typing import Dict
 import torch
 
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
+from filtering_pipeline import KO_FILTER_TAG
 from sketch_data.primitive import Primitive
 from src.utils.maps import construct_node_map
 from src.utils import discretization

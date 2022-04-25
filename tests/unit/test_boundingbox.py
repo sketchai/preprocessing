@@ -15,10 +15,7 @@ from sketch_data.catalog_constraint import *
 from sketch_data.sketch import Sketch
 
 from filtering_pipeline import KO_FILTER_TAG
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
-
+from src.utils.logger import logger
 
 class TestFilterBoundingBox(unittest.TestCase):
 
@@ -29,7 +26,9 @@ class TestFilterBoundingBox(unittest.TestCase):
         sketch.add(Distance(references=[1,2], distance_min = 6.))
         sketch.add(Length(references=[10], length = 6.))
         sketch.add(Radius(references=[48], radius = 6.))
-        sketch.add(Arc(center = [7., -7.], radius = 7., angles = [45,90]))
+        arc = Arc(center = [7., -7.], radius = 7., angles = [.5*np.pi,np.pi])
+        arc.add_points_startend()
+        sketch.add(arc)
         sketch.add(Line(pnt1 = [8.,-8.], pnt2 = [9.,10.]))
 
         self.conf_filter = {
@@ -37,7 +36,7 @@ class TestFilterBoundingBox(unittest.TestCase):
                 Point : ['x', 'y'],
                 Line : ['pnt1', 'pnt2'],
                 Circle : 'center',
-                Arc : 'center',
+                Arc : ['pnt1', 'pnt2','center'],
             },
             'request_length': {
                 Circle : 'radius',
