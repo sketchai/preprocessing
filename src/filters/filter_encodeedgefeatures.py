@@ -1,6 +1,5 @@
 from typing import Dict
-import torch
-
+import numpy as np
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
 from filtering_pipeline import KO_FILTER_TAG
 from sketch_data.constraint import Constraint
@@ -25,7 +24,7 @@ class FilterEncodeEdgeFeatures(AbstractFilter):
     def process(self, message: object) -> object:
         sequence = message.get('sequence')
         edge_ops = [op for op in sequence if isinstance(op, Constraint)]
-        edge_features = torch.tensor([self.edge_idx_map[op.type.name] for op in edge_ops], dtype=torch.int64)
+        edge_features = np.array([self.edge_idx_map[op.type.name] for op in edge_ops], dtype=np.int64)
         try:
             sparse_edge_features = discretization.discretization_edges(edge_ops, self.params_edge)
         except Exception:
