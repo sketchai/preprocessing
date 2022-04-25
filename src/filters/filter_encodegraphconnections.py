@@ -20,30 +20,21 @@ class FilterEncodeGraphConnections(AbstractFilter):
     def process(self, message: object) -> object:
         edge_ops = message.get('edge_ops')
         logger.debug(edge_ops)
-        incidences = torch.tensor([
+        incidences = np.array([
             [op.references[0].node_index,
-             op.references[-1].node_index] for op in edge_ops], dtype=torch.int64)
+             op.references[-1].node_index] for op in edge_ops], dtype=np.int64)
         l = len(message['node_ops'])
         i_edges_given = []
         i_edges_possible = []
-        edges_exemple = torch.zeros((l, l), dtype=torch.bool)
         for i, op in enumerate(edge_ops):
-            edges_exemple[
-                op.references[0].node_index, 
-                op.references[-1].node_index] = True
-            edges_exemple[
-                op.references[-1].node_index,
-                op.references[0].node_index] = True
             if op.type.name == 'Subnode':
                 i_edges_given.append(i)
             else:
                 i_edges_possible.append(i)
         i_edges_given = np.array(i_edges_given, dtype=np.int64)
         i_edges_possible = np.array(i_edges_possible, dtype=np.int64)
-        edges_toInf_neg = torch.nonzero(torch.triu(~edges_exemple))
 
         message['incidences']= incidences
         message['i_edges_given']= i_edges_given
         message['i_edges_possible']= i_edges_possible
-        message['edges_toInf_neg']= edges_toInf_neg
         return message

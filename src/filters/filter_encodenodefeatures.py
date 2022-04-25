@@ -1,6 +1,5 @@
 from typing import Dict
-import torch
-
+import numpy as np
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
 from filtering_pipeline import KO_FILTER_TAG
 from sketch_data.primitive import Primitive
@@ -58,14 +57,14 @@ class FilterEncodeNodeFeatures(AbstractFilter):
             else:
                 type_ = op.type.name 
             node_features.append(self.node_idx_map[type_])
-        node_features = torch.tensor(node_features, dtype=torch.int64)
+        node_features = np.array(node_features, dtype=np.int64)
         try:
             sparse_node_features = discretization.discretization_nodes(node_ops, self.params_node)
         except Exception:
             message[KO_FILTER_TAG] = self.name
             return message
 
-        mask_attention = torch.ones(self.lMax, dtype=torch.bool)
+        mask_attention = np.ones(self.lMax, dtype=np.bool)
         mask_attention[:l] = False
         message['node_ops'] = node_ops
         message['node_features'] = node_features
