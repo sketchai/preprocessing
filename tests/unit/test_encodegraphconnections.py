@@ -45,7 +45,3 @@ class TestFilterEncodeGraphConnections(unittest.TestCase):
         
         # other edges
         np.testing.assert_allclose(message['i_edges_possible'], [1])
-
-        # edges not in the graph
-        torch.testing.assert_allclose(message['edges_toInf_neg'],
-            [[0,0], [0,1], [0,2], [2,2]])
