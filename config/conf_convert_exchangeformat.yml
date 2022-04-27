@@ -1,11 +1,17 @@
 General:
-  l_filters: 
+  l_filters:
     - OpSubPipelineFilter
-    - FilterLog 
+    - FilterConvertSequence
+    - FilterLog
+
   source : SourceFromFlatArray
   sink : SinkSlices
   n_process : 1
 
+SourceSub:
+  type : SourceList
+  parms:
+    l_data : TO_COMPLETE
 
 # Source
 SourceFromFlatArray:
@@ -20,24 +26,20 @@ OpSubPipelineFilter:
   sink : None
   parms:
     l_filters:
-      - FilterBoundingBox
-      - FilterModuloAngle
+      - FilterConvertMetrics
 
-SourceSub:
-  type : SourceList
-  parms:
-    l_data : TO_COMPLETE
-   
-
-FilterBoundingBox:
-  type: FilterBoundingBox
+FilterConvertMetrics:
+  type: FilterConvertMetrics
   parms:
     request: TO_COMPLETE
 
-FilterModuloAngle:
-  type: FilterModuloAngle
+FilterConvertSequence:
+  type: FilterConvertSequence
   parms:
-    request: TO_COMPLETE
+    nb_nodes: None
+    nb_edges: 1
+
+
 
 FilterLog:
   type: FilterLog
@@ -50,5 +52,4 @@ SinkSlices:
   type: SinkSlices
   parms:
     output_path: TO_COMPLETE
-    slice_length: 500000
-    clean_up: True
+    slice_length: 917979

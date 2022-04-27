@@ -2,7 +2,7 @@ import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
-from src.filters.sink_dict import SinkDict
+from src.sinks.sink_dict import SinkDict
 import json
 import os
 import logging

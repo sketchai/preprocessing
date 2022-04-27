@@ -8,6 +8,7 @@ INDEXES_PATH = d_conf['path']['indexes_path']
 WEIGHTS_PATH = d_conf['path']['weights_path']
 ENCODING_PATH = d_conf['path']['encoding_path']
 PARAMETERS_PATH = d_conf['path']['parameters_path']
+EXCHANGE_PATH = d_conf['path']['convert_exchange_path']
 
 ## Global params 
 # (these params can be changed but should stay consistent through the pipeline steps)
@@ -18,3 +19,5 @@ N_BINS = d_conf['parameters']['n_bins']
 
 L_KEEP_EDGE = d_conf['keep']['l_keep_edge']
 L_KEEP_NODE = d_conf['keep']['l_keep_node']
+L_KEEP_EDGE_SG = d_conf['keep']['l_keep_edge_SG']
+L_KEEP_NODE_SG = d_conf['keep']['l_keep_node_SG']

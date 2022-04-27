@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append('src/sketchgraphs/')
+sys.path.append('sketch_data')
 sys.path.append('src/filtering-pipeline')
 
 import unittest
@@ -8,53 +8,57 @@ import logging
 import numpy as np
 
 from src.utils.bounding_box import compute_coords_of_entity
-from src.filters.filter_boundingbox import FilterBoundingBox
-from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType, ConstraintType
+from src.filters.on_exchangeformat.filter_boundingbox import FilterBoundingBox
+
+from sketch_data.catalog_primitive import *
+from sketch_data.catalog_constraint import *
+from sketch_data.sketch import Sketch
+
 from filtering_pipeline import KO_FILTER_TAG
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
-
+from src.utils.logger import logger
 
 class TestFilterBoundingBox(unittest.TestCase):
 
     def test_last_process(self):
-        sequence_1 = [
-            NodeOp(label=EntityType.Point, parameters={'x': 1., 'y': 2.}),
-            NodeOp(label=EntityType.Circle, parameters={'xCenter': 3., 'yCenter': 4., 'radius': 5.}),
-            EdgeOp(label=ConstraintType.Distance, references=None, parameters={'length': 6.}),
-            EdgeOp(label=ConstraintType.Length, references=None, parameters={'length': 6.}),
-            EdgeOp(label=ConstraintType.Diameter, references=None, parameters={'length': 6.}),
-            EdgeOp(label=ConstraintType.Radius, references=None, parameters={'length': 6.}),
-            NodeOp(label=EntityType.Arc, parameters={'xCenter': 7., 'yCenter': -7., 'radius': 7., 'xDir': 0.,
-             'yDir': 1., 'startParam': 0, 'endParam': np.pi, 'clockwise' : True}),
-            NodeOp(label=EntityType.Line, parameters={'pntX': 8., 'pntY': -8., 'startParam': 9.,
-             'endParam': 10., 'dirX': 0., 'dirY': 1.}),
-        ]
+        sketch = Sketch()
+        sketch.add(Point(point = [1., 2.]))
+        sketch.add(Circle(center = [3., 4. ], radius = 5.))
+        sketch.add(Distance(references=[1,2], distance_min = 6.))
+        sketch.add(Length(references=[10], length = 6.))
+        sketch.add(Radius(references=[48], radius = 6.))
+        arc = Arc(center = [7., -7.], radius = 7., angles = [.5*np.pi,np.pi])
+        arc.add_points_startend()
+        sketch.add(arc)
+        sketch.add(Line(pnt1 = [8.,-8.], pnt2 = [9.,10.]))
 
         self.conf_filter = {
-            'request': {
-                ('node', EntityType.Point): ['x', 'y'],
-                ('node', EntityType.Line): ['pntX', 'pntY', 'startParam', 'endParam'],
-                ('node', EntityType.Circle): ['xCenter', 'yCenter', 'radius'],
-                ('node', EntityType.Arc): ['xCenter', 'yCenter', 'radius'],
-                ('edge', ConstraintType.Distance): 'length',
-                ('edge', ConstraintType.Length): 'length',
-                ('edge', ConstraintType.Diameter): 'length',
-                ('edge', ConstraintType.Radius): 'length',
-            }
-        }
+            'request_coord': {
+                'POINT' : ['x', 'y'],
+                'LINE' : ['pnt1', 'pnt2'],
+                'ARC' : ['pnt1', 'pnt2','center'],
+                'CIRCLE' : 'center',
+            },
+            'request_length': {
+                'ARC' : 'radius',
+                'CIRCLE' : 'radius',
+                # 'DISTANCE': 'distance_min',
+                'LENGTH': 'length',
+                'RADIUS': 'radius',
+            }}
 
-        filter1 = FilterBoundingBox(conf_filter=self.conf_filter)
 
-        for op in sequence_1:
+        filter1 = FilterBoundingBox(conf=self.conf_filter)
+
+        for op in sketch.sequence:
             message = {'op': op}
             message = filter1.process(message)
 
         message = filter1.last_process(message)
+        
 
         # check that the NodeOps are in the box
-        for op in sequence_1:
+        for op in sketch.sequence:
+
             x_coords, y_coords = compute_coords_of_entity(op)
             for coord in x_coords + y_coords:
                 self.assertGreater(coord,-0.0001)
@@ -62,11 +66,11 @@ class TestFilterBoundingBox(unittest.TestCase):
         
         # check that EdgeOps are also normalized
         constraints_parameter = [
-            sequence_1[2].parameters['length'],
-            sequence_1[3].parameters['length'],
-            sequence_1[4].parameters['length'],
-            sequence_1[5].parameters['length'],
+            # sketch.sequence[2].distance_min,
+            sketch.sequence[3].length,
+            sketch.sequence[4].radius,
         ]
+        logger.info(f'message: {constraints_parameter}')
         for parameter in constraints_parameter:
             self.assertGreater(parameter,-2**0.5 + 1e-4)
             self.assertLess(parameter,2**0.5 + 1e-4)

@@ -1,28 +1,27 @@
 #!/bin/bash
 
 #SBATCH --job-name=sketchgraphs_preprocessing
-#SBATCH --output=scripts/output_full_pipeline.out
-#SBATCH --error=scripts/output_full_pipeline.err
-#SBATCH --qos=an_all_long_rd
+#SBATCH --output=scripts/output_coarse.out
+#SBATCH --error=scripts/output_coarse.err
+#SBATCH --qos=an_all_short
 #SBATCH --partition=an
 #SBATCH --nodes=1
-#SBATCH --time=3-00:00:00
+#SBATCH --time=08:00:00
 #SBATCH --wckey="P11MM:SALOME"
 #SBATCH --exclusive
 set -x
 srun hostname
 . /home/f49681/anaconda3/etc/profile.d/conda.sh
 now=$(date +"%m_%d_%Y_%H_%M_%S")
-folder="scripts/full_pipeline_$1_$now"
+folder="scripts/convert_exchange_format_$1_$now"
 mkdir $folder
 STARTTIME=$(date +%s)
-dataset=$1
 
 conda activate sg_prep
-srun python experiments/full_pipeline.py --dataset $dataset
+srun python experiments/experiment_convert_exchange_format.py --dataset $1
 
-mv scripts/output_full_pipeline.err $folder
-mv scripts/output_full_pipeline.out $folder
+mv scripts/output_exchangeform.err $folder
+mv scripts/output_exchangeform.out $folder
 
 ENDTIME=$(date +%s)
 echo "Time spent: $((($ENDTIME - $STARTTIME)/ 60)) minutes"

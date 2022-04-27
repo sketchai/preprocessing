@@ -1,5 +1,6 @@
 General:
   l_filters:
+    - FilterFormatEncoding
     - FilterEncodeEdgeFeatures
     - FilterEncodeNodeFeatures
     - FilterEncodeGraphConnections
@@ -26,13 +27,16 @@ SinkDictFlat:
       - 'incidences'
       - 'i_edges_given'
       - 'i_edges_possible'
-      - 'edges_toInf_neg'
       - 'mask_attention'
       - 'sequence_idx'
     output_path: TO_COMPLETE
     slice_length: 100000
     clean_up: True
 
+FilterFormatEncoding:
+  type: FilterFormatEncoding
+  parms:
+    
 
 FilterEncodeEdgeFeatures:
   type: FilterEncodeEdgeFeatures
