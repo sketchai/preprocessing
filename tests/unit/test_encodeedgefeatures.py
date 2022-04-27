@@ -14,7 +14,7 @@ from src.filters.filter_encodenodefeatures import PrimitiveVoid
 from src.filters.filter_encodeedgefeatures import FilterEncodeEdgeFeatures
 from src.utils.logger import logger
 from src.filters.filter_formatencoding import SubnodeConstraint
-
+from filtering_pipeline import KO_FILTER_TAG
 
 class TestFilterEncodeEdgeFeatures(unittest.TestCase):
 
@@ -69,8 +69,7 @@ class TestFilterEncodeEdgeFeatures(unittest.TestCase):
             torch.testing.assert_allclose(value, exp_value)
 
         # Test msg with an incorrect param value
-        message = {'sequence': [EdgeOp(label=ConstraintType.Distance, references=(0,1), parameters= {
-            'direction': 'MINIMUM', 'halfSpace0': 'LEFT', 'halfSpace1': 'RIGHT', 'length': 2**0.5+0.1})]}
+        message = {'sequence': [Length(length = 2**0.5+0.1)]}
 
         answer = filter1.process(message=message)
         self.assertEqual(filter1.name,answer[KO_FILTER_TAG])

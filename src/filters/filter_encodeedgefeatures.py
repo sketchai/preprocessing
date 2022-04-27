@@ -29,6 +29,7 @@ class FilterEncodeEdgeFeatures(AbstractFilter):
             sparse_edge_features = discretization.discretization_edges(edge_ops, self.params_edge)
         except Exception:
             message[KO_FILTER_TAG] = self.name
+            return message
             
         message['edge_ops'] = edge_ops
         message['edge_features'] = edge_features
