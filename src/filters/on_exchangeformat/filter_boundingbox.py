@@ -65,15 +65,15 @@ class FilterBoundingBox(AbstractFilter):
         # Collect phase
 
         # -- Collect the coordinates
-        for couple, additional_parameters in self.request_coord.items():
-            if isinstance(op , couple) :
+        for name, additional_parameters in self.request_coord.items():
+            if op.type.name == name:
                 message = self.collect(message, additional_parameters)
                 x_coords, y_coords = compute_coords_of_entity(op) 
                 self.x_coords.extend(x_coords)
                 self.y_coords.extend(y_coords)
         # Collect phase
-        for couple, additional_parameters in self.request_length.items():
-            if isinstance(op , couple) :
+        for name, additional_parameters in self.request_length.items():
+            if op.type.name == name:
                 message = self.collect(message, additional_parameters)
                 # -- Collect the length
                 for elt in additional_parameters:
@@ -99,7 +99,6 @@ class FilterBoundingBox(AbstractFilter):
 
         if not self._check_normalization():
             message[KO_FILTER_TAG] = self.name
-
         return message
 
     def _check_normalization(self,margin = CHECK_MARGIN)->bool:
@@ -108,16 +107,19 @@ class FilterBoundingBox(AbstractFilter):
                 for reference in reference_list:
                     value = reference.__dict__.get(key)
                     if value < (0 - margin) or value > (1+ margin):
+                        logger.debug(f'found bad {key} in {reference}, v = {value}')
                         return False
             elif key in ['center', 'pnt1', 'pnt2']: # points
                 for reference in reference_list:
                     point = reference.__dict__.get(key)
                     for v in [point.x, point.y]:
                         if v < (0 - margin) or v > (1+ margin):
+                            logger.debug(f'found bad {key} in {reference}, v = {v}')
                             return False
             elif key in ['length','radius']: # length
                 for reference in reference_list:
                     value = reference.__dict__.get(key)
                     if value < (-2**.5 - margin) or value > (2**.5+ margin):
+                        logger.debug(f'found bad {key} in {reference}, v = {value}')
                         return False
         return True

@@ -7,7 +7,7 @@ from src.utils.logger import logger
 
 class FilterModuloAngle(AbstractFilter):
     """
-        A filter that transposes radiant angles in [0;2pi].
+        A filter that transforms degrees into radiant angles in [0;2pi].
     """
 
     def __init__(self, conf: Dict = {}):
@@ -16,7 +16,7 @@ class FilterModuloAngle(AbstractFilter):
         self.request = conf.get('request')
 
 
-    def apply_function(self, message: object, additional_parameters) -> object:
+    def modify_angle(self, message: object, additional_parameters) -> object:
        
         op = message.get('op')
         if isinstance(additional_parameters, str):
@@ -25,7 +25,8 @@ class FilterModuloAngle(AbstractFilter):
             list_of_params = additional_parameters
         
         for parameter_name in list_of_params:
-            value = op.__dict__.get(parameter_name) 
+            value = op.__dict__.get(parameter_name)
+            value *= np.pi/180
             value %= 2*np.pi
             op.update_parms({parameter_name: value})
         return message
@@ -35,7 +36,7 @@ class FilterModuloAngle(AbstractFilter):
         If the operation corresponds to one of the requested couple (type, label), apply function self.apply_function()
         """
         op = message.get('op')
-        for couple, additional_parameters in self.request.items():
-            if isinstance(op , couple) :
-                message = self.apply_function(message, additional_parameters)
+        for name, additional_parameters in self.request.items():
+            if op.type.name == name :
+                message = self.modify_angle(message, additional_parameters)
         return message
