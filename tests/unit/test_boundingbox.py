@@ -33,19 +33,19 @@ class TestFilterBoundingBox(unittest.TestCase):
 
         self.conf_filter = {
             'request_coord': {
-                Point : ['x', 'y'],
-                Line : ['pnt1', 'pnt2'],
-                Circle : 'center',
-                Arc : ['pnt1', 'pnt2','center'],
+                'POINT' : ['x', 'y'],
+                'LINE' : ['pnt1', 'pnt2'],
+                'ARC' : ['pnt1', 'pnt2','center'],
+                'CIRCLE' : 'center',
             },
             'request_length': {
-                Circle : 'radius',
-                Arc : 'radius',
-                # Distance: 'distance_min',
-                Length: 'length',
-                Radius: 'radius',
-            }
-        }
+                'ARC' : 'radius',
+                'CIRCLE' : 'radius',
+                # 'DISTANCE': 'distance_min',
+                'LENGTH': 'length',
+                'RADIUS': 'radius',
+            }}
+
 
         filter1 = FilterBoundingBox(conf=self.conf_filter)
 

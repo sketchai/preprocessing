@@ -64,7 +64,7 @@ class FilterEncodeNodeFeatures(AbstractFilter):
             message[KO_FILTER_TAG] = self.name
             return message
 
-        mask_attention = np.ones(self.lMax, dtype=np.bool)
+        mask_attention = np.ones(self.lMax, dtype=bool)
         mask_attention[:l] = False
         message['node_ops'] = node_ops
         message['node_features'] = node_features
