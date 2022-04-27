@@ -46,22 +46,22 @@ class ExperimentNormalization():
         self.d_conf = yaml_to_dict('config/conf_normalizationpip.yml')
         self.d_conf['FilterBoundingBox']['parms'] ={
             'request_coord': {
-                Point : ['x', 'y'],
-                Line : ['pnt1', 'pnt2'],
-                Circle : 'center',
-                Arc : ['pnt1', 'pnt2','center'],
+                'POINT' : ['x', 'y'],
+                'LINE' : ['pnt1', 'pnt2'],
+                'ARC' : ['pnt1', 'pnt2','center'],
+                'CIRCLE' : 'center',
             },
             'request_length': {
-                Circle : 'radius',
-                Arc : 'radius',
-                # Distance: 'distance_min',
-                Length: 'length',
-                Radius: 'radius',
+                'ARC' : 'radius',
+                'CIRCLE' : 'radius',
+                # 'DISTANCE': 'distance_min',
+                'LENGTH': 'length',
+                'RADIUS': 'radius',
             }}
 
         self.d_conf['FilterModuloAngle']['parms']['request'] = {
-                Arc: ["angle_start","angle_end"],
-                Angle: "angle"
+                'ARC': ["angle_start","angle_end"],
+                'ANGLE': "angle"
         }
 
         self.d_conf['SourceFromFlatArray']['parms']['file_path'] = EXCHANGE_PATH.format(dataset)
