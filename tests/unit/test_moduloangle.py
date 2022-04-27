@@ -19,15 +19,15 @@ class TestFilterModuloAngle(unittest.TestCase):
 
         conf_filter = {'request':
             {
-                Arc: ["angle_start","angle_end"],
-                Angle: "angle"
+                'ARC': ["angle_start","angle_end"],
+                'ANGLE': "angle"
             }
         }
         filter1 = FilterModuloAngle(conf_filter)
 
 
         # testing arc node
-        arc = Arc(status_construction=False, center=[0., 5.], radius=1, angles=[38.2*np.pi, 38.5*np.pi])
+        arc = Arc(status_construction=False, center=[0., 5.], radius=1, angles=[38.2*180, 38.5*180])
         message = filter1.process({'op': arc})
         
         op = message.get('op')
@@ -37,7 +37,7 @@ class TestFilterModuloAngle(unittest.TestCase):
         self.assertAlmostEqual(angle_end, 0.5*np.pi)
 
         # testing angle constraint
-        angle = Angle(references= [1,2], angle= 51*np.pi)
+        angle = Angle(references= [1,2], angle= 51*180)
         message = filter1.process({'op': angle})
 
         op = message.get('op')
