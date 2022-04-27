@@ -18,8 +18,6 @@ BooleanValue._member_map_[True] = BooleanValue.TRUE
 
 MARGIN=1e-3
 
-MARGIN = 1e-2
-
 def create_params_node(n_bins=50):
     """
     Create dictionaries to discretize all the parameters of the primitives and the constraints.
@@ -166,25 +164,3 @@ def discretization_nodes(ops, params_node):
         else:
             node_features[k]['value'] = np.empty((0, len(params_node[k])), dtype=np.int64)
     return node_features
-    
-# def sparse_feature_matrix(ops, params_op):
-#     h = len(ops)
-#     w = max((len(d) for d in params_op.values())) + 2
-#     feature_matrix = np.zeros((h,w))
-#     i = 0
-#     for index, op in enumerate(ops):
-#         if type(op) not in EDGES_PARAMETRIZED:
-#             continue
-            
-#         num_feat = []
-#         for param, map_ in params_edge[op.type.name].items():
-#             if isinstance(map_, np.ndarray):
-#                 value = np.searchsorted(map_, op.__dict__[param]-MARGIN)
-#                 assert value < len(map_), f'{map_}'
-#             else:
-#                 value = int(map_[op.__dict__[param]])
-#             num_feat.append(value)
-            
-#         edge_features[index,0] = i 
-#         edge_features[op.type.name]['value'].append(num_feat)
-#         i+=1
