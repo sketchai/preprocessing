@@ -3,7 +3,7 @@ import logging
 import numpy as np
 
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
-from sketchgraphs.data.sequence import NodeOp, EdgeOp, ConstraintType, EntityType
+from sketch_data.primitive import Primitive
 from collections import OrderedDict
 
 logging.basicConfig(level=logging.DEBUG)
@@ -38,8 +38,8 @@ class FilterParamsEncoding(AbstractFilter):
         # count the nb of param
         template_seq = list_of_sequences[0]
         for op in template_seq:
-            if isinstance(op, NodeOp):
-                l_params += len(self.nodes_parametrized.get(op.label, []))
+            if isinstance(op, Primitive):
+                l_params += len(self.nodes_parametrized.get(type(op), []))
 
         # fill the params array with the values
         params = np.zeros((n_sequences, l_params))
@@ -57,10 +57,18 @@ class FilterParamsEncoding(AbstractFilter):
         encoding = np.zeros((l_params,))
         offset = 0
         for op in seq:
-            if isinstance(op, NodeOp):
-                list_of_params = self.nodes_parametrized.get(op.label, [])
-                for j, parameter_name in enumerate(list_of_params):
-                    encoding[offset + j] = float(op.parameters.get(parameter_name))
+            if isinstance(op, Primitive):
+                list_of_params = self.nodes_parametrized.get(type(op), [])
+                logger.debug(list_of_params)
+                for j, param in enumerate(list_of_params):
+                    if param[-2:] in ['_x', '_y']:
+                        racine, coord = param.split('_')
+                        point = op.__dict__.get(racine)
+                        value = point.__dict__.get(coord)
+                    else :
+                        value = op.__dict__.get(param)
+                    logger.info(f'param: {param}, op_param: {value}')
+                    encoding[offset + j] = float(value)
 
                 offset += len(list_of_params)
 

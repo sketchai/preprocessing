@@ -100,9 +100,9 @@ class ExperimentClusterParams():
 
         self.d_conf['FilterParamsEncoding']['parms']['nodes_parametrized'] = {
             Point: ['status_construction', 'x', 'y'],
-            Line: ['status_construction', 'pnt1', 'pnt2'],
-            Circle: ['status_construction', 'center', 'radius'],
-            Arc: ['status_construction', 'center', 'radius','angle_start', 'angle_end']
+            Line: ['status_construction', 'pnt1_x', 'pnt1_y', 'pnt2_x', 'pnt2_y'],
+            Circle: ['status_construction', 'center_x', 'center_y', 'radius'],
+            Arc: ['status_construction', 'center_x', 'center_y', 'radius','angle_start', 'angle_end']
         } 
 
         self.d_conf['SourceDict']['parms']['indexes'] = INDEXES_PATH.format(dataset)
