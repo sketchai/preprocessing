@@ -5,7 +5,7 @@ sys.path.append('src/filtering-pipeline/')
 import logging
 import unittest
 import numpy as np
-from sketch_data.catalog_primitive import Point,Line
+from sketch_data.catalog_primitive import Point,Line,Arc
 from sketch_data.catalog_constraint import Distance
 from src.filters.filter_paramsencoding import FilterParamsEncoding
 from src.utils.maps import NODES_PARAMETRIZED
@@ -26,79 +26,29 @@ class TestParamsEncoding(unittest.TestCase):
         message = {'list_of_sequences': [
             [Point(status_construction = True, point = [0.1, 0.3]), Distance(references=None, distance_min=1.)],
             [Point(status_construction = False, point = [0.3, 0.6]), Distance(references=None, distance_min=1.)],
-            [Point(status_construction = False, point = [0.5, 0.0]), Distance(references=None, distance_min=1.)],
+            [Point(status_construction = False, point = [0.35, 0.6]), Distance(references=None, distance_min=1.)],
         ]}
 
         answer = filter1.process(message)
 
-        result = answer['params_array']
-        expected = np.array([
-            [1., 0., 0.5],
-            [0., 0.5, 1.],
-            [0., 1., 0.]
-        ])
+        result = answer['d_cluster']
+        expected = {
+            '[4, 0, 1]': [0],
+            '[0, 1, 2]': [1,2]
+        }
+        
 
-        np.testing.assert_allclose(result,expected)
-        self.assertEqual(answer['params_indexes'],range(3))
-
-
-        # Test with n>max_sequence_size
-        filter1 = FilterParamsEncoding(self.conf_filter)
-        message = {'list_of_sequences': [
-            [Point(status_construction=True, point=[0.1, 0.1]), Distance(references=None, distance_min=1.)],
-            [Point(status_construction=False, point=[0.3, 0.6]), Distance(references=None, distance_min=1.)],
-            [Point(status_construction=False, point=[0.5, -0.4]), Distance(references=None, distance_min=1.)],
-            [Point(status_construction=False, point=[0.5, -0.4]), Distance(references=None, distance_min=1.)],
-            [Point(status_construction=False, point=[0.5, -0.4]), Distance(references=None, distance_min=1.)],
-            [Point(status_construction=False, point=[0.5, -0.4]), Distance(references=None, distance_min=1.)],
-        ]}
-
-        answer = filter1.process(message)
-
-        result = answer['params_array']
-        indexes = answer['params_indexes']
-        logger.debug(f'{result}, {indexes}')
-        expected = np.array([
-            [1., 0., 0.5],
-            [0., 0.5, 1.],
-            [0., 1., 0.],
-            [0., 1., 0.],
-            [0., 1., 0.],
-            [0., 1., 0.],
-        ])
-        expected_reindexed = filter1._normalize(expected[indexes])
-        np.testing.assert_allclose(expected_reindexed,result)
-
+        self.assertDictEqual(result,expected)
 
     def test_encode_sequence(self):
         seq = [
             Point(status_construction=True, point=[0.1,0.2]),
             Distance(references=None, distance_min=1.),
             Line(status_construction=False, pnt1=[0.3,0.4], pnt2=[0.5,0.6]),
+            Arc(status_construction=False, center=[0.3,0.4], radius=1., angles=[2*np.pi,0])
         ]
-        l_params = 8
         filter1 = FilterParamsEncoding(self.conf_filter)
-        encoding = filter1._encode_sequence(seq, l_params)
+        encoding = filter1._encode_sequence(seq)
 
-        expected = [1., 0.1, 0.2, 0., 0.3, 0.4, 0.5, 0.6]
-        for value, check in zip(encoding, expected):
-            self.assertAlmostEqual(value, check)
-
-    def test_normalize(self):
-        array = np.array([
-            [0.00, 0.6, 0.],
-            [0.02, 0.3, 0.],
-            [0.10, 0.1, 0.],
-        ])
-
-        result = FilterParamsEncoding._normalize(array)
-        logger.debug(result)
-
-        expected = np.array([
-            [0.0, 1.0, 0.],
-            [0.2, 0.4, 0.],
-            [1.0, 0.0, 0.],
-        ])
-
-        for value, check in zip(result.flatten(), expected.flatten()):
-            self.assertAlmostEqual(value, check)
+        expected = str([4,0,1,0,1,2,2,2,0,1,2,4,25,0])
+        self.assertSequenceEqual(encoding, expected)

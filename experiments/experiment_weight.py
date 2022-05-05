@@ -18,7 +18,7 @@ from sketch_data.constraint import ConstraintType
 from sketch_data.catalog_primitive import Arc, Line, Circle, Point
 from sketch_data.catalog_constraint import *
 
-from src.sinks.sink_array import SinkArray
+from src.sinks.sink_weights import SinkWeights
 from src.sinks.sink_dict import SinkDict
 
 from src.sources.source_fromdict import SourceDict
@@ -32,7 +32,7 @@ from src.sources.source_fromflatarray import SourceFromFlatArray
 from src.filters.utils.filter_log import FilterLog
 from src.utils.to_dict import yaml_to_dict
 from filtering_pipeline.factory import pipeline_factory
-from experiments import INDEXES_PATH, NORMALIZATION_PATH, WEIGHTS_PATH
+from experiments import INDEXES_PATH, NORMALIZATION_PATH, SUBCLUSTERS_PATH, WEIGHTS_PATH, L_KEEP_EDGE, L_KEEP_NODE
 import json
 import numpy as np
 
@@ -50,16 +50,8 @@ class ExperimentClusterOrder():
             'FilterLog': FilterLog,
             }
         self.d_conf = yaml_to_dict('config/conf_clusterorder.yml')
-        self.d_conf['FilterEncodeOrder']['parms']['l_keep_edge'] = [
-            ConstraintType.COINCIDENT, ConstraintType.DISTANCE, ConstraintType.HORIZONTAL, 
-            ConstraintType.PARALLEL, ConstraintType.VERTICAL, ConstraintType.TANGENT,
-            ConstraintType.LENGTH, ConstraintType.HORIZONTAL_LENGTH, ConstraintType.VERTICAL_LENGTH,
-            ConstraintType.PERPENDICULAR, ConstraintType.MIDPOINT,
-            ConstraintType.EQUAL, ConstraintType.RADIUS, ConstraintType.ANGLE]
-
-        self.d_conf['FilterEncodeOrder']['parms']['l_keep_node'] = [
-            PrimitiveType.POINT, PrimitiveType.LINE,
-            PrimitiveType.CIRCLE, PrimitiveType.ARC]
+        self.d_conf['FilterEncodeOrder']['parms']['l_keep_edge'] = L_KEEP_EDGE
+        self.d_conf['FilterEncodeOrder']['parms']['l_keep_node'] = L_KEEP_NODE
 
         self.d_conf['SourceFromFlatArray']['parms']['file_path'] = NORMALIZATION_PATH.format(dataset)
         self.d_conf['SinkDict']['parms']['output_path'] = INDEXES_PATH.format(dataset)
@@ -94,7 +86,7 @@ class ExperimentClusterParams():
             'FilterClusterParamValues': FilterClusterParamValues,
             'FilterParamsEncoding': FilterParamsEncoding,
             'FilterLog': FilterLog,
-            'SinkArray': SinkArray,
+            'SinkWeights': SinkWeights,
             }
         self.d_conf = yaml_to_dict('config/conf_clusterparams.yml')
 
@@ -103,11 +95,13 @@ class ExperimentClusterParams():
             Line: ['status_construction', 'pnt1_x', 'pnt1_y', 'pnt2_x', 'pnt2_y'],
             Circle: ['status_construction', 'center_x', 'center_y', 'radius'],
             Arc: ['status_construction', 'center_x', 'center_y', 'radius','angle_start', 'angle_end']
-        } 
+        }
 
         self.d_conf['SourceDict']['parms']['indexes'] = INDEXES_PATH.format(dataset)
         self.d_conf['SourceDict']['parms']['data'] = NORMALIZATION_PATH.format(dataset)
-        self.d_conf['SinkArray']['parms']['output_path'] = WEIGHTS_PATH.format(dataset)
+        self.d_conf['SinkWeights']['parms']['output_path'] = WEIGHTS_PATH.format(dataset)
+        self.d_conf['SinkWeights']['parms']['output_path_json'] = SUBCLUSTERS_PATH.format(dataset)
+
         
 
     def run_pipeline(self):
@@ -119,7 +113,7 @@ class ExperimentClusterParams():
         input_path = self.d_conf['SourceDict']['parms']['data']
         input_data = flat_array.load_flat_array(input_path)
 
-        output_path = self.d_conf['SinkArray']['parms']['output_path']
+        output_path = self.d_conf['SinkWeights']['parms']['output_path']
         output_data = np.load(output_path)
 
         logger.info(f'Pipeline input is of length {len(input_data)}')
