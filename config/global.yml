@@ -4,6 +4,7 @@ path:
   normalization_path: 'out/normalization_output_{}.npy'
   convert_exchange_path: 'out/convert_exchange_output_{}.npy'
   indexes_path: 'out/indexes_cluster_order_{}.json'
+  subclusters_path: 'out/indexes_subclusters_{}.json'
   weights_path: 'out/sg_{}_weights.npy'
   encoding_path: 'out/sg_{}_final.npy'
   parameters_path: 'out/preprocessing_params.pkl'

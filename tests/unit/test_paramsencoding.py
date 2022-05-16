@@ -1,13 +1,14 @@
 import sys
-sys.path.append('src/sketchgraphs/')
+sys.path.append('sketch_data/')
 sys.path.append('src/filtering-pipeline/')
 
 import logging
 import unittest
 import numpy as np
-from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
+from sketch_data.catalog_primitive import Point,Line,Arc
+from sketch_data.catalog_constraint import Distance
 from src.filters.filter_paramsencoding import FilterParamsEncoding
-
+from src.utils.maps import NODES_PARAMETRIZED
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -17,96 +18,37 @@ class TestParamsEncoding(unittest.TestCase):
 
     @classmethod
     def setUp(self):
-        NODES_PARAMETRIZED = {
-            EntityType.Point: ['isConstruction', 'x', 'y'],
-            EntityType.Line: ['isConstruction', 'dirX', 'dirY', 'pntX', 'pntY', 'startParam', 'endParam'],
-            EntityType.Circle: ['isConstruction', 'xCenter', 'yCenter', 'xDir', 'yDir', 'radius', 'clockwise'],
-            EntityType.Arc: ['isConstruction', 'xCenter', 'yCenter', 'xDir', 'yDir', 'radius', 'startParam', 'endParam', 'clockwise'],
-        }
-
         self.conf_filter = {'nodes_parametrized': NODES_PARAMETRIZED, 'max_cluster_size': 5}
 
     def test_process(self):
         # Test with n<=max_cluster_size
         filter1 = FilterParamsEncoding(self.conf_filter)
         message = {'list_of_sequences': [
-            [NodeOp(0, parameters={'isConstruction': True, 'x': 0.1, 'y': 0.1}), EdgeOp(8, references=(0,)), ],
-            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.3, 'y': 0.6}), EdgeOp(8, references=(0,)), ],
-            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.5, 'y': -0.4}), EdgeOp(8, references=(0,)), ],
+            [Point(status_construction = True, point = [0.1, 0.3]), Distance(references=None, distance_min=1.)],
+            [Point(status_construction = False, point = [0.3, 0.6]), Distance(references=None, distance_min=1.)],
+            [Point(status_construction = False, point = [0.35, 0.6]), Distance(references=None, distance_min=1.)],
         ]}
 
         answer = filter1.process(message)
 
-        result = answer['params_array']
-        expected = np.array([
-            [1., 0., 0.5],
-            [0., 0.5, 1.],
-            [0., 1., 0.]
-        ])
+        result = answer['d_cluster']
+        expected = {
+            '[4, 0, 1]': [0],
+            '[0, 1, 2]': [1,2]
+        }
+        
 
-        np.testing.assert_allclose(result,expected)
-        self.assertEqual(answer['params_indexes'],range(3))
-
-
-        # Test with n>max_sequence_size
-        filter1 = FilterParamsEncoding(self.conf_filter)
-        message = {'list_of_sequences': [
-            [NodeOp(0, parameters={'isConstruction': True, 'x': 0.1, 'y': 0.1}), EdgeOp(8, references=(0,)), ],
-            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.3, 'y': 0.6}), EdgeOp(8, references=(0,)), ],
-            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.5, 'y': -0.4}), EdgeOp(8, references=(0,)), ],
-            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.5, 'y': -0.4}), EdgeOp(8, references=(0,)), ],
-            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.5, 'y': -0.4}), EdgeOp(8, references=(0,)), ],
-            [NodeOp(0, parameters={'isConstruction': False, 'x': 0.5, 'y': -0.4}), EdgeOp(8, references=(0,)), ],
-        ]}
-
-        answer = filter1.process(message)
-
-        result = answer['params_array']
-        indexes = answer['params_indexes']
-        logger.debug(f'{result}, {indexes}')
-        expected = np.array([
-            [1., 0., 0.5],
-            [0., 0.5, 1.],
-            [0., 1., 0.],
-            [0., 1., 0.],
-            [0., 1., 0.],
-            [0., 1., 0.],
-        ])
-        expected_reindexed = filter1._normalize(expected[indexes])
-        np.testing.assert_allclose(expected_reindexed,result)
-
+        self.assertDictEqual(result,expected)
 
     def test_encode_sequence(self):
         seq = [
-            NodeOp(7),
-            NodeOp(0, parameters={'isConstruction': True, 'x': 0.1, 'y': 0.2}),
-            EdgeOp(8, references=(0,), parameters={'length': 12}),
-            NodeOp(1, parameters={'isConstruction': False, 'dirX': 0.3, 'dirY': 0.4,
-                                  'pntX': 0.5, 'pntY': 0.6, 'startParam': 0., 'endParam': 0.7}),
+            Point(status_construction=True, point=[0.1,0.2]),
+            Distance(references=None, distance_min=1.),
+            Line(status_construction=False, pnt1=[0.3,0.4], pnt2=[0.5,0.6]),
+            Arc(status_construction=False, center=[0.3,0.4], radius=1., angles=[2*np.pi,0])
         ]
-        l_params = 10
         filter1 = FilterParamsEncoding(self.conf_filter)
-        encoding = filter1._encode_sequence(seq, l_params)
+        encoding = filter1._encode_sequence(seq)
 
-        expected = [1., 0.1, 0.2, 0., 0.3, 0.4, 0.5, 0.6, 0., 0.7]
-        for value, check in zip(encoding, expected):
-            self.assertAlmostEqual(value, check)
-
-    def test_normalize(self):
-        array = np.array([
-            [0.00, 0.6, 0.],
-            [0.02, 0.3, 0.],
-            [0.10, 0.1, 0.],
-        ])
-
-        result = FilterParamsEncoding._normalize(array)
-        logger.debug(result)
-
-        expected = np.array([
-            [0.0, 1.0, 0.],
-            [0.2, 0.4, 0.],
-            [1.0, 0.0, 0.],
-        ])
-
-        for value, check in zip(result.flatten(), expected.flatten()):
-            self.assertAlmostEqual(value, check)
+        expected = str([4,0,1,0,1,2,2,2,0,1,2,4,25,0])
+        self.assertSequenceEqual(encoding, expected)
