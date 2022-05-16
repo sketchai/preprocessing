@@ -38,5 +38,7 @@ class SourceDict(SourceFilter):
     
         for list_of_indexes in self.d_indexes.values():
             list_of_sequences = [self.values[i] for i in list_of_indexes]
-            yield {'list_of_sequences': list_of_sequences}
+            yield {
+                'list_of_sequences': list_of_sequences,
+                'list_of_indexes': list_of_indexes}
         logger.info('Stop generator')

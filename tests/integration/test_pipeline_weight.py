@@ -7,7 +7,7 @@ import unittest
 import logging
 
 from experiments.experiment_weight import ExperimentClusterOrder, ExperimentClusterParams
-from tests import MOCK_NORMALIZATION_PATH, MOCK_INDEXES_PATH, MOCK_WEIGHTS_PATH
+from tests import MOCK_NORMALIZATION_PATH, MOCK_INDEXES_PATH, MOCK_SUBCLUSTERS_PATH, MOCK_WEIGHTS_PATH
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -27,6 +27,8 @@ class TestExperimentClusterParams(unittest.TestCase):
         experiment = ExperimentClusterParams()
         experiment.d_conf['SourceDict']['parms']['indexes'] = MOCK_INDEXES_PATH
         experiment.d_conf['SourceDict']['parms']['data'] = MOCK_NORMALIZATION_PATH
-        experiment.d_conf['SinkArray']['parms']['output_path'] = MOCK_WEIGHTS_PATH
+        experiment.d_conf['SinkWeights']['parms']['output_path'] = MOCK_WEIGHTS_PATH
+        experiment.d_conf['SinkWeights']['parms']['output_path_json'] = MOCK_SUBCLUSTERS_PATH
+
 
         experiment.run_pipeline()
