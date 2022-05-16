@@ -29,6 +29,8 @@ class FilterModuloAngle(AbstractFilter):
             value *= np.pi/180
             value %= 2*np.pi
             op.update_parms({parameter_name: value})
+        if op.type.name == 'ARC':
+            op.radian = True
         return message
 
     def process(self, message: object) -> object:
