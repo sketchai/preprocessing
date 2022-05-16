@@ -1,9 +1,0 @@
-TODO:
-
-- Parser pour le fichier de config : mettre les tests en place.
-- Tester avec une pipeline 'simple'
-- Tester avec une pipeline plus complexe
-
-- Implémenter une pipeline minimale ac les premiers filtres d'Odilon
-
-- lancer test test_pipeline_coarsegrained
