@@ -3,8 +3,8 @@ import enum
 import torch
 
 
-from sketch_data.primitive import PrimitiveType
-from sketch_data.constraint import ConstraintType
+from sam.primitive import PrimitiveType
+from sam.constraint import ConstraintType
 
 from src.utils.maps import NODES_PARAMETRIZED, EDGES_PARAMETRIZED
 from src.utils.logger import logger

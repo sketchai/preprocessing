@@ -3,7 +3,7 @@ import logging
 import numpy as np
 
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
-from sketch_data.primitive import Primitive
+from sam.primitive import Primitive
 from collections import OrderedDict, defaultdict
 
 logging.basicConfig(level=logging.DEBUG)

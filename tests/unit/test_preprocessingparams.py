@@ -1,19 +1,17 @@
 import os
 import sys
 
-sys.path.append('sketch_data/')
+sys.path.append('sam/')
 sys.path.append('src/filtering-pipeline/')
 
-import logging
 import unittest
 import pickle
 from experiments import DOF_MAX, L_MAX, L_MIN, N_BINS
 from experiments.preprocessing_params import export_parameters
-from sketch_data.primitive import PrimitiveType
-from sketch_data.constraint import ConstraintType
+from sam.primitive import PrimitiveType
+from sam.constraint import ConstraintType
+from src.utils.logger import logger
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
 
 class TestPreprocessingParams(unittest.TestCase):
 

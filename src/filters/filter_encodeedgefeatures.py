@@ -2,7 +2,7 @@ from typing import Dict
 import numpy as np
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
 from filtering_pipeline import KO_FILTER_TAG
-from sketch_data.constraint import Constraint
+from sam.constraint import Constraint
 from src.utils.maps import construct_edge_map, construct_edge_map
 from src.utils import discretization
 from src.utils.logger import logger

@@ -1,8 +1,8 @@
 import math
 import numpy as np
 
-from sketch_data.catalog_primitive import *
-from sketch_data.catalog_constraint import *
+from sam.catalog_primitive import *
+from sam.catalog_constraint import *
 
 def compute_coords_of_entity(op):
     x_coords = []

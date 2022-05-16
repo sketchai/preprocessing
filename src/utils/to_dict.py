@@ -2,8 +2,8 @@ from collections import defaultdict
 from typing import Dict
 import collections.abc
 import yaml
-from sketch_data.constraint import ConstraintType
-from sketch_data.primitive import PrimitiveType
+from sam.constraint import ConstraintType
+from sam.primitive import PrimitiveType
 PRIMITIVE_TYPE_MAPPING = {p.name: p for p in PrimitiveType}
 CONSTRAINT_TYPE_MAPPING = {c.name: c for c in ConstraintType}
 

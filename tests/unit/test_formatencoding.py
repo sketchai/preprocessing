@@ -1,12 +1,12 @@
 import sys
 sys.path.append('src/sketchgraphs/')
-sys.path.append('sketch_data/')
+sys.path.append('sam/')
 sys.path.append('src/filtering-pipeline/')
 
 import unittest
-from sketch_data.primitive import Primitive, PrimitiveType
-from sketch_data.catalog_primitive import Arc, Line, Circle, Point
-from sketch_data.catalog_constraint import Length, Distance
+from sam.primitive import Primitive, PrimitiveType
+from sam.catalog_primitive import Arc, Line, Circle, Point
+from sam.catalog_constraint import Length, Distance
 from src.filters.filter_formatencoding import format_for_encoding
 from src.utils.logger import logger
 

@@ -33,7 +33,7 @@ from sketchgraphs.data.sequence import ConstraintType, EntityType
 
 logger = logging.getLogger()
 
-class ExperimentConvertExchangeFormat():
+class ExperimentConvertSAM():
 
     def __init__(self, dataset='train'):
         self.catalog_filters = {
@@ -45,7 +45,7 @@ class ExperimentConvertExchangeFormat():
             'FilterLog': FilterLog,
             'SinkSlices': SinkSlices
             }
-        self.d_conf = yaml_to_dict('config/conf_convert_exchangeformat.yml')
+        self.d_conf = yaml_to_dict('config/conf_convert_sam.yml')
 
 
         self.d_conf['SourceFromFlatArray']['parms']['file_path'] = COARSE_PATH.format(dataset)
@@ -85,7 +85,7 @@ def main():
     parser = argparse.ArgumentParser(description='Run Weights pipeline')
     parser.add_argument('--dataset', help='train, validation or test')
     args = parser.parse_args()
-    ExperimentConvertExchangeFormat(dataset=args.dataset).run_pipeline()
+    ExperimentConvertSAM(dataset=args.dataset).run_pipeline()
 
 if __name__ == '__main__':
     main()

@@ -1,21 +1,18 @@
 import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
-sys.path.append('sketch_data/')
-sys.path.append('src/sketchgraphvsexchangeformat/')
+sys.path.append('sam/')
+sys.path.append('src/sketchgraphvssam/')
 
 from filtering_pipeline import KO_FILTER_TAG
 from sketchgraphs.data.sequence import EdgeOp, NodeOp
-from sketch_data.catalog_primitive import Arc, Line, Circle, Point
-from sketch_data.catalog_constraint import *
+from sam.catalog_primitive import Arc, Line, Circle, Point
+from sam.catalog_constraint import *
 
 from src.filters.filter_convert_exchangeformat import FilterConvertSequence
-import logging
+from src.utils.logger import logger
 import unittest
 
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
 
 
 class TestFilterCount(unittest.TestCase):

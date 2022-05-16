@@ -2,8 +2,8 @@ from typing import Dict
 import logging
 
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
-from sketch_data.primitive import Primitive
-from sketch_data.constraint import Constraint
+from sam.primitive import Primitive
+from sam.constraint import Constraint
 from src.utils.maps import construct_edge_map, construct_node_map
 from src import OPS_ENCODING_TAG
 

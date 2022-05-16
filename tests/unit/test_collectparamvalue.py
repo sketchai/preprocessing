@@ -4,12 +4,9 @@ sys.path.append('src/filtering-pipeline/')
 
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
 from src.filters.utils.filter_collectparamvalue import FilterCollectParamValue
-import logging
+
 import unittest
-
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
+from src.utils.logger import logger
 
 
 class TestFilterCollectParamValue(unittest.TestCase):

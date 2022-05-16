@@ -2,8 +2,8 @@ import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
 
-from sketch_data.catalog_primitive import Point
-from sketch_data.catalog_constraint import Distance
+from sam.catalog_primitive import Point
+from sam.catalog_constraint import Distance
 from src.filters.filter_clusterparamvalues import FilterClusterParamValues
 import unittest
 import logging

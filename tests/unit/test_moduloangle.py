@@ -1,6 +1,6 @@
 import sys
 sys.path.append('src/filtering-pipeline/')
-sys.path.append('sketch_data/')
+sys.path.append('sam/')
 
 import unittest
 import numpy as np
@@ -8,8 +8,8 @@ import numpy as np
 from src.filters.on_exchangeformat.filter_moduloangle import FilterModuloAngle
 from src.utils.logger import logger
 
-from sketch_data.catalog_primitive import Arc
-from sketch_data.catalog_constraint import Angle
+from sam.catalog_primitive import Arc
+from sam.catalog_constraint import Angle
 
 
 

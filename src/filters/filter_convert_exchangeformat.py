@@ -3,7 +3,7 @@ import logging
 from filtering_pipeline import KO_FILTER_TAG
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
 
-from src.sketchgraphvsexchangeformat.convert.convert_sequence import convert_sequence
+from src.sketchgraphvssam.convert.convert_sequence import convert_sequence
 
 class FilterConvertSequence(AbstractFilter):
     def __init__(self, conf: Dict):

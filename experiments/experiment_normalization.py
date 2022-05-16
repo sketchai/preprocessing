@@ -6,15 +6,15 @@ import logging
 if __name__ == '__main__':
     # Add paths for packages
     sys.path.append('src/filtering-pipeline/')
-    sys.path.append('sketch_data/')
+    sys.path.append('sam/')
     cur_path = os.path.abspath(os.path.dirname(__file__))
     sys.path.insert(0, cur_path + "/..")
     logging.basicConfig(level=logging.WARNING)
 else:
     logging.basicConfig(level=logging.DEBUG)
 
-from sketch_data.catalog_primitive import *
-from sketch_data.catalog_constraint import *
+from sam.catalog_primitive import *
+from sam.catalog_constraint import *
 
 from src.sources.source_fromlist import SourceList
 from src.sources.source_fromflatarray import SourceFromFlatArray

@@ -2,15 +2,15 @@ import math
 import sys
 from weakref import ref
 sys.path.append('src/sketchgraphs/')
-sys.path.append('sketch_data/')
+sys.path.append('sam/')
 sys.path.append('src/filtering-pipeline/')
 
 import torch
 import unittest
-from sketch_data.primitive import Primitive, PrimitiveType
-from sketch_data.constraint import Constraint, ConstraintType
-from sketch_data.catalog_primitive import Arc, Line, Circle, Point
-from sketch_data.catalog_constraint import *
+from sam.primitive import Primitive, PrimitiveType
+from sam.constraint import Constraint, ConstraintType
+from sam.catalog_primitive import Arc, Line, Circle, Point
+from sam.catalog_constraint import *
 from src.filters.filter_encodenodefeatures import PrimitiveVoid
 from src.filters.filter_encodeedgefeatures import FilterEncodeEdgeFeatures
 from src.utils.logger import logger

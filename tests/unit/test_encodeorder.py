@@ -1,13 +1,13 @@
 import sys
-sys.path.append('sketch_data/')
+sys.path.append('sam/')
 sys.path.append('src/filtering-pipeline/')
 
 import logging
 import unittest
-from sketch_data.primitive import PrimitiveType
-from sketch_data.constraint import ConstraintType
-from sketch_data.catalog_primitive import *
-from sketch_data.catalog_constraint import *
+from sam.primitive import PrimitiveType
+from sam.constraint import ConstraintType
+from sam.catalog_primitive import *
+from sam.catalog_constraint import *
 from src.filters.filter_encodeorder import FilterEncodeOrder
 from src import OPS_ENCODING_TAG
 

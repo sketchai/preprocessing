@@ -1,8 +1,8 @@
 from typing import Dict
-import logging
+
 import torch
 import numpy as np
-from sketch_data.constraint import ConstraintType
+from sam.constraint import ConstraintType
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
 from src.utils.maps import construct_edge_map
 from src.utils.logger import logger

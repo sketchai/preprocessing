@@ -1,5 +1,8 @@
-from sketch_data.primitive import Primitive
-from sketch_data.constraint import Constraint
+import sys
+sys.path.append('sam/')
+
+from sam.primitive import Primitive
+from sam.constraint import Constraint
 TYPE_OF_OP_FROM_NAME = {'primitive' : Primitive, 'constraint': Constraint}
 try:
     from sketchgraphs.data.sequence import EdgeOp, NodeOp

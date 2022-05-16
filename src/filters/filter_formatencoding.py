@@ -1,8 +1,8 @@
 from typing import Dict
 from filtering_pipeline.filters.abstract_filter import AbstractFilter
-from sketch_data.catalog_primitive import Point, Line, Circle, Arc
-from sketch_data.primitive import Primitive
-from sketch_data.constraint import Constraint
+from sam.catalog_primitive import Point, Line, Circle, Arc
+from sam.primitive import Primitive
+from sam.constraint import Constraint
 from src.utils.logger import logger
 
 class SubnodeConstraint(Constraint):

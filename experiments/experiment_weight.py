@@ -4,7 +4,7 @@ import os
 import logging
 
 if __name__ == '__main__':
-    sys.path.append('sketch_data/')
+    sys.path.append('sam/')
     sys.path.append('src/filtering-pipeline/')
     cur_path = os.path.abspath(os.path.dirname(__file__))
     sys.path.insert(0, cur_path + "/..")
@@ -13,10 +13,10 @@ else:
     logging.basicConfig(level=logging.DEBUG)
 
 from src.utils import flat_array
-from sketch_data.primitive import PrimitiveType
-from sketch_data.constraint import ConstraintType
-from sketch_data.catalog_primitive import Arc, Line, Circle, Point
-from sketch_data.catalog_constraint import *
+from sam.primitive import PrimitiveType
+from sam.constraint import ConstraintType
+from sam.catalog_primitive import Arc, Line, Circle, Point
+from sam.catalog_constraint import *
 
 from src.sinks.sink_weights import SinkWeights
 from src.sinks.sink_dict import SinkDict

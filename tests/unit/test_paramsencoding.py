@@ -1,17 +1,14 @@
 import sys
-sys.path.append('sketch_data/')
+sys.path.append('sam/')
 sys.path.append('src/filtering-pipeline/')
 
-import logging
 import unittest
 import numpy as np
-from sketch_data.catalog_primitive import Point,Line,Arc
-from sketch_data.catalog_constraint import Distance
+from sam.catalog_primitive import Point,Line,Arc
+from sam.catalog_constraint import Distance
 from src.filters.filter_paramsencoding import FilterParamsEncoding
 from src.utils.maps import NODES_PARAMETRIZED
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
+from src.utils.logger import logger
 
 
 class TestParamsEncoding(unittest.TestCase):

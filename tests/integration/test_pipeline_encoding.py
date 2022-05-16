@@ -1,15 +1,12 @@
 import sys
-sys.path.append('sketch_data/')
+sys.path.append('sam/')
 sys.path.append('src/filtering-pipeline')
 
 import unittest
-import logging
 from tests import MOCK_ENCODING_PATH, MOCK_NORMALIZATION_PATH
 from experiments.experiment_encoding import ExperimentEncoding
 from src.utils.flat_array import load_flat_array
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
+from src.utils.logger import logger
 
 class TestExperimentEncoding(unittest.TestCase):
 

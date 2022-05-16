@@ -5,12 +5,9 @@ sys.path.append('src/filtering-pipeline/')
 from filtering_pipeline import KO_FILTER_TAG
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, ConstraintType, EntityType
 from src.filters.filter_convertmetrics import FilterConvertMetrics
-import logging
+
 import unittest
-
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
+from src.utils.logger import logger
 
 NB_RGX = r'[-+]?(?:\d*\.\d+|\d+)'
 

@@ -1,18 +1,17 @@
 import sys
 
-sys.path.append('sketch_data')
+sys.path.append('sam')
 sys.path.append('src/filtering-pipeline')
 
 import unittest
-import logging
 import numpy as np
 
 from src.utils.bounding_box import compute_coords_of_entity
 from src.filters.on_exchangeformat.filter_boundingbox import FilterBoundingBox
 
-from sketch_data.catalog_primitive import *
-from sketch_data.catalog_constraint import *
-from sketch_data.sketch import Sketch
+from sam.catalog_primitive import *
+from sam.catalog_constraint import *
+from sam.sketch import Sketch
 
 from filtering_pipeline import KO_FILTER_TAG
 from src.utils.logger import logger

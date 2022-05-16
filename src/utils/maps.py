@@ -1,7 +1,7 @@
 from typing import List, Dict
 
-from sketch_data.catalog_primitive import *
-from sketch_data.catalog_constraint import *
+from sam.catalog_primitive import *
+from sam.catalog_constraint import *
 
 from src.utils.logger import logger
 

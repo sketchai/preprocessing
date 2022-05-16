@@ -1,15 +1,15 @@
 import sys
-sys.path.append('sketch_data/')
+sys.path.append('sam/')
 sys.path.append('src/filtering-pipeline/')
 
 import numpy as np
 import torch
 import logging
 import unittest
-from sketch_data.primitive import Primitive, PrimitiveType
-from sketch_data.constraint import Constraint, ConstraintType
-from sketch_data.catalog_primitive import Arc, Line, Circle, Point
-from sketch_data.catalog_constraint import *
+from sam.primitive import Primitive, PrimitiveType
+from sam.constraint import Constraint, ConstraintType
+from sam.catalog_primitive import Arc, Line, Circle, Point
+from sam.catalog_constraint import *
 from src.filters.filter_encodenodefeatures import PrimitiveVoid
 from src.utils.logger import logger
 from src.filters.filter_formatencoding import SubnodeConstraint

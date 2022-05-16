@@ -1,15 +1,12 @@
 import sys
 sys.path.append('src/sketchgraphs/')
 sys.path.append('src/filtering-pipeline/')
+import unittest
 
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
 from src.filters.filter_barycenter import FilterBarycenter
-import logging
-import unittest
+from src.utils.logger import logger
 
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
 
 
 class TestFilterBarycenter(unittest.TestCase):
