@@ -37,8 +37,9 @@ class SinkWeights(AbstractFilter):
 
     def last_process(self, message: Dict) -> Dict:
         indexes = np.concatenate(self.collect_indexes)
+        argsort=np.argsort(indexes)
         concat_data = np.concatenate(self.collect_data)
-        weights = concat_data[indexes]
+        weights = concat_data[argsort]
         logger.debug(f'Writing {len(weights)} weights to {self.output_path}')
         np.save(self.output_path, weights, allow_pickle=False)
 
