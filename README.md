@@ -39,21 +39,28 @@ To update package dependencies,
 
 2. Install our gitlab package [FilteringPipeline](https://gitlab.pam-retd.fr/cao_ml/python_packages/abstractfilters/filteringpipeline):
 ```bash
-    pip install -e git+https://gitlab.pleiade.edf.fr/cao_ml/toolbox/filteringpipeline.git#egg=filtering-pipeline
+    pip install -e git+https://github.com/sketchai/filteringpipeline#egg=filtering-pipeline
 ```
 
 3. Install sktechgraphs: to avoid unwanted evolution, use a cloned version on the EDF repo:
 
 ```bash
-    pip install -e git+https://gitlab.pleiade.edf.fr/cao_ml/sketchgraphs_for_edf/sketchgraphs.git#egg=sketchgraphs
-```
-
-Otherwise, use the original github repository:
-
-```bash
     pip install -e git+https://github.com/PrincetonLIPS/SketchGraphs.git@2fbf9e5e84031b233325331c95880a86448e5bee#egg=sketchgraphs
 ```
 
+4. Install SAM package language
+```bash
+    pip install -e git+https://github.com/sketchai/sam#egg=sam
+```
+
+(or use a symlink for the dependencies).
+
+
+5. Install sketchgraph_vs_sam package that allows to convert the sketchgraph object to sam data model
+
+```bash
+    pip install -e git+https://github.com/sketchai/sketchgraph_vs_sam#egg=sketchgraph_vs_sam
+```
 
 ## Testing 
 
