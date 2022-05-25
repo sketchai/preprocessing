@@ -31,7 +31,7 @@ logger = logging.getLogger()
 
 class ExperimentCoarse():
     
-    def __init__(self):
+    def __init__(self, dataset='merged'):
         self.catalog_filters = {
             'SourceFromFlatArray': SourceFromFlatArray,
             'OpSubPipelineFilter': OpSubPipelineFilter,
@@ -62,8 +62,8 @@ class ExperimentCoarse():
         self.d_conf['FilterCheckParamsMetrics_Angle']['parms']['request'] = {
             ('edge', ConstraintType.Angle): {'angle': r'[-+]?(?:\d*\.\d+|\d+) DEGREE'},
         }
-        self.d_conf['SourceFromFlatArray']['parms']['file_path'] = SKETCHGRAPHS_PATH
-        self.d_conf['SinkSlices']['parms']['output_path'] = COARSE_PATH
+        self.d_conf['SourceFromFlatArray']['parms']['file_path'] = SKETCHGRAPHS_PATH.format(dataset)
+        self.d_conf['SinkSlices']['parms']['output_path'] = COARSE_PATH.format(dataset)
 
     def run_pipeline(self):
         pipeline = pipeline_factory(conf=self.d_conf, catalog_filter=self.catalog_filters)

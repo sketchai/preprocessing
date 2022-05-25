@@ -21,7 +21,6 @@ def merge(path, pack_dict=False):
     for split in ('train','test','validation'):
         paths.append(path.format(split))
     array = merge_array_slices(slice_path_list=paths)
-    merge_dir = os.path.abspath(os.path.dirname(path))
     merge_path = path.format('merged')
     if pack_dict:
         array = flat_array.pack_dictionary_flat({

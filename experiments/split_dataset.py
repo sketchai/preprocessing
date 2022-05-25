@@ -60,10 +60,14 @@ def split(
             np.save(w_path, w_array)
 
 
-if __name__ == '__main__':
+def main():
     encoded_dataset = ENCODING_PATH.format('merged')
     cluster_path = INDEXES_PATH.format('merged')
     weights_path = WEIGHTS_PATH.format('merged')
     subcluster_path = SUBCLUSTERS_PATH.format('merged')
 
     split(encoded_dataset,cluster_path,weights_path,subcluster_path)
+
+
+if __name__ == '__main__':
+    main()

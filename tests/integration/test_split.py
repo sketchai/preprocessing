@@ -15,4 +15,4 @@ class TestSplit(unittest.TestCase):
         cluster_path = MOCK_INDEXES_PATH
         weights_path = MOCK_WEIGHTS_PATH
         subcluster_path = MOCK_SUBCLUSTERS_PATH
-        split(normalized_dataset,encoded_dataset,cluster_path,weights_path,subcluster_path,test_ratio=0.2, val_ratio=0.2)
+        split(encoded_dataset,cluster_path,weights_path,subcluster_path,test_ratio=0.2, val_ratio=0.2)
