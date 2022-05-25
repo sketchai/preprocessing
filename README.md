@@ -87,18 +87,28 @@ ln -s path/to/your/data/folder data
 The corresponding folder should contain the `sg_t16_train` `test` and `validation.npy` files.
 Otherwise make sure to configure the correct paths to the sketchgraphs dataset in the `config/global.yml` file
 
+In order to properly split the dataset, files must be merged first by running
+
+```sh
+python experiments/merge_dataset.py
+```
 
 Launch script on your pc
 ```sh
 # to run the complete pipeline
-python experiments/full_pipeline.py --dataset test
+python experiments/full_pipeline.py 
 
 # or run only one specific step
-python experiments/experiment_coarse.py --dataset test
-python experiments/experiment_convert_exchangeformat.py --dataset test
-python experiments/experiment_normalization.py --dataset test
-python experiments/experiment_weight.py --dataset test
-python experiments/experiment_encoding.py --dataset test
+python experiments/experiment_coarse.py 
+python experiments/experiment_convert_exchangeformat.py 
+python experiments/experiment_normalization.py 
+python experiments/experiment_weight.py 
+python experiments/experiment_encoding.py
+
+# Split btw train test and val
+python experiments/split_dataset.py
+
+# Save params
 python experiments/preprocessing_params.py
 ```
 

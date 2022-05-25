@@ -38,7 +38,7 @@ logger = logging.getLogger()
 
 class ExperimentClusterOrder():
 
-    def __init__(self, dataset='train'):
+    def __init__(self, dataset='merged'):
         self.catalog_filters = {
             'SourceFromFlatArray': SourceFromFlatArray,
             'SinkDict': SinkDict,

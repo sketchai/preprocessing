@@ -31,7 +31,7 @@ logger = logging.getLogger()
 
 class ExperimentCoarse():
     
-    def __init__(self, dataset='train'):
+    def __init__(self, dataset='merged'):
         self.catalog_filters = {
             'SourceFromFlatArray': SourceFromFlatArray,
             'OpSubPipelineFilter': OpSubPipelineFilter,
