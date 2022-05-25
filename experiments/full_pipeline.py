@@ -13,7 +13,7 @@ else:
 
 import argparse
 from experiments.experiment_coarse import ExperimentCoarse
-from experiments.experiment_convert_sam import ExperimentConvertExchangeFormat
+from experiments.experiment_convert_sam import ExperimentConvertSAM
 from experiments.experiment_normalization import ExperimentNormalization
 from experiments.experiment_weight import ExperimentClusterOrder, ExperimentClusterParams
 from experiments.experiment_encoding import ExperimentEncoding
@@ -26,7 +26,7 @@ def main():
     parser.add_argument('--dataset', help='train, validation or test')
     args = parser.parse_args()
     ExperimentCoarse(dataset=args.dataset).run_pipeline()
-    ExperimentConvertExchangeFormat(dataset=args.dataset).run_pipeline()
+    ExperimentConvertSAM(dataset=args.dataset).run_pipeline()
     ExperimentNormalization(dataset=args.dataset).run_pipeline()
     ExperimentClusterOrder(dataset=args.dataset).run_pipeline()
     ExperimentClusterParams(dataset=args.dataset).run_pipeline()
