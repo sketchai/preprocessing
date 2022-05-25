@@ -19,7 +19,6 @@ from src.utils.split import split_train_test_val, f_array_from_idxes, DEFAULT_SP
 from experiments import ENCODING_PATH, NORMALIZATION_PATH, INDEXES_PATH, WEIGHTS_PATH, SUBCLUSTERS_PATH
 
 def split(
-    normalized_dataset,
     encoded_dataset,
     cluster_path,
     weights_path,
@@ -41,19 +40,11 @@ def split(
         test_ratio=test_ratio, val_ratio=val_ratio,
         mode=mode)
 
-    f_array = flat_array.load_flat_array(normalized_dataset)
-    seq_offsets, seq_data = f_array._offsets, f_array._pickle_data
-
     f_array = flat_array.load_flat_array(encoded_dataset)
     encod_offsets, encod_data = f_array._offsets, f_array._pickle_data
 
     
     for split, seq_idxes in split_indexes.items():
-        # save sequences
-        offsets, pickle_data = f_array_from_idxes(seq_idxes, seq_offsets, seq_data)
-        pack = flat_array.pack_list_flat(offsets, pickle_data)
-        path = normalized_dataset.split('.npy')[0] + f'_{split}.npy'
-        np.save(path, pack, allow_pickle=False)
 
         # save encoded sequences
         offsets, pickle_data = f_array_from_idxes(seq_idxes, encod_offsets, encod_data)
@@ -70,10 +61,9 @@ def split(
 
 
 if __name__ == '__main__':
-    normalized_dataset = NORMALIZATION_PATH.format('merged')
     encoded_dataset = ENCODING_PATH.format('merged')
     cluster_path = INDEXES_PATH.format('merged')
     weights_path = WEIGHTS_PATH.format('merged')
     subcluster_path = SUBCLUSTERS_PATH.format('merged')
 
-    split(normalized_dataset,encoded_dataset,cluster_path,weights_path,subcluster_path)
+    split(encoded_dataset,cluster_path,weights_path,subcluster_path)

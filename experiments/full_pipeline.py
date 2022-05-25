@@ -23,17 +23,13 @@ from experiments.split_dataset import main as split_dataset
 logger = logging.getLogger()
 
 def main():
-    parser = argparse.ArgumentParser(description='Run full pipeline')
-    parser.add_argument('--dataset', help='train, validation or test')
-    args = parser.parse_args()
-    ExperimentCoarse(dataset=args.dataset).run_pipeline()
-    ExperimentConvertSAM(dataset=args.dataset).run_pipeline()
-    ExperimentNormalization(dataset=args.dataset).run_pipeline()
-    ExperimentClusterOrder(dataset=args.dataset).run_pipeline()
-    ExperimentClusterParams(dataset=args.dataset).run_pipeline()
-    ExperimentEncoding(dataset=args.dataset).run_pipeline()
-    if args.dataset=='merged':
-        split_dataset()
+    ExperimentCoarse(dataset='merged').run_pipeline()
+    ExperimentConvertSAM(dataset='merged').run_pipeline()
+    ExperimentNormalization(dataset='merged').run_pipeline()
+    ExperimentClusterOrder(dataset='merged').run_pipeline()
+    ExperimentClusterParams(dataset='merged').run_pipeline()
+    ExperimentEncoding(dataset='merged').run_pipeline()
+    split_dataset()
     export_parameters()
 
 if __name__ == '__main__':
