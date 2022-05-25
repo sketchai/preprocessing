@@ -1,6 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 from sam.catalog_primitive import Point
 from sam.catalog_constraint import Distance

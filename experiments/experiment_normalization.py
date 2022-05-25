@@ -5,8 +5,6 @@ import logging
 
 if __name__ == '__main__':
     # Add paths for packages
-    sys.path.append('src/filtering-pipeline/')
-    sys.path.append('sam/')
     cur_path = os.path.abspath(os.path.dirname(__file__))
     sys.path.insert(0, cur_path + "/..")
     logging.basicConfig(level=logging.WARNING)

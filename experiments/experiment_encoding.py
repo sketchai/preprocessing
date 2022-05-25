@@ -4,8 +4,6 @@ import os
 import logging
 
 if __name__ == '__main__':
-    sys.path.append('sam/')
-    sys.path.append('src/filtering-pipeline/')
     cur_path = os.path.abspath(os.path.dirname(__file__))
     sys.path.insert(0, cur_path + "/..")
     logging.basicConfig(level=logging.WARNING)

@@ -1,6 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 from sketchgraphs.data.sequence import NodeOp, EdgeOp
 from src.utils import flat_array

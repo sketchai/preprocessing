@@ -5,11 +5,7 @@ import logging
 import numpy as np
 
 if __name__ == '__main__':
-    sys.path.append('src/sketchgraphs/')
-    sys.path.append('src/filtering-pipeline/')
-    sys.path.append('sketch_data/')
-    sys.path.append('src/sketchgraphvsexchangeformat/')
-
+                
     cur_path = os.path.abspath(os.path.dirname(__file__))
     sys.path.insert(0, cur_path + "/..")
     logging.basicConfig(level=logging.WARNING)

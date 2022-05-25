@@ -1,6 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 from sketchgraphs.data.sequence import EdgeOp, NodeOp, EntityType
 from src.filters.utils.filter_collectparamvalue import FilterCollectParamValue

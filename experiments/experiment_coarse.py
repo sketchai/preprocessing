@@ -4,9 +4,6 @@ import logging
 
 if __name__ == '__main__':
     # Add paths for packages
-    sys.path.append('src/sketchgraphs/')
-    sys.path.append('sketch_data/')
-    sys.path.append('src/filtering-pipeline/')
     cur_path = os.path.abspath(os.path.dirname(__file__))
     sys.path.insert(0, cur_path + "/..")
     logging.basicConfig(level=logging.WARNING)

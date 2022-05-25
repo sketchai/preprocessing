@@ -1,6 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 from src.filters.filter_checklabel import FilterCheckLabel
 from filtering_pipeline import KO_FILTER_TAG

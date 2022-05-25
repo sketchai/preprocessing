@@ -1,6 +1,4 @@
 import sys
-sys.path.append('sam/')
-sys.path.append('src/filtering-pipeline/')
 
 import numpy as np
 import torch

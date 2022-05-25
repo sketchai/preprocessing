@@ -1,6 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 import torch
 import numpy as np

@@ -1,6 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 from src.utils.mini_dataset_maker import save_mini_sequence_data
 from sketchgraphs.data.sequence import NodeOp, EdgeOp

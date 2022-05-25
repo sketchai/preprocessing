@@ -1,7 +1,5 @@
 import sys
 
-sys.path.append('sam')
-sys.path.append('src/filtering-pipeline')
 
 import unittest
 import numpy as np

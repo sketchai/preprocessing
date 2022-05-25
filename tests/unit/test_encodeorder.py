@@ -1,6 +1,4 @@
 import sys
-sys.path.append('sam/')
-sys.path.append('src/filtering-pipeline/')
 
 import logging
 import unittest
