@@ -1,6 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 from src.filters.filter_sequenceorderencoding import FilterSequenceOrderEncoding
 from src import OPS_ENCODING_TAG, SEQUENCE_ENCODING_TAG

@@ -1,7 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('sam/')
-sys.path.append('src/filtering-pipeline/')
 
 import unittest
 from sam.primitive import Primitive, PrimitiveType

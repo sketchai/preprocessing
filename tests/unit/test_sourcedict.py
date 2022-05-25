@@ -1,6 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 from src.sources.source_fromdict import SourceDict
 from sketchgraphs.data.sequence import NodeOp

@@ -1,6 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 from src.filters.filter_clustersequences import FilterClusterSequences
 from src import SEQUENCE_ENCODING_TAG, CLUSTER_DICT_TAG

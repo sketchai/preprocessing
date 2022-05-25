@@ -1,7 +1,5 @@
 import json
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 from typing import Dict
 import logging

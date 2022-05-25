@@ -1,8 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline')
-sys.path.append('sam/')
-sys.path.append('src/sketchgraphvssam/')
 import unittest
 import logging
 

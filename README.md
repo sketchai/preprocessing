@@ -24,9 +24,8 @@ then
 NB: it can be good to change the conda name env into [env_basic_conda.yml](./env/env_basic_conda.yml) file.
 
 
-2. Install poetry and package dependencies
 
-1. To install package dependencies with poetry, 
+2. To install package dependencies with poetry, 
 
 ```
     poetry install
@@ -37,30 +36,24 @@ To update package dependencies,
     poetry update
 ```
 
-2. Install our gitlab package [FilteringPipeline](https://gitlab.pam-retd.fr/cao_ml/python_packages/abstractfilters/filteringpipeline):
+3. Ensure you have cloned the following repositories somewhere:
 ```bash
-    pip install -e git+https://github.com/sketchai/filteringpipeline#egg=filtering-pipeline
+    # sketchai local dependencies 
+    git clone https://github.com/sketchai/sam
+    git clone https://github.com/sketchai/filteringpipeline
+    git clone https://github.com/sketchai/sketchgraph_vs_sam
+
+    # sketchgraphs
+    git clone https://github.com/PrincetonLIPS/SketchGraphs
 ```
 
-3. Install sktechgraphs: to avoid unwanted evolution, use a cloned version on the EDF repo:
+4. Install packages in editable mode (latest version of pip is required)
 
 ```bash
-    pip install -e git+https://github.com/PrincetonLIPS/SketchGraphs.git@2fbf9e5e84031b233325331c95880a86448e5bee#egg=sketchgraphs
+    # for each package run
+    pip install -e path/to/your/package
 ```
-
-4. Install SAM package language
-```bash
-    pip install -e git+https://github.com/sketchai/sam#egg=sam
-```
-
 (or use a symlink for the dependencies).
-
-
-5. Install sketchgraph_vs_sam package that allows to convert the sketchgraph object to sam data model
-
-```bash
-    pip install -e git+https://github.com/sketchai/sketchgraph_vs_sam#egg=sketchgraph_vs_sam
-```
 
 ## Testing 
 
@@ -77,6 +70,7 @@ For running a specific test:
 
 We use a small 5 sequence long dataset extracted from the sg_t16_test.npy file to do the testing. It is located under tests/asset/sg_t16_mini.npy
 
+All integration tests may not pass on first run, in that case run pytest again.
 See test coverage : [TO COMPLETE]
 
 
@@ -96,21 +90,16 @@ Otherwise make sure to configure the correct paths to the sketchgraphs dataset i
 
 Launch script on your pc
 ```sh
+# to run the complete pipeline
+python experiments/full_pipeline.py --dataset test
+
+# or run only one specific step
 python experiments/experiment_coarse.py --dataset test
 python experiments/experiment_convert_exchangeformat.py --dataset test
 python experiments/experiment_normalization.py --dataset test
 python experiments/experiment_weight.py --dataset test
 python experiments/experiment_encoding.py --dataset test
 python experiments/preprocessing_params.py
-```
-
-Run on HPC:
-```sh
-# Full pipeline
-sbatch scripts/full_pipeline.sh train
-
-# Or
-sbatch scripts/coarse.sh validation
 ```
 
 ## Good pratices 

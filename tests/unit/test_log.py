@@ -1,6 +1,5 @@
 import sys
 
-sys.path.append('src/filtering-pipeline/')
 
 import logging
 import unittest

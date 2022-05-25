@@ -1,5 +1,4 @@
 import sys
-sys.path.append('sam/')
 
 from sam.primitive import Primitive
 from sam.constraint import Constraint

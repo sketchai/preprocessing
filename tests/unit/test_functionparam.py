@@ -1,6 +1,4 @@
 import sys
-sys.path.append('src/sketchgraphs/')
-sys.path.append('src/filtering-pipeline/')
 
 from tests.asset.mock.mock_functionOnParam import MockFunctionOnParam
 from filtering_pipeline import KO_FILTER_TAG
