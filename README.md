@@ -1,5 +1,6 @@
 # Preprocessing
 
+In this package, we detail how to preprocess data sketches using our SAM data model.
 
 
 ## Installation
@@ -71,12 +72,11 @@ For running a specific test:
 We use a small 5 sequence long dataset extracted from the sg_t16_test.npy file to do the testing. It is located under tests/asset/sg_t16_mini.npy
 
 All integration tests may not pass on first run, in that case run pytest again.
-See test coverage : [TO COMPLETE]
+
 
 
 ## Preprocessing pipeline 
 
-- [How does the preprocessing pipeline works?](docs/preprocessing.md)
 
 An easy way to change the paths to your data folder is to use the following symbolic link (on linux).
 
@@ -123,6 +123,4 @@ autopep8 --in-place --aggressive --aggressive ./
 ```
 
 
-### FLAKE8
 
-[TO COMPLETE]
