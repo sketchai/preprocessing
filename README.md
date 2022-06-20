@@ -22,7 +22,7 @@ then
     conda activate sg_prep
 ```
 
-NB: it can be good to change the conda name env
+NB: you can change the conda env name in the .yml file if needed
 
 
 
@@ -32,7 +32,7 @@ NB: it can be good to change the conda name env
     poetry install
 ```
 
-To update package dependencies, 
+At a later stage, if you want to update package dependencies, 
 ```
     poetry update
 ```
@@ -48,7 +48,7 @@ To update package dependencies,
     git clone https://github.com/PrincetonLIPS/SketchGraphs
 ```
 
-Assuming your directory tree is:
+The recommended way to setup your directory tree is:
 
 ```
 sketchai
@@ -59,14 +59,14 @@ sketchai
 └── sketchgraph_vs_sam
 ```
 
-4. Install the python packages in editable mode. Ensure your [pip](https://pip.pypa.io/en/stable/getting-started/) version is at least 22.0
+4. Install the python packages in editable mode in your conda environment. Ensure your [pip](https://pip.pypa.io/en/stable/getting-started/) version is at least 22.0
 
 ```bash
     cd sketchai
-    pip install -e sam
-    pip install -e SketchgGraphs
-    pip install -e sketchgraph_vs_sam
-    pip install -e filteringpipeline
+    pip install -e ./sam
+    pip install -e ./SketchgGraphs
+    pip install -e ./sketchgraph_vs_sam
+    pip install -e ./filteringpipeline
 ```
 
 (or use a symlink for the dependencies).
