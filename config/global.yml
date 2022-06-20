@@ -54,8 +54,8 @@ keep:
     - !ConstraintType VERTICAL 
     - !ConstraintType TANGENT
     - !ConstraintType LENGTH
-    - !ConstraintType HORIZONTAL_LENGTH 
-    - !ConstraintType VERTICAL_LENGTH
+    - !ConstraintType HORIZONTAL_DISTANCE 
+    - !ConstraintType VERTICAL_DISTANCE
     - !ConstraintType PERPENDICULAR 
     - !ConstraintType MIDPOINT
     - !ConstraintType EQUAL 

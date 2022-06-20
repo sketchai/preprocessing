@@ -32,7 +32,8 @@ def main():
     ExperimentClusterOrder(dataset=args.dataset).run_pipeline()
     ExperimentClusterParams(dataset=args.dataset).run_pipeline()
     ExperimentEncoding(dataset=args.dataset).run_pipeline()
-    split_dataset()
+    if args.dataset=='merged':
+        split_dataset()
     export_parameters()
 
 if __name__ == '__main__':

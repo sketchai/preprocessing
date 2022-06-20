@@ -22,7 +22,7 @@ then
     conda activate sg_prep
 ```
 
-NB: it can be good to change the conda name env into [env_basic_conda.yml](./env/env_basic_conda.yml) file.
+NB: you can change the conda env name in the .yml file if needed
 
 
 
@@ -32,12 +32,12 @@ NB: it can be good to change the conda name env into [env_basic_conda.yml](./env
     poetry install
 ```
 
-To update package dependencies, 
+At a later stage, if you want to update package dependencies, 
 ```
     poetry update
 ```
 
-3. Ensure you have cloned the following repositories somewhere:
+3. Ensure you have cloned the following repositories:
 ```bash
     # sketchai local dependencies 
     git clone https://github.com/sketchai/sam
@@ -48,30 +48,45 @@ To update package dependencies,
     git clone https://github.com/PrincetonLIPS/SketchGraphs
 ```
 
-4. Install packages in editable mode (latest version of pip is required)
+The recommended way to setup your directory tree is:
+
+```
+sketchai
+├── filteringpipeline
+├── preprocessing
+├── sam
+├── SketchGraphs
+└── sketchgraph_vs_sam
+```
+
+4. Install the python packages in editable mode in your conda environment. Ensure your [pip](https://pip.pypa.io/en/stable/getting-started/) version is at least 22.0
 
 ```bash
-    # for each package run
-    pip install -e path/to/your/package
+    cd sketchai
+    pip install -e ./sam
+    pip install -e ./SketchgGraphs
+    pip install -e ./sketchgraph_vs_sam
+    pip install -e ./filteringpipeline
 ```
+
 (or use a symlink for the dependencies).
 
 ## Testing 
 
-For running all the tests:
+To run all the tests:
 
 ```
     poetry run pytest 
 ```
 
-For running a specific test: 
+To run a specific test: 
 ```
     poetry run pytest path/my_test
 ```
 
 We use a small 5 sequence long dataset extracted from the sg_t16_test.npy file to do the testing. It is located under tests/asset/sg_t16_mini.npy
 
-All integration tests may not pass on first run, in that case run pytest again.
+All integration tests will not pass on first run, in that case run pytest again 3 or 4 times.
 
 
 
@@ -95,8 +110,11 @@ python experiments/merge_dataset.py
 
 Launch script on your pc
 ```sh
-# to run the complete pipeline
-python experiments/full_pipeline.py 
+# to run the complete pipeline on validation (ETA: ~20min)
+python experiments/full_pipeline.py --dataset validation
+
+# Run the complete pipeline on all data (ETA: ~7hours)
+python experiments/full_pipeline.py --dataset merged
 
 # or run only one specific step
 python experiments/experiment_coarse.py 
@@ -105,7 +123,7 @@ python experiments/experiment_normalization.py
 python experiments/experiment_weight.py 
 python experiments/experiment_encoding.py
 
-# Split btw train test and val
+# Split between train test and val
 python experiments/split_dataset.py
 
 # Save params
