@@ -7,6 +7,7 @@ path:
   subclusters_path: 'out/indexes_subclusters_{}.json'
   weights_path: 'out/sg_{}_weights.npy'
   encoding_path: 'out/sg_{}_final.npy'
+  encoding_path_pyg: 'out/pyg_{}_final.npy'
   parameters_path: 'out/preprocessing_params.pkl'
 
 # TODO: set the params in the conf_xxx_pip.yml files

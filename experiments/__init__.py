@@ -8,6 +8,7 @@ INDEXES_PATH = d_conf['path']['indexes_path']
 SUBCLUSTERS_PATH = d_conf['path']['subclusters_path']
 WEIGHTS_PATH = d_conf['path']['weights_path']
 ENCODING_PATH = d_conf['path']['encoding_path']
+ENCODING_PATH_PYG = d_conf['path']['encoding_path_pyg']
 PARAMETERS_PATH = d_conf['path']['parameters_path']
 EXCHANGE_PATH = d_conf['path']['convert_exchange_path']
 
