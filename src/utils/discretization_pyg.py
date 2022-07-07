@@ -40,8 +40,8 @@ def discretization_nodes(ops, params_node, node_idx_map):
     # set padding idx to the max possible dim
     f_dims = feature_dims(params_node=params_node)
     padding_idx = 0
-    n_max_params = max(len(params) for params in f_dims)
-    node_features = np.ones((len(ops),n_max_params), dtype=np.int64)
+    n_max_params = max(len(params.values()) for params in f_dims.values())
+    node_features = np.ones((len(ops),n_max_params + 1), dtype=np.int64)
     node_features *= padding_idx
     for i, op in enumerate(ops):
         if hasattr(op, 'subnode_type'):
