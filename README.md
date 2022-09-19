@@ -2,9 +2,21 @@
 
 In this package, we detail how to preprocess data sketches using our SAM data model.
 
+During the preprocessing step, sketches coming from divers CAD sketches sources (here OnShape) are first convert to the SAM data model, then they are filtered based on heuristics.
+![CAD_ML_train](https://user-images.githubusercontent.com/103726832/184370818-5f1cb693-0a99-4472-8ed6-a3f317f86e4b.gif)
+
+This preprocessing pipepeline is composed of 6 sub-pipelines:
+- a [coarse-grained sub-pipeline](https://github.com/sketchai/preprocessing/blob/main/experiments/experiment_coarse.py) that removes graphs based on several criteria (sequence size, number of primitives, etc.)
+- a [conversion sub-pipeline](https://github.com/sketchai/preprocessing/blob/main/experiments/experiment_convert_sam.py), that converts here OnShape to SAM data model,
+- a [normalization sub-pipeline](https://github.com/sketchai/preprocessing/blob/main/experiments/experiment_normalization.py), that rescales sketches into a [0,1] X [0,1] box.
+- [two clustering sub-pipelines](https://github.com/sketchai/preprocessing/blob/main/experiments/experiment_weight.py), that detects and remove duplicate sketches based on the primitives and constraints sequence (first clustering) and on the parameters values (second clustering).
+- an [encoding sub-pipeline](https://github.com/sketchai/preprocessing/blob/main/experiments/experiment_encoding.py), that converts SAM data model to a specific graph ML model.
+
+To adapt this pipeline to another CAD data model, you must need to:
+- write a package to convert from you CAD data model to SAM. You can inspire from [OnShape to SAM package converter](https://github.com/sketchai/sketchgraph_vs_sam),
+- update the [conversion pipeline](https://github.com/sketchai/preprocessing/blob/main/experiments/experiment_convert_sam.py).
 
 ## Installation
-
 
 We use conda as an environment manager and poetry as dependency manager.
 

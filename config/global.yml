@@ -1,0 +1,68 @@
+path:
+  sketchgraphs_path: 'data/sg_t16_{}.npy'
+  coarse_path: 'out/coarse_grained_output_{}.npy'
+  normalization_path: 'out/normalization_output_{}.npy'
+  convert_exchange_path: 'out/convert_exchange_output_{}.npy'
+  indexes_path: 'out/indexes_cluster_order_{}.json'
+  subclusters_path: 'out/indexes_subclusters_{}.json'
+  weights_path: 'out/sg_{}_weights.npy'
+  encoding_path: 'out/sg_{}_final.npy'
+  parameters_path: 'out/preprocessing_params.pkl'
+
+# TODO: set the params in the conf_xxx_pip.yml files
+# for now this is only used for the export_parameters()
+parameters:
+  lMax: 60
+  lMin: 5
+  dof_max: null
+  n_bins: 50
+
+keep:
+  l_keep_edge_SG:
+    - !SGConstraintType Coincident
+    - !SGConstraintType Distance
+    - !SGConstraintType Horizontal
+    - !SGConstraintType Parallel
+    - !SGConstraintType Vertical
+    - !SGConstraintType Tangent
+    - !SGConstraintType Length
+    - !SGConstraintType Perpendicular
+    - !SGConstraintType Midpoint
+    - !SGConstraintType Equal
+    - !SGConstraintType Diameter
+    - !SGConstraintType Radius
+    - !SGConstraintType Concentric
+    - !SGConstraintType Angle
+    - !SGConstraintType Subnode
+  
+  l_keep_node_SG:
+    - !SGEntityType Point
+    - !SGEntityType Line
+    - !SGEntityType Circle
+    - !SGEntityType Arc
+    - !SGSubnodeType SN_Start
+    - !SGSubnodeType SN_End
+    - !SGSubnodeType SN_Center
+    - !SGEntityType External
+    - !SGEntityType Stop
+
+  l_keep_edge:
+    - !ConstraintType COINCIDENT 
+    - !ConstraintType DISTANCE
+    - !ConstraintType HORIZONTAL 
+    - !ConstraintType PARALLEL 
+    - !ConstraintType VERTICAL 
+    - !ConstraintType TANGENT
+    - !ConstraintType LENGTH
+    - !ConstraintType HORIZONTAL_DISTANCE 
+    - !ConstraintType VERTICAL_DISTANCE
+    - !ConstraintType PERPENDICULAR 
+    - !ConstraintType MIDPOINT
+    - !ConstraintType EQUAL 
+    - !ConstraintType RADIUS 
+    - !ConstraintType ANGLE
+  l_keep_node:
+    - !PrimitiveType POINT
+    - !PrimitiveType LINE
+    - !PrimitiveType CIRCLE
+    - !PrimitiveType ARC
