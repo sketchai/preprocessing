@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+.pytest_cache/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Poetry specific file
+poetry.lock
+
+data
+
+# Unit test / coverage reports
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Remove gitlab installation
+src/filtering-pipeline
+src/sketchgraphs
+sketch_data
+src/sketchgraphvssam
