@@ -1,0 +1,57 @@
+General:
+  l_filters:
+    - FilterFormatEncoding
+    - FilterEncodeEdgeFeatures
+    - FilterEncodeNodeFeatures
+    - FilterEncodeGraphConnections
+    - FilterLog
+  source: SourceFromFlatArray
+  sink: SinkDictFlat
+
+# Source
+SourceFromFlatArray:
+  type: SourceFromFlatArray
+  parms:
+    file_path: TO_COMPLETE
+
+
+SinkDictFlat:
+  type: SinkDictFlat
+  parms:
+    l_keys:
+      - 'node_features'
+      - 'edge_features'
+      - 'incidences'
+      - 'i_edges_given'
+      - 'i_edges_possible'
+      - 'sequence_idx'
+    output_path: TO_COMPLETE
+    slice_length: 100000
+    clean_up: True
+
+FilterFormatEncoding:
+  type: FilterFormatEncoding
+  parms:
+    
+
+FilterEncodeEdgeFeatures:
+  type: FilterEncodeEdgeFeatures
+  parms:
+    l_keep_edge: TO_COMPLETE
+
+FilterEncodeNodeFeatures:
+  type: FilterEncodeNodeFeatures
+  parms:
+    n_bins: 50
+    l_keep_node: TO_COMPLETE
+
+FilterEncodeGraphConnections:
+  type: FilterEncodeGraphConnections
+  parms:
+    l_keep_edge: TO_COMPLETE
+
+FilterLog:
+  type: FilterLog
+  parms:
+    output_path: 'out/logs'
+    clean_up: True
